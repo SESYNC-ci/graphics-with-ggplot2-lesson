@@ -1,0 +1,7 @@
+baseurl: '/graphics-with-ggplot2-lesson'
+defaults:
+  -
+    scope:
+      path: ''
+    values:
+      layout: 'default'
