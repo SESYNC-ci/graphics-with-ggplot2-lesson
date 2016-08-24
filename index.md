@@ -1,7 +1,12 @@
 ---
+style: /css/lesson.css
 ---
 
 # Graphics with ggplot2
+{:.no-toc}
+
+* TOC
+{:toc}
 
 This lesson is a brief overview of the **ggplot2** package, which is a R implementation of the "grammar of graphics". In base R, there are different functions for different types of graphics (`plot`, `boxplot`, `hist`, etc.) and each may have their own specific parameters in addition to general plot options. In contrast, ggplot2 constructs plots one *layer* at a time; for example, the output of a linear regression could be plotted by defining the axes, then adding individual points, tracing the line of best fit, and finally specifying overall layout parameters such as font sizes and background color.
 
@@ -12,8 +17,8 @@ Let's start by loading a few packages along with a sample dataset, which is the 
 ~~~r
 library(dplyr)
 library(ggplot2)
-surveys <- read.csv("data/surveys.csv", na.strings = "")
-surveys <- filter(surveys, !is.na(species_id), !is.na(sex), !is.na(weight))
+surveys <- read.csv("data/surveys.csv", na.strings = "") %>%
+    filter(!is.na(species_id), !is.na(sex), !is.na(weight))
 ~~~
 {:.input}
 
@@ -22,7 +27,9 @@ surveys <- filter(surveys, !is.na(species_id), !is.na(sex), !is.na(weight))
 As a first example, this code plots the inviduals' weights by species:
 
 ~~~r
-ggplot(data = surveys, aes(x = species_id, y = weight)) + geom_point()
+ggplot(data = surveys,
+       aes(x = species_id, y = weight)) +
+    geom_point()
 ~~~
 {:.input}
 
@@ -33,9 +40,12 @@ In `ggplot`, we specified a data frame (*surveys*) and a number of aesthetic map
 Multiple geom layers can be combined in a single plot:
 
 ~~~r
-ggplot(data = surveys, aes(x = species_id, y = weight)) + 
-  geom_boxplot() +
-  geom_point(stat = "summary", fun.y = "mean", color = "red")
+ggplot(data = surveys,
+       aes(x = species_id, y = weight)) +
+    geom_boxplot() +
+    geom_point(stat = "summary",
+               fun.y = "mean",
+               color = "red")
 ~~~
 {:.input}
 
@@ -50,9 +60,11 @@ This `geom_point` layer definition illustrates a couple new features:
 
 The `qplot` function provides a shortcut to `ggplot` that looks more like the base R `plot` function, e.g. `qplot(x = species_id, y = weight, data = surveys, geom = "boxplot")`. This can be useful to quickly produce simple graphs, especially those with a single geom.
 
-### Exercise
+### Exercise 1
 
 Using `dplyr` and `ggplot` show how the mean weight of individuals of the species *DM* varies across years and between males and females.
+
+[View solution](#solution-1)
 
 ## Adding and customizing scales
 
@@ -60,9 +72,13 @@ The code below shows one graph answering the question in the exercise. I added a
 
 ~~~r
 surveys_dm <- filter(surveys, species_id == "DM")
-ggplot(data = surveys_dm, aes(x = year, y = weight)) + 
-  geom_point(aes(shape = sex), size = 3, stat = "summary", fun.y = "mean") +
-  geom_smooth(method = "lm")
+ggplot(data = surveys_dm,
+       aes(x = year, y = weight)) + 
+    geom_point(aes(shape = sex),
+               size = 3,
+	       stat = "summary",
+	       fun.y = "mean") +
+    geom_smooth(method = "lm")
 ~~~
 {:.input}
 
@@ -71,9 +87,13 @@ ggplot(data = surveys_dm, aes(x = year, y = weight)) +
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
 
 ~~~r
-ggplot(data = surveys_dm, aes(x = year, y = weight)) + 
-  geom_point(aes(shape = sex), size = 3, stat = "summary", fun.y = "mean") +
-  geom_smooth(aes(group = sex), method = "lm")
+ggplot(data = surveys_dm,
+       aes(x = year, y = weight)) + 
+    geom_point(aes(shape = sex),
+               size = 3,
+	       stat = "summary",
+	       fun.y = "mean") +
+    geom_smooth(aes(group = sex), method = "lm")
 ~~~
 {:.input}
 
@@ -82,9 +102,15 @@ ggplot(data = surveys_dm, aes(x = year, y = weight)) +
 Even better would be to distinguish the two lines by color:
 
 ~~~r
-year_wgt <- ggplot(data = surveys_dm, aes(x = year, y = weight, color = sex)) + 
-  geom_point(aes(shape = sex), size = 3, stat = "summary", fun.y = "mean") +
-  geom_smooth(method = "lm")
+year_wgt <- ggplot(data = surveys_dm,
+                   aes(x = year,
+		       y = weight,
+		       color = sex)) + 
+    geom_point(aes(shape = sex),
+               size = 3,
+	       stat = "summary",
+	       fun.y = "mean") +
+    geom_smooth(method = "lm")
 year_wgt
 ~~~
 {:.input}
@@ -107,17 +133,20 @@ year_wgt
 
 The `labels` parameter affects the names displayed in the legend. What happens if the labels provided to the shape and color scales don't match? (Try it.) You can also change the order of legend labels with the `breaks` parameter of the `scale` function. 
 
-### Exercise
+### Exercise 2
 
 Create an histogram of the weights of individuals of species *DM* and divide the data by sex. Look at the [documentation](http://docs.ggplot2.org/current/geom_histogram.html) for `geom_histogram` to learn how to customize this graph. Can you make the bars representing males and females display side by side instead of vertically? How can you change the default bin width? Does the `color` parameter work as you would expect, and if not, which other parameter can you use? 
+
+[View solution](#solution-2)
 
 ## Axes, labels and themes
 
 Let's start from the histogram produced for the exercise above. 
 
 ~~~r
-histo <- ggplot(data = surveys_dm, aes(x = weight, fill = sex)) +
-  geom_histogram(binwidth = 3, color = "white")
+histo <- ggplot(data = surveys_dm,
+                aes(x = weight, fill = sex)) +
+    geom_histogram(binwidth = 3, color = "white")
 histo
 ~~~
 {:.input}
@@ -127,18 +156,17 @@ histo
 We change the title and axis labels with the `labs` function, edit the breaks and limits of the *x*-axis, and remove the "buffer" around the axis limits with `expand = c(0, 0)`.
 
 ~~~r
+title <- expression(paste(italic("Dipodomys merriami"),
+                          " weight distribution"))
 histo <- histo + 
-  labs(title = expression(paste(italic("Dipodomys merriami"), " weight distribution")),
-       x = "Weight (g)", y = "Count") +
-  scale_x_continuous(limits = c(20, 60), breaks = c(20, 30, 40, 50, 60), 
+  labs(title = title,
+       x = "Weight (g)",
+       y = "Count") +
+  scale_x_continuous(limits = c(20, 60),
+                     breaks = c(20, 30, 40, 50, 60), 
                      expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 histo
-~~~
-{:.input}
-
-~~~
-Warning: Removed 61 rows containing non-finite values (stat_bin).
 ~~~
 {:.input}
 
@@ -151,7 +179,7 @@ Many plot-level options in `ggplot`, from background color to font sizes, are de
 ~~~r
 histo <- histo +
   theme_bw() +
-  theme(legend.position = c(0.2, 0.5),  # position relative to plot size (i.e. between 0 and 1)
+  theme(legend.position = c(0.2, 0.5),
         plot.title = element_text(face = "bold", vjust = 2),
         axis.title.y = element_text(size = 13, vjust = 1), 
         axis.title.x = element_text(size = 13, vjust = 0))
@@ -159,29 +187,75 @@ histo
 ~~~
 {:.input}
 
-~~~
-Warning: Removed 61 rows containing non-finite values (stat_bin).
-~~~
-{:.input}
-
 ![plot of chunk plot_hist_themes](/graphics-with-ggplot2-lesson/images/plot_hist_themes-1.png)
+
+Note that position is relative to plot size (i.e. between 0 and 1).
 
 ## Facets
 
-To conclude this overview of ggplot2, here is an example of the use of *facets* to display a grid of plots. To create facets along two categorical variables, use `facet_grid` instead of `facet_wrap`.
+To conclude this overview of ggplot2, here is an example of the use of *facets* to display a grid of plots.
+
 
 ~~~r
 surveys_dm$month <- as.factor(surveys_dm$month)
-levels(surveys_dm$month) <- c("January", "February", "March", "April", "May",  
-  "June", "July", "August", "September", "October", "November", "December")
-ggplot(data = surveys_dm, aes(x = weight)) +
+levels(surveys_dm$month) <- c("January", "February", "March", "April", "May", "June",
+                              "July", "August", "September", "October", "November", "December")
+ggplot(data = surveys_dm,
+       aes(x = weight)) +
   geom_histogram() +
   facet_wrap( ~ month) +
-  labs(title = "DM weight distribution by month", x = "Count", y = "Weight (g)")
+  labs(title = "DM weight distribution by month",
+       x = "Count",
+       y = "Weight (g)")
 ~~~
 {:.input}
 
 ![plot of chunk plot_facets](/graphics-with-ggplot2-lesson/images/plot_facets-1.png)
+
+Add the unfaceted data to each panel.
+
+
+~~~r
+ggplot(data = surveys_dm,
+       aes(x = weight)) +
+  geom_histogram(data = select(surveys_dm, -month),
+                 alpha = 0.2) +
+  geom_histogram() +
+  facet_wrap( ~ month) +
+  labs(title = "DM weight distribution by month",
+       x = "Count",
+       y = "Weight (g)")
+~~~
+{:.input}
+
+![plot of chunk plot_facets_2](/graphics-with-ggplot2-lesson/images/plot_facets_2-1.png)
+
+And make it look good ...
+
+
+~~~r
+ggplot(data = surveys_dm,
+       aes(x = weight, fill = month)) +
+  geom_histogram(data = select(surveys_dm, -month),
+                 aes(y = ..density..),
+                 fill = "black") +
+  geom_histogram(aes(y = ..density..),
+                 alpha = 0.8) +
+  facet_wrap( ~ month) +
+  labs(title = "DM weight distribution by month",
+       x = "Count",
+       y = "Weight (g)") +
+  guides(fill = FALSE)								 
+~~~
+{:.input}
+
+![plot of chunk plot_facets_3](/graphics-with-ggplot2-lesson/images/plot_facets_3-1.png)
+
+### Exercise 3
+
+For records with species_id "DM" and "PB", create facets along two categorical variables, species_id and sex, using `facet_grid` instead of `facet_wrap`.
+
+[View solution](#solution-3)
 
 ## Additional information
 
@@ -189,4 +263,52 @@ ggplot(data = surveys_dm, aes(x = weight)) +
 
 * [Documentation site for ggplot2](http://docs.ggplot2.org)
 
-* [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/) A useful reference on how to customize different graph elements in ggplot2. 
+* [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/) A useful reference on how to customize different graph elements in ggplot2.
+
+## Exercise solutions
+
+### Solution 1
+
+
+~~~r
+filter(surveys, species_id == "DM") %>%
+  ggplot(aes(x = year, y = weight, color = sex)) +
+  geom_line(stat = "summary", fun.y = "mean")
+~~~
+{:.input}
+
+![plot of chunk sol1](/graphics-with-ggplot2-lesson/images/sol1-1.png)
+
+[Return](#exercise-1)
+
+### Solution 2
+
+
+~~~r
+filter(surveys, species_id == "DM") %>%
+  ggplot(aes(x = weight, fill = sex)) +
+  geom_histogram(binwidth = 1, position = "dodge")
+~~~
+{:.input}
+
+![plot of chunk sol2](/graphics-with-ggplot2-lesson/images/sol2-1.png)
+
+[Return](#exercise-2)
+
+### Solution 3
+
+
+~~~r
+filter(surveys, species_id %in% c("DM", "PB")) %>%
+  ggplot(aes(x = weight)) +
+  geom_histogram() +
+  facet_grid(sex ~ species_id) +
+  labs(title = "DM and RO weight distribution by sex",
+       x = "Count",
+       y = "Weight (g)")
+~~~
+{:.input}
+
+![plot of chunk sol3](/graphics-with-ggplot2-lesson/images/sol3-1.png)
+
+[Return](#exercise-3)

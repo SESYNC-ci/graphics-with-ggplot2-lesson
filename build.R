@@ -2,12 +2,6 @@ require(knitr)
 require(yaml)
 require(stringr)
 
-# If sourcing, set value appropriately
-args = "index.Rmd"
-
-# # If running as "Rscript build.R ..."
-# args = commandArgs(trailingOnly=TRUE)
-
 config = yaml.load_file("_config.yml")
 render_markdown(fence_char = "~")
 opts_knit$set(base.url = paste0(config$baseurl, "/"))
@@ -34,4 +28,4 @@ chunk = function(x, options) {
 }
 knit_hooks$set(chunk = chunk)
 
-knit(args[1])
+knit('index.Rmd')
