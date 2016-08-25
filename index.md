@@ -14,13 +14,14 @@ This layered approach allows for highly customizable graphics. Even when a plot 
 
 Let's start by loading a few packages along with a sample dataset, which is the *surveys* table from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). We filter the data to remove rows that have missing values for the species\_id, sex, or weight columns. (This is not strictly necessary, but it will prevent ggplot from returning missing values warnings.)
 
+
 ~~~r
 library(dplyr)
 library(ggplot2)
 surveys <- read.csv("data/surveys.csv", na.strings = "") %>%
     filter(!is.na(species_id), !is.na(sex), !is.na(weight))
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ## Constructing layered graphics in ggplot
 
@@ -31,7 +32,7 @@ ggplot(data = surveys,
        aes(x = species_id, y = weight)) +
     geom_point()
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_pt](/graphics-with-ggplot2-lesson/images/plot_pt-1.png)
 
@@ -47,7 +48,7 @@ ggplot(data = surveys,
                fun.y = "mean",
                color = "red")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_box](/graphics-with-ggplot2-lesson/images/plot_box-1.png)
 
@@ -81,7 +82,7 @@ ggplot(data = surveys_dm,
 	       fun.y = "mean") +
     geom_smooth(method = "lm")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_lm](/graphics-with-ggplot2-lesson/images/plot_lm-1.png)
 
@@ -97,7 +98,7 @@ ggplot(data = surveys_dm,
 	       fun.y = "mean") +
     geom_smooth(aes(group = sex), method = "lm")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_lm_group](/graphics-with-ggplot2-lesson/images/plot_lm_group-1.png)
 
@@ -116,7 +117,7 @@ year_wgt <- ggplot(data = surveys_dm,
     geom_smooth(method = "lm")
 year_wgt
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_lm_color](/graphics-with-ggplot2-lesson/images/plot_lm_color-1.png)
 
@@ -131,7 +132,7 @@ The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It
 year_wgt + scale_color_manual(values = c("darkblue", "orange"),
                               labels = c("Female", "Male"))
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_lm_scales](/graphics-with-ggplot2-lesson/images/plot_lm_scales-1.png)
 
@@ -140,7 +141,7 @@ year_wgt + scale_color_manual(values = c("darkblue", "orange"),
 year_wgt + scale_color_manual(values = c("black", "red"),
                               labels = c("Female", "Male"))
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_lm_scales_2](/graphics-with-ggplot2-lesson/images/plot_lm_scales_2-1.png)
 
@@ -163,7 +164,7 @@ histo <- ggplot(data = surveys_dm,
     geom_histogram(binwidth = 3, color = "white")
 histo
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_hist](/graphics-with-ggplot2-lesson/images/plot_hist-1.png)
 
@@ -179,7 +180,7 @@ histo <- histo +
                      breaks = c(20, 30, 40, 50, 60))
 histo
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_hist_axes](/graphics-with-ggplot2-lesson/images/plot_hist_axes-1.png)
 
@@ -197,7 +198,7 @@ histo <- histo +
         axis.title.x = element_text(size = 13, vjust = 0))
 histo
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_hist_themes](/graphics-with-ggplot2-lesson/images/plot_hist_themes-1.png)
 
@@ -221,7 +222,7 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_facets](/graphics-with-ggplot2-lesson/images/plot_facets-1.png)
 
@@ -239,7 +240,7 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_facets_2](/graphics-with-ggplot2-lesson/images/plot_facets_2-1.png)
 
@@ -260,7 +261,7 @@ ggplot(data = surveys_dm,
        y = "Weight (g)") +
   guides(fill = FALSE)								 
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk plot_facets_3](/graphics-with-ggplot2-lesson/images/plot_facets_3-1.png)
 
@@ -288,7 +289,7 @@ filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = year, y = weight, color = sex)) +
   geom_line(stat = "summary", fun.y = "mean")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk sol1](/graphics-with-ggplot2-lesson/images/sol1-1.png)
 
@@ -302,7 +303,7 @@ filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk sol2](/graphics-with-ggplot2-lesson/images/sol2-1.png)
 
@@ -320,7 +321,7 @@ filter(surveys, species_id %in% c("DM", "PB")) %>%
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.input}
+{:.text-document title='lesson-3.R'}
 
 ![plot of chunk sol3](/graphics-with-ggplot2-lesson/images/sol3-1.png)
 
