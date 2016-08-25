@@ -33,7 +33,7 @@ ggplot(data = surveys,
 ~~~
 {:.input}
 
-![plot of chunk plot_pt](/images/plot_pt-1.png)
+![plot of chunk plot_pt](/graphics-with-ggplot2-lesson/images/plot_pt-1.png)
 
 In `ggplot`, we specified a data frame (*surveys*) and a number of aesthetic mappings (`aes`). The `aes` function associates variables from that data frame to visual elements in the plot: here, *species_id* on the x-axis and *weight* on the y-axis. The `ggplot` function by itself does not plot anything until we add a *geom* layer such as `geom_point`. In this particular case, individual points are hard to distinguish; what could we use instead? (Try `geom_boxplot`.)
 
@@ -49,7 +49,7 @@ ggplot(data = surveys,
 ~~~
 {:.input}
 
-![plot of chunk plot_box](/images/plot_box-1.png)
+![plot of chunk plot_box](/graphics-with-ggplot2-lesson/images/plot_box-1.png)
 
 This `geom_point` layer definition illustrates a couple new features:
 
@@ -83,7 +83,7 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_lm](/images/plot_lm-1.png)
+![plot of chunk plot_lm](/graphics-with-ggplot2-lesson/images/plot_lm-1.png)
 
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
 
@@ -99,7 +99,7 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_group](/images/plot_lm_group-1.png)
+![plot of chunk plot_lm_group](/graphics-with-ggplot2-lesson/images/plot_lm_group-1.png)
 
 Even better would be to distinguish the two lines by color:
 
@@ -118,7 +118,7 @@ year_wgt
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_color](/images/plot_lm_color-1.png)
+![plot of chunk plot_lm_color](/graphics-with-ggplot2-lesson/images/plot_lm_color-1.png)
 
 Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).
 
@@ -133,7 +133,7 @@ year_wgt + scale_color_manual(values = c("darkblue", "orange"),
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_scales](/images/plot_lm_scales-1.png)
+![plot of chunk plot_lm_scales](/graphics-with-ggplot2-lesson/images/plot_lm_scales-1.png)
 
 
 ~~~r
@@ -142,7 +142,7 @@ year_wgt + scale_color_manual(values = c("black", "red"),
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_scales_2](/images/plot_lm_scales_2-1.png)
+![plot of chunk plot_lm_scales_2](/graphics-with-ggplot2-lesson/images/plot_lm_scales_2-1.png)
 
 The `labels` parameter sets the names to display in the legend.
 
@@ -165,7 +165,7 @@ histo
 ~~~
 {:.input}
 
-![plot of chunk plot_hist](/images/plot_hist-1.png)
+![plot of chunk plot_hist](/graphics-with-ggplot2-lesson/images/plot_hist-1.png)
 
 We change the title and axis labels with the `labs` function. We have various functions related to the scale of each axis, i.e. the range, breaks and any transformations of the values on the axis. Here, we use `scale_x_continuous` to modify a continuous (as opposed to discrete) x-axis.
 
@@ -181,7 +181,7 @@ histo
 ~~~
 {:.input}
 
-![plot of chunk plot_hist_axes](/images/plot_hist_axes-1.png)
+![plot of chunk plot_hist_axes](/graphics-with-ggplot2-lesson/images/plot_hist_axes-1.png)
 
 For information on how to add special symbols and formatting to plot labels, see `?plotmath`.
 
@@ -199,7 +199,7 @@ histo
 ~~~
 {:.input}
 
-![plot of chunk plot_hist_themes](/images/plot_hist_themes-1.png)
+![plot of chunk plot_hist_themes](/graphics-with-ggplot2-lesson/images/plot_hist_themes-1.png)
 
 Note that position is relative to plot size (i.e. between 0 and 1).
 
@@ -223,7 +223,7 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_facets](/images/plot_facets-1.png)
+![plot of chunk plot_facets](/graphics-with-ggplot2-lesson/images/plot_facets-1.png)
 
 The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. *month*).
 
@@ -241,7 +241,7 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_facets_2](/images/plot_facets_2-1.png)
+![plot of chunk plot_facets_2](/graphics-with-ggplot2-lesson/images/plot_facets_2-1.png)
 
 Finally, let's show off with some nice styling and the very unusual `..density..` argument in the aesthetic. The notation signifies the ggplot is to calculate the probability density, rather than plot frequency as before.
 
@@ -262,7 +262,7 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_facets_3](/images/plot_facets_3-1.png)
+![plot of chunk plot_facets_3](/graphics-with-ggplot2-lesson/images/plot_facets_3-1.png)
 
 ### Exercise 3
 
@@ -290,7 +290,7 @@ filter(surveys, species_id == "DM") %>%
 ~~~
 {:.input}
 
-![plot of chunk sol1](/images/sol1-1.png)
+![plot of chunk sol1](/graphics-with-ggplot2-lesson/images/sol1-1.png)
 
 [Return](#exercise-1)
 
@@ -304,7 +304,7 @@ filter(surveys, species_id == "DM") %>%
 ~~~
 {:.input}
 
-![plot of chunk sol2](/images/sol2-1.png)
+![plot of chunk sol2](/graphics-with-ggplot2-lesson/images/sol2-1.png)
 
 [Return](#exercise-2)
 
@@ -322,6 +322,6 @@ filter(surveys, species_id %in% c("DM", "PB")) %>%
 ~~~
 {:.input}
 
-![plot of chunk sol3](/images/sol3-1.png)
+![plot of chunk sol3](/graphics-with-ggplot2-lesson/images/sol3-1.png)
 
 [Return](#exercise-3)
