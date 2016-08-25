@@ -56,9 +56,10 @@ Using `dplyr` and `ggplot` show how the mean weight of individuals of the specie
 
 [View solution](#solution-1)
 
-## Adding and customizing scales
+## Adding a regression line
 
 The code below shows one graph answering the question in the exercise. I added a `geom_smooth` layer that displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
+
 ```{r plot_lm}
 surveys_dm <- filter(surveys, species_id == "DM")
 ggplot(data = surveys_dm,
@@ -71,6 +72,7 @@ ggplot(data = surveys_dm,
 ```
 
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
+
 ```{r plot_lm_group}
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
@@ -82,6 +84,7 @@ ggplot(data = surveys_dm,
 ```
 
 Even better would be to distinguish the two lines by color:
+
 ```{r plot_lm_color}
 year_wgt <- ggplot(data = surveys_dm,
                    aes(x = year,
@@ -95,27 +98,34 @@ year_wgt <- ggplot(data = surveys_dm,
 year_wgt
 ```
 
-Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color). After saving a graph in a variable (here, `year_wgt`), it is still possible to add new elements to it with the `+` operator. We will now customize the color and point shape scales:
+Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).
+
+## Storing and re-plotting
+
+The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It is then possible to add new elements to it with the `+` operator. We will use this method to try different color scales for the previous plot
+
 ```{r plot_lm_scales}
-year_wgt <- year_wgt +
-  scale_color_manual(values = c("darkblue", "orange"),
-                     labels = c("Female", "Male")) +
-  scale_shape_manual(values = c(3, 2),
-                     labels = c("Female", "Male"))
-year_wgt  
+year_wgt + scale_color_manual(values = c("darkblue", "orange"),
+                              labels = c("Female", "Male"))
 ```
 
-The `labels` parameter affects the names displayed in the legend. What happens if the labels provided to the shape and color scales don't match? (Try it.) You can also change the order of legend labels with the `breaks` parameter of the `scale` function. 
+```{r plot_lm_scales_2}
+year_wgt + scale_color_manual(values = c("black", "red"),
+                              labels = c("Female", "Male"))
+```
+
+The `labels` parameter sets the names to display in the legend.
 
 ### Exercise 2
 
-Create an histogram of the weights of individuals of species *DM* and divide the data by sex. Look at the [documentation](http://docs.ggplot2.org/current/geom_histogram.html) for `geom_histogram` to learn how to customize this graph. Can you make the bars representing males and females display side by side instead of vertically? How can you change the default bin width? Does the `color` parameter work as you would expect, and if not, which other parameter can you use? 
+Create a histogram, using a `geom_histogram()` layer, of the weights of individuals of species *DM* and divide the data by sex. Note that instead of using `color` in the aesthetic, you'll use `fill` to distinguish the sexes. Also look at the [documentation](http://docs.ggplot2.org/current/geom_histogram.html) and determine how to explicitly set the bin width.
 
 [View solution](#solution-2)
 
 ## Axes, labels and themes
 
-Let's start from the histogram produced for the exercise above. 
+Let's start from the histogram like the one generated in the exercise.
+
 ```{r plot_hist}
 histo <- ggplot(data = surveys_dm,
                 aes(x = weight, fill = sex)) +
@@ -123,24 +133,22 @@ histo <- ggplot(data = surveys_dm,
 histo
 ```
 
-We change the title and axis labels with the `labs` function, edit the breaks and limits of the *x*-axis, and remove the "buffer" around the axis limits with `expand = c(0, 0)`.
+We change the title and axis labels with the `labs` function. We have various functions related to the scale of each axis, i.e. the range, breaks and any transformations of the values on the axis. Here, we use `scale_x_continuous` to modify a continuous (as opposed to discrete) x-axis.
+
 ```{r plot_hist_axes, warning = FALSE}
-title <- expression(paste(italic("Dipodomys merriami"),
-                          " weight distribution"))
 histo <- histo + 
-  labs(title = title,
+  labs(title = "Dipodomys merriami weight distribution",
        x = "Weight (g)",
        y = "Count") +
   scale_x_continuous(limits = c(20, 60),
-                     breaks = c(20, 30, 40, 50, 60), 
-                     expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
+                     breaks = c(20, 30, 40, 50, 60))
 histo
 ```
 
-Note how `expression` is used to italicize part of the title. To learn more about how to add special symbols and formatting to plot labels, see `?plotmath`.
+For information on how to add special symbols and formatting to plot labels, see `?plotmath`.
 
-Many plot-level options in `ggplot`, from background color to font sizes, are defined as part of *themes*. As a last step, we change the base theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a few options manually with the `theme` function. Try `?theme` for a list of available theme options.
+Many plot-level options in `ggplot`, from background color to font sizes, are defined as part of *themes*. The next modification to *histo* changes the base theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a few options manually with the `theme` function. Try `?theme` for a list of available theme options.
+
 ```{r plot_hist_themes, warning = FALSE}
 histo <- histo +
   theme_bw() +
@@ -155,7 +163,8 @@ Note that position is relative to plot size (i.e. between 0 and 1).
 
 ## Facets
 
-To conclude this overview of ggplot2, here is an example of the use of *facets* to display a grid of plots.
+To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called *facets*.
+The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~'. First, we specify that *month* is a factor, rather than an integer, so grouping works.
 
 ```{r plot_facets, message = FALSE}
 surveys_dm$month <- as.factor(surveys_dm$month)
@@ -170,7 +179,7 @@ ggplot(data = surveys_dm,
        y = "Weight (g)")
 ```
 
-Add the unfaceted data to each panel.
+The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. *month*).
 
 ```{r plot_facets_2, message = FALSE}
 ggplot(data = surveys_dm,
@@ -184,7 +193,7 @@ ggplot(data = surveys_dm,
        y = "Weight (g)")
 ```
 
-And make it look good ...
+Finally, let's show off with some nice styling and the very unusual `..density..` argument in the aesthetic. The notation signifies the ggplot is to calculate the probability density, rather than plot frequency as before.
 
 ```{r plot_facets_3, message = FALSE}
 ggplot(data = surveys_dm,
@@ -203,7 +212,7 @@ ggplot(data = surveys_dm,
 
 ### Exercise 3
 
-For records with species_id "DM" and "PB", create facets along two categorical variables, species_id and sex, using `facet_grid` instead of `facet_wrap`.
+Here's a take-home challenge for you to try later. For records with species_id "DM" and "PB", create facets along two categorical variables, species_id and sex, using `facet_grid` instead of `facet_wrap`.
 
 [View solution](#solution-3)
 
@@ -231,8 +240,8 @@ filter(surveys, species_id == "DM") %>%
 
 ```{r sol2, message = FALSE}
 filter(surveys, species_id == "DM") %>%
-  ggplot(aes(x = weight, fill = sex)) +
-  geom_histogram(binwidth = 1, position = "dodge")
+  ggplot(aes(x = weight, fill = sex)) +         
+  geom_histogram(binwidth = 1)
 ```
 
 [Return](#exercise-2)

@@ -33,7 +33,7 @@ ggplot(data = surveys,
 ~~~
 {:.input}
 
-![plot of chunk plot_pt](/graphics-with-ggplot2-lesson/images/plot_pt-1.png)
+![plot of chunk plot_pt](/images/plot_pt-1.png)
 
 In `ggplot`, we specified a data frame (*surveys*) and a number of aesthetic mappings (`aes`). The `aes` function associates variables from that data frame to visual elements in the plot: here, *species_id* on the x-axis and *weight* on the y-axis. The `ggplot` function by itself does not plot anything until we add a *geom* layer such as `geom_point`. In this particular case, individual points are hard to distinguish; what could we use instead? (Try `geom_boxplot`.)
 
@@ -49,7 +49,7 @@ ggplot(data = surveys,
 ~~~
 {:.input}
 
-![plot of chunk plot_box](/graphics-with-ggplot2-lesson/images/plot_box-1.png)
+![plot of chunk plot_box](/images/plot_box-1.png)
 
 This `geom_point` layer definition illustrates a couple new features:
 
@@ -66,9 +66,10 @@ Using `dplyr` and `ggplot` show how the mean weight of individuals of the specie
 
 [View solution](#solution-1)
 
-## Adding and customizing scales
+## Adding a regression line
 
 The code below shows one graph answering the question in the exercise. I added a `geom_smooth` layer that displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
+
 
 ~~~r
 surveys_dm <- filter(surveys, species_id == "DM")
@@ -82,9 +83,10 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_lm](/graphics-with-ggplot2-lesson/images/plot_lm-1.png)
+![plot of chunk plot_lm](/images/plot_lm-1.png)
 
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
+
 
 ~~~r
 ggplot(data = surveys_dm,
@@ -97,9 +99,10 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_group](/graphics-with-ggplot2-lesson/images/plot_lm_group-1.png)
+![plot of chunk plot_lm_group](/images/plot_lm_group-1.png)
 
 Even better would be to distinguish the two lines by color:
+
 
 ~~~r
 year_wgt <- ggplot(data = surveys_dm,
@@ -115,33 +118,44 @@ year_wgt
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_color](/graphics-with-ggplot2-lesson/images/plot_lm_color-1.png)
+![plot of chunk plot_lm_color](/images/plot_lm_color-1.png)
 
-Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color). After saving a graph in a variable (here, `year_wgt`), it is still possible to add new elements to it with the `+` operator. We will now customize the color and point shape scales:
+Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).
+
+## Storing and re-plotting
+
+The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It is then possible to add new elements to it with the `+` operator. We will use this method to try different color scales for the previous plot
+
 
 ~~~r
-year_wgt <- year_wgt +
-  scale_color_manual(values = c("darkblue", "orange"),
-                     labels = c("Female", "Male")) +
-  scale_shape_manual(values = c(3, 2),
-                     labels = c("Female", "Male"))
-year_wgt  
+year_wgt + scale_color_manual(values = c("darkblue", "orange"),
+                              labels = c("Female", "Male"))
 ~~~
 {:.input}
 
-![plot of chunk plot_lm_scales](/graphics-with-ggplot2-lesson/images/plot_lm_scales-1.png)
+![plot of chunk plot_lm_scales](/images/plot_lm_scales-1.png)
 
-The `labels` parameter affects the names displayed in the legend. What happens if the labels provided to the shape and color scales don't match? (Try it.) You can also change the order of legend labels with the `breaks` parameter of the `scale` function. 
+
+~~~r
+year_wgt + scale_color_manual(values = c("black", "red"),
+                              labels = c("Female", "Male"))
+~~~
+{:.input}
+
+![plot of chunk plot_lm_scales_2](/images/plot_lm_scales_2-1.png)
+
+The `labels` parameter sets the names to display in the legend.
 
 ### Exercise 2
 
-Create an histogram of the weights of individuals of species *DM* and divide the data by sex. Look at the [documentation](http://docs.ggplot2.org/current/geom_histogram.html) for `geom_histogram` to learn how to customize this graph. Can you make the bars representing males and females display side by side instead of vertically? How can you change the default bin width? Does the `color` parameter work as you would expect, and if not, which other parameter can you use? 
+Create a histogram, using a `geom_histogram()` layer, of the weights of individuals of species *DM* and divide the data by sex. Note that instead of using `color` in the aesthetic, you'll use `fill` to distinguish the sexes. Also look at the [documentation](http://docs.ggplot2.org/current/geom_histogram.html) and determine how to explicitly set the bin width.
 
 [View solution](#solution-2)
 
 ## Axes, labels and themes
 
-Let's start from the histogram produced for the exercise above. 
+Let's start from the histogram like the one generated in the exercise.
+
 
 ~~~r
 histo <- ggplot(data = surveys_dm,
@@ -151,30 +165,28 @@ histo
 ~~~
 {:.input}
 
-![plot of chunk plot_hist](/graphics-with-ggplot2-lesson/images/plot_hist-1.png)
+![plot of chunk plot_hist](/images/plot_hist-1.png)
 
-We change the title and axis labels with the `labs` function, edit the breaks and limits of the *x*-axis, and remove the "buffer" around the axis limits with `expand = c(0, 0)`.
+We change the title and axis labels with the `labs` function. We have various functions related to the scale of each axis, i.e. the range, breaks and any transformations of the values on the axis. Here, we use `scale_x_continuous` to modify a continuous (as opposed to discrete) x-axis.
+
 
 ~~~r
-title <- expression(paste(italic("Dipodomys merriami"),
-                          " weight distribution"))
 histo <- histo + 
-  labs(title = title,
+  labs(title = "Dipodomys merriami weight distribution",
        x = "Weight (g)",
        y = "Count") +
   scale_x_continuous(limits = c(20, 60),
-                     breaks = c(20, 30, 40, 50, 60), 
-                     expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
+                     breaks = c(20, 30, 40, 50, 60))
 histo
 ~~~
 {:.input}
 
-![plot of chunk plot_hist_axes](/graphics-with-ggplot2-lesson/images/plot_hist_axes-1.png)
+![plot of chunk plot_hist_axes](/images/plot_hist_axes-1.png)
 
-Note how `expression` is used to italicize part of the title. To learn more about how to add special symbols and formatting to plot labels, see `?plotmath`.
+For information on how to add special symbols and formatting to plot labels, see `?plotmath`.
 
-Many plot-level options in `ggplot`, from background color to font sizes, are defined as part of *themes*. As a last step, we change the base theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a few options manually with the `theme` function. Try `?theme` for a list of available theme options.
+Many plot-level options in `ggplot`, from background color to font sizes, are defined as part of *themes*. The next modification to *histo* changes the base theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a few options manually with the `theme` function. Try `?theme` for a list of available theme options.
+
 
 ~~~r
 histo <- histo +
@@ -187,13 +199,14 @@ histo
 ~~~
 {:.input}
 
-![plot of chunk plot_hist_themes](/graphics-with-ggplot2-lesson/images/plot_hist_themes-1.png)
+![plot of chunk plot_hist_themes](/images/plot_hist_themes-1.png)
 
 Note that position is relative to plot size (i.e. between 0 and 1).
 
 ## Facets
 
-To conclude this overview of ggplot2, here is an example of the use of *facets* to display a grid of plots.
+To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called *facets*.
+The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~'. First, we specify that *month* is a factor, rather than an integer, so grouping works.
 
 
 ~~~r
@@ -210,9 +223,9 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_facets](/graphics-with-ggplot2-lesson/images/plot_facets-1.png)
+![plot of chunk plot_facets](/images/plot_facets-1.png)
 
-Add the unfaceted data to each panel.
+The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. *month*).
 
 
 ~~~r
@@ -228,9 +241,9 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_facets_2](/graphics-with-ggplot2-lesson/images/plot_facets_2-1.png)
+![plot of chunk plot_facets_2](/images/plot_facets_2-1.png)
 
-And make it look good ...
+Finally, let's show off with some nice styling and the very unusual `..density..` argument in the aesthetic. The notation signifies the ggplot is to calculate the probability density, rather than plot frequency as before.
 
 
 ~~~r
@@ -249,11 +262,11 @@ ggplot(data = surveys_dm,
 ~~~
 {:.input}
 
-![plot of chunk plot_facets_3](/graphics-with-ggplot2-lesson/images/plot_facets_3-1.png)
+![plot of chunk plot_facets_3](/images/plot_facets_3-1.png)
 
 ### Exercise 3
 
-For records with species_id "DM" and "PB", create facets along two categorical variables, species_id and sex, using `facet_grid` instead of `facet_wrap`.
+Here's a take-home challenge for you to try later. For records with species_id "DM" and "PB", create facets along two categorical variables, species_id and sex, using `facet_grid` instead of `facet_wrap`.
 
 [View solution](#solution-3)
 
@@ -277,7 +290,7 @@ filter(surveys, species_id == "DM") %>%
 ~~~
 {:.input}
 
-![plot of chunk sol1](/graphics-with-ggplot2-lesson/images/sol1-1.png)
+![plot of chunk sol1](/images/sol1-1.png)
 
 [Return](#exercise-1)
 
@@ -286,12 +299,12 @@ filter(surveys, species_id == "DM") %>%
 
 ~~~r
 filter(surveys, species_id == "DM") %>%
-  ggplot(aes(x = weight, fill = sex)) +
-  geom_histogram(binwidth = 1, position = "dodge")
+  ggplot(aes(x = weight, fill = sex)) +         
+  geom_histogram(binwidth = 1)
 ~~~
 {:.input}
 
-![plot of chunk sol2](/graphics-with-ggplot2-lesson/images/sol2-1.png)
+![plot of chunk sol2](/images/sol2-1.png)
 
 [Return](#exercise-2)
 
@@ -309,6 +322,6 @@ filter(surveys, species_id %in% c("DM", "PB")) %>%
 ~~~
 {:.input}
 
-![plot of chunk sol3](/graphics-with-ggplot2-lesson/images/sol3-1.png)
+![plot of chunk sol3](/images/sol3-1.png)
 
 [Return](#exercise-3)
