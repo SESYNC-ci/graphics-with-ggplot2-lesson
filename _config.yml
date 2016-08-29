@@ -1,5 +1,5 @@
 baseurl: /graphics-with-ggplot2-lesson
-styleurl: https://rawgit.com/sesync-ci/lesson-stylesheets/master
+styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets
 kramdown:
   parse_block_html: true
   toc_levels: 2..2

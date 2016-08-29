@@ -1,5 +1,5 @@
 ---
-style: /css/lesson.css
+style: /1.0.0/css/lesson.css
 ---
 
 # Graphics with ggplot2
