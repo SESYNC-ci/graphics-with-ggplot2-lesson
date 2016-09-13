@@ -1,13 +1,26 @@
+# Site
+
+title: "Vizualizations the ggplot Way"
 baseurl: /graphics-with-ggplot2-lesson
-styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets
+email: cyberhelp@sesync.org
+description: ""
+# styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.0
+styleurl: https://rawgit.com/sesync-ci/lesson-stylesheets/master
+reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.3.0
+authors:
+ - Philippe Marchand
+ - Ian Carroll
+lesson: 5
+
+# Jekyll
+
+markdown: kramdown
 kramdown:
   parse_block_html: true
   toc_levels: 2..2
 exclude:
-  - '*.Rmd'
-defaults:
-  -
-    scope:
-      path: ''
-    values:
-      layout: 'default'
+  - README.md
+  - build.R
+  - "*.Rproj"
+  - "*.Rmd"
+  - data

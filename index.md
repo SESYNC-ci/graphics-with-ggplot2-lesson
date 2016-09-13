@@ -1,9 +1,12 @@
 ---
-style: /1.0.0/css/lesson.css
+layout: default
+style: /css/lesson.css
 ---
 
-# Graphics with ggplot2
+# {{ site.title }}
 {:.no-toc}
+
+Lesson {{ sit.lesson }} with *Ian Carroll*
 
 * TOC
 {:toc}
@@ -21,7 +24,6 @@ library(ggplot2)
 surveys <- read.csv("data/surveys.csv", na.strings = "") %>%
     filter(!is.na(species_id), !is.na(sex), !is.na(weight))
 ~~~
-{:.text-document title='lesson-3.R'}
 
 ## Constructing layered graphics in ggplot
 
@@ -30,9 +32,9 @@ As a first example, this code plots the inviduals' weights by species:
 ~~~r
 ggplot(data = surveys,
        aes(x = species_id, y = weight)) +
-    geom_point()
+  geom_point()
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_pt](/graphics-with-ggplot2-lesson/images/plot_pt-1.png)
 
@@ -43,12 +45,12 @@ Multiple geom layers can be combined in a single plot:
 ~~~r
 ggplot(data = surveys,
        aes(x = species_id, y = weight)) +
-    geom_boxplot() +
-    geom_point(stat = "summary",
-               fun.y = "mean",
-               color = "red")
+  geom_boxplot() +
+  geom_point(stat = "summary",
+             fun.y = "mean",
+             color = "red")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_box](/graphics-with-ggplot2-lesson/images/plot_box-1.png)
 
@@ -69,20 +71,21 @@ Using `dplyr` and `ggplot` show how the mean weight of individuals of the specie
 
 ## Adding a regression line
 
-The code below shows one graph answering the question in the exercise. I added a `geom_smooth` layer that displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
+The code below shows one graph answering the question in the exercise.
+Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
 
 
 ~~~r
 surveys_dm <- filter(surveys, species_id == "DM")
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
-    geom_point(aes(shape = sex),
-               size = 3,
-	       stat = "summary",
-	       fun.y = "mean") +
-    geom_smooth(method = "lm")
+  geom_point(aes(shape = sex),
+             size = 3,
+             stat = "summary",
+             fun.y = "mean") +
+  geom_smooth(method = "lm")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_lm](/graphics-with-ggplot2-lesson/images/plot_lm-1.png)
 
@@ -92,13 +95,13 @@ To get separate regression lines for females and males, we could add a *group* a
 ~~~r
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
-    geom_point(aes(shape = sex),
-               size = 3,
-	       stat = "summary",
-	       fun.y = "mean") +
-    geom_smooth(aes(group = sex), method = "lm")
+  geom_point(aes(shape = sex),
+             size = 3,
+             stat = "summary",
+             fun.y = "mean") +
+  geom_smooth(aes(group = sex), method = "lm")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_lm_group](/graphics-with-ggplot2-lesson/images/plot_lm_group-1.png)
 
@@ -106,18 +109,17 @@ Even better would be to distinguish the two lines by color:
 
 
 ~~~r
-year_wgt <- ggplot(data = surveys_dm,
-                   aes(x = year,
-		       y = weight,
-		       color = sex)) + 
-    geom_point(aes(shape = sex),
-               size = 3,
-	       stat = "summary",
-	       fun.y = "mean") +
-    geom_smooth(method = "lm")
-year_wgt
+ggplot(data = surveys_dm,
+       aes(x = year,
+           y = weight,
+           color = sex)) + 
+  geom_point(aes(shape = sex),
+             size = 3,
+	     stat = "summary",
+	     fun.y = "mean") +
+  geom_smooth(method = "lm")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_lm_color](/graphics-with-ggplot2-lesson/images/plot_lm_color-1.png)
 
@@ -129,23 +131,34 @@ The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It
 
 
 ~~~r
-year_wgt + scale_color_manual(values = c("darkblue", "orange"),
-                              labels = c("Female", "Male"))
+year_wgt <- ggplot(data = surveys_dm,
+                   aes(x = year,
+                   y = weight,
+                   color = sex)) + 
+              geom_point(aes(shape = sex),
+                         size = 3,
+	                 stat = "summary",
+	                 fun.y = "mean") +
+              geom_smooth(method = "lm")
+
+year_wgt +
+  scale_color_manual(values = c("darkblue", "orange"))
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_lm_scales](/graphics-with-ggplot2-lesson/images/plot_lm_scales-1.png)
 
 
 ~~~r
-year_wgt + scale_color_manual(values = c("black", "red"),
-                              labels = c("Female", "Male"))
+year_wgt <- year_wgt +
+  scale_color_manual(values = c("black", "red"))
+year_wgt
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_lm_scales_2](/graphics-with-ggplot2-lesson/images/plot_lm_scales_2-1.png)
 
-The `labels` parameter sets the names to display in the legend.
+By overwriting the `year_wgt` variable, the stored plot gets updated with the black and red color scale.
 
 ### Exercise 2
 
@@ -164,7 +177,7 @@ histo <- ggplot(data = surveys_dm,
     geom_histogram(binwidth = 3, color = "white")
 histo
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_hist](/graphics-with-ggplot2-lesson/images/plot_hist-1.png)
 
@@ -180,7 +193,7 @@ histo <- histo +
                      breaks = c(20, 30, 40, 50, 60))
 histo
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_hist_axes](/graphics-with-ggplot2-lesson/images/plot_hist_axes-1.png)
 
@@ -198,7 +211,7 @@ histo <- histo +
         axis.title.x = element_text(size = 13, vjust = 0))
 histo
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_hist_themes](/graphics-with-ggplot2-lesson/images/plot_hist_themes-1.png)
 
@@ -222,7 +235,7 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_facets](/graphics-with-ggplot2-lesson/images/plot_facets-1.png)
 
@@ -240,7 +253,7 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_facets_2](/graphics-with-ggplot2-lesson/images/plot_facets_2-1.png)
 
@@ -261,7 +274,7 @@ ggplot(data = surveys_dm,
        y = "Weight (g)") +
   guides(fill = FALSE)								 
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk plot_facets_3](/graphics-with-ggplot2-lesson/images/plot_facets_3-1.png)
 
@@ -289,7 +302,7 @@ filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = year, y = weight, color = sex)) +
   geom_line(stat = "summary", fun.y = "mean")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk sol1](/graphics-with-ggplot2-lesson/images/sol1-1.png)
 
@@ -303,7 +316,7 @@ filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk sol2](/graphics-with-ggplot2-lesson/images/sol2-1.png)
 
@@ -321,7 +334,7 @@ filter(surveys, species_id %in% c("DM", "PB")) %>%
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.text-document title='lesson-3.R'}
+{:.text-document title="lesson-5.R"}
 
 ![plot of chunk sol3](/graphics-with-ggplot2-lesson/images/sol3-1.png)
 
