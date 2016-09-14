@@ -4,8 +4,8 @@ title: "Vizualizations the ggplot Way"
 baseurl: /graphics-with-ggplot2-lesson
 email: cyberhelp@sesync.org
 description: ""
-# styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.0
-styleurl: https://rawgit.com/sesync-ci/lesson-stylesheets/master
+styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.1
+# styleurl: https://rawgit.com/sesync-ci/lesson-stylesheets/master
 reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.3.0
 authors:
  - Philippe Marchand

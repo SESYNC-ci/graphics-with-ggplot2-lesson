@@ -6,7 +6,7 @@ style: /css/lesson.css
 # {{ site.title }}
 {:.no-toc}
 
-Lesson {{ sit.lesson }} with *Ian Carroll*
+Lesson {{ site.lesson }} with *Ian Carroll*
 
 * TOC
 {:toc}
