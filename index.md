@@ -293,6 +293,8 @@ Here's a take-home challenge for you to try later. For records with species_id "
 
 * [Cookbook for R - Graphs](http://www.cookbook-r.com/Graphs/) A useful reference on how to customize different graph elements in ggplot2.
 
+* [Introduction to cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html) Vignette for an add-on package for customizing ggplot figures.
+
 ## Exercise solutions
 
 ### Solution 1
