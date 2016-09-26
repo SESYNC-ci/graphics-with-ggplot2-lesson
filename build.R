@@ -14,24 +14,29 @@ current_chunk = knit_hooks$get("chunk")
 chunk = function(x, options) {
     x <- current_chunk(x, options)
     if (!is.null(options$title)) {
-        x <- gsub("~~~(\n*[!$].*)",
-                  paste0("~~~\n{:.text-document title=\"", options$title, "\"}\\1"),
-                  x)
-        return(x)
-    }
-    x <- gsub("~~~\n(\n+~~~)",
-              paste0("~~~\n", options$block_ial[1], "\\1"),
-              x)
-    if (str_count(x, "~~~") > 2) {
-        idx <- 2
+        first <- paste0("~~~\n{:.text-document title=\"", options$title, "\"}\\1")
     } else {
-        idx <- 1
+        first <- paste0("~~~\n", options$block_ial[1], "\\1")
     }
-    x <- gsub("~~~(\n*$)",
-              paste0("~~~\n", options$block_ial[idx], "\\1"),
-              x)
+    if (str_count(x, "~~~") <= 2 & str_count(x, "!\\[plot") == 0) {
+        x <- gsub("~~~(\n*$)", first, x)
+    } else {
+        x <- gsub("~~~(\n.+)", first, x)
+        last <- paste0("~~~\n", options$block_ial[2], "\\1")
+        x <- gsub("~~~(\n*$)", last, x)
+    }
     return(x)
 }
 knit_hooks$set(chunk = chunk)
 
-knit('index.Rmd')
+if (!is.null(config$slide_sorter)) {
+    for (f in config$slide_sorter) {
+        fname <- paste0("_slides/", f, ".Rmd")
+        if (file.exists(fname)) {
+            knit(input = fname, 
+                 output = paste0("_slides/", f, ".md"))
+        }
+    }
+} else {
+    knit(input = "index.Rmd")
+}

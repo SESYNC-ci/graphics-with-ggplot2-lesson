@@ -24,6 +24,7 @@ library(ggplot2)
 surveys <- read.csv("data/surveys.csv", na.strings = "") %>%
     filter(!is.na(species_id), !is.na(sex), !is.na(weight))
 ~~~
+{:.text-document title="lesson-5.R"}
 
 ## Constructing layered graphics in ggplot
 
