@@ -9,35 +9,45 @@ This layered approach allows for highly customizable graphics. Even when a plot 
 
 Let's start by loading a few packages along with a sample dataset, which is the *surveys* table from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459). We filter the data to remove rows that have missing values for the species\_id, sex, or weight columns. (This is not strictly necessary, but it will prevent ggplot from returning missing values warnings.)
 
-```{r message = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 library(dplyr)
 library(ggplot2)
 surveys <- read.csv("data/surveys.csv", na.strings = "") %>%
     filter(!is.na(species_id), !is.na(sex), !is.na(weight))
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
 
 ===
 
 ## Constructing layered graphics in ggplot
 
 As a first example, this code plots the inviduals' weights by species:
-```{r plot_pt, title='{{ site.worksheet }}'}
+
+~~~r
 ggplot(data = surveys,
        aes(x = species_id, y = weight)) +
   geom_point()
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_pt]({{ site.baseurl }}/images/plot_pt-1.png)
 
 In `ggplot`, we specified a data frame (*surveys*) and a number of aesthetic mappings (`aes`). The `aes` function associates variables from that data frame to visual elements in the plot: here, *species_id* on the x-axis and *weight* on the y-axis. The `ggplot` function by itself does not plot anything until we add a *geom* layer such as `geom_point`. In this particular case, individual points are hard to distinguish; what could we use instead? (Try `geom_boxplot`.)
 
 Multiple geom layers can be combined in a single plot:
-```{r plot_box, title='{{ site.worksheet }}'}
+
+~~~r
 ggplot(data = surveys,
        aes(x = species_id, y = weight)) +
   geom_boxplot() +
   geom_point(stat = "summary",
              fun.y = "mean",
              color = "red")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_box]({{ site.baseurl }}/images/plot_box-1.png)
 
 This `geom_point` layer definition illustrates a couple new features:
 
@@ -59,7 +69,8 @@ Using `dplyr` and `ggplot` show how the mean weight of individuals of the specie
 The code below shows one graph answering the question in the exercise.
 Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
 
-```{r plot_lm, title='{{ site.worksheet }}'}
+
+~~~r
 surveys_dm <- filter(surveys, species_id == "DM")
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
@@ -68,11 +79,15 @@ ggplot(data = surveys_dm,
              stat = "summary",
              fun.y = "mean") +
   geom_smooth(method = "lm")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_lm]({{ site.baseurl }}/images/plot_lm-1.png)
 
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
 
-```{r plot_lm_group, title='{{ site.worksheet }}'}
+
+~~~r
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
@@ -80,11 +95,15 @@ ggplot(data = surveys_dm,
              stat = "summary",
              fun.y = "mean") +
   geom_smooth(aes(group = sex), method = "lm")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_lm_group]({{ site.baseurl }}/images/plot_lm_group-1.png)
 
 Even better would be to distinguish the two lines by color:
 
-```{r plot_lm_color, title='{{ site.worksheet }}'}
+
+~~~r
 ggplot(data = surveys_dm,
        aes(x = year,
            y = weight,
@@ -94,7 +113,10 @@ ggplot(data = surveys_dm,
 	     stat = "summary",
 	     fun.y = "mean") +
   geom_smooth(method = "lm")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_lm_color]({{ site.baseurl }}/images/plot_lm_color-1.png)
 
 Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).
 
@@ -104,7 +126,8 @@ Notice that by adding the aesthetic mapping in the `ggplot` command, it is appli
 
 The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It is then possible to add new elements to it with the `+` operator. We will use this method to try different color scales for the previous plot
 
-```{r plot_lm_scales, title='{{ site.worksheet }}'}
+
+~~~r
 year_wgt <- ggplot(data = surveys_dm,
                    aes(x = year,
                    y = weight,
@@ -117,13 +140,20 @@ year_wgt <- ggplot(data = surveys_dm,
 
 year_wgt +
   scale_color_manual(values = c("darkblue", "orange"))
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
 
-```{r plot_lm_scales_2, title='{{ site.worksheet }}'}
+![plot of chunk plot_lm_scales]({{ site.baseurl }}/images/plot_lm_scales-1.png)
+
+
+~~~r
 year_wgt <- year_wgt +
   scale_color_manual(values = c("black", "red"))
 year_wgt
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_lm_scales_2]({{ site.baseurl }}/images/plot_lm_scales_2-1.png)
 
 By overwriting the `year_wgt` variable, the stored plot gets updated with the black and red color scale.
 
@@ -139,16 +169,21 @@ Create a histogram, using a `geom_histogram()` layer, of the weights of individu
 
 Let's start from the histogram like the one generated in the exercise.
 
-```{r plot_hist, title='{{ site.worksheet }}'}
+
+~~~r
 histo <- ggplot(data = surveys_dm,
                 aes(x = weight, fill = sex)) +
     geom_histogram(binwidth = 3, color = "white")
 histo
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_hist]({{ site.baseurl }}/images/plot_hist-1.png)
 
 We change the title and axis labels with the `labs` function. We have various functions related to the scale of each axis, i.e. the range, breaks and any transformations of the values on the axis. Here, we use `scale_x_continuous` to modify a continuous (as opposed to discrete) x-axis.
 
-```{r plot_hist_axes, warning = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 histo <- histo + 
   labs(title = "Dipodomys merriami weight distribution",
        x = "Weight (g)",
@@ -156,13 +191,17 @@ histo <- histo +
   scale_x_continuous(limits = c(20, 60),
                      breaks = c(20, 30, 40, 50, 60))
 histo
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_hist_axes]({{ site.baseurl }}/images/plot_hist_axes-1.png)
 
 For information on how to add special symbols and formatting to plot labels, see `?plotmath`.
 
 Many plot-level options in `ggplot`, from background color to font sizes, are defined as part of *themes*. The next modification to *histo* changes the base theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a few options manually with the `theme` function. Try `?theme` for a list of available theme options.
 
-```{r plot_hist_themes, warning = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 histo <- histo +
   theme_bw() +
   theme(legend.position = c(0.2, 0.5),
@@ -170,7 +209,10 @@ histo <- histo +
         axis.title.y = element_text(size = 13, vjust = 1), 
         axis.title.x = element_text(size = 13, vjust = 0))
 histo
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_hist_themes]({{ site.baseurl }}/images/plot_hist_themes-1.png)
 
 Note that position is relative to plot size (i.e. between 0 and 1).
 
@@ -181,7 +223,8 @@ Note that position is relative to plot size (i.e. between 0 and 1).
 To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called *facets*.
 The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~'. First, we specify that *month* is a factor, rather than an integer, so grouping works.
 
-```{r plot_facets, message = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 surveys_dm$month <- as.factor(surveys_dm$month)
 levels(surveys_dm$month) <- c("January", "February", "March", "April", "May", "June",
                               "July", "August", "September", "October", "November", "December")
@@ -192,11 +235,15 @@ ggplot(data = surveys_dm,
   labs(title = "DM weight distribution by month",
        x = "Count",
        y = "Weight (g)")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_facets]({{ site.baseurl }}/images/plot_facets-1.png)
 
 The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. *month*).
 
-```{r plot_facets_2, message = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 ggplot(data = surveys_dm,
        aes(x = weight)) +
   geom_histogram(data = select(surveys_dm, -month),
@@ -206,11 +253,15 @@ ggplot(data = surveys_dm,
   labs(title = "DM weight distribution by month",
        x = "Count",
        y = "Weight (g)")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_facets_2]({{ site.baseurl }}/images/plot_facets_2-1.png)
 
 Finally, let's show off with some nice styling and the very unusual `..density..` argument in the aesthetic. The notation signifies the ggplot is to calculate the probability density, rather than plot frequency as before.
 
-```{r plot_facets_3, message = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 ggplot(data = surveys_dm,
        aes(x = weight, fill = month)) +
   geom_histogram(data = select(surveys_dm, -month),
@@ -223,7 +274,10 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)") +
   guides(fill = FALSE)								 
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk plot_facets_3]({{ site.baseurl }}/images/plot_facets_3-1.png)
 
 ### Exercise 3
 
@@ -247,27 +301,36 @@ Here's a take-home challenge for you to try later. For records with species_id "
 
 ### Solution 1
 
-```{r sol1, title='{{ site.worksheet }}'}
+
+~~~r
 filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = year, y = weight, color = sex)) +
   geom_line(stat = "summary", fun.y = "mean")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk sol1]({{ site.baseurl }}/images/sol1-1.png)
 
 [Return](#exercise-1)
 
 ### Solution 2
 
-```{r sol2, message = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk sol2]({{ site.baseurl }}/images/sol2-1.png)
 
 [Return](#exercise-2)
 
 ### Solution 3
 
-```{r sol3, message = FALSE, title='{{ site.worksheet }}'}
+
+~~~r
 filter(surveys, species_id %in% c("DM", "PB")) %>%
   ggplot(aes(x = weight)) +
   geom_histogram() +
@@ -275,6 +338,9 @@ filter(surveys, species_id %in% c("DM", "PB")) %>%
   labs(title = "DM and RO weight distribution by sex",
        x = "Count",
        y = "Weight (g)")
-```
+~~~
+{:.text-document title="{{ site.worksheet }}"}
+
+![plot of chunk sol3]({{ site.baseurl }}/images/sol3-1.png)
 
 [Return](#exercise-3)

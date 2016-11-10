@@ -1,4 +1,6 @@
+# R
 .Rhistory
 .Rproj.user
-_site
-/data
+
+# Jekyll
+docs/_site
