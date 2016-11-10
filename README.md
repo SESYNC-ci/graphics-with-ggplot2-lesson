@@ -8,3 +8,7 @@
 -- Only modify content below or risk --
 -- a merge conflict with upstream.   --
 -------------------------------------->
+
+[www.sesync.org]: https://www.sesync.org
+[lesson]: https://sesync-ci.github.io/graphics-with-ggplot2-lesson
+[slideshow]: https://sesync-ci.github.io/graphics-with-ggplot2-lesson/instructor
