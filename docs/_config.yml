@@ -12,7 +12,15 @@ authors:
 # Slides
 
 slide_sorter:
-  - full
+  - intro
+  - layer
+  - model
+  - assign
+  - label
+  - facet
+  - conclude
+  - solutions
+  
 
 #####################################
 # Only modify content above or risk #
