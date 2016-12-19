@@ -20,7 +20,7 @@ year_wgt <- ggplot(data = surveys_dm,
 year_wgt +
   scale_color_manual(values = c("darkblue", "orange"))
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_lm_scales]({{ site.baseurl }}/images/plot_lm_scales-1.png)
 
@@ -34,7 +34,7 @@ year_wgt <- year_wgt +
   scale_color_manual(values = c("black", "red"))
 year_wgt
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_lm_scales_2]({{ site.baseurl }}/images/plot_lm_scales_2-1.png)
 

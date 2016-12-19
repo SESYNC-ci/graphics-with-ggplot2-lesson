@@ -12,7 +12,7 @@ histo <- ggplot(data = surveys_dm,
     geom_histogram(binwidth = 3, color = "white")
 histo
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_hist]({{ site.baseurl }}/images/plot_hist-1.png)
 
@@ -30,7 +30,7 @@ histo <- histo +
                      breaks = c(20, 30, 40, 50, 60))
 histo
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_hist_axes]({{ site.baseurl }}/images/plot_hist_axes-1.png)
 
@@ -50,7 +50,7 @@ histo <- histo +
         axis.title.x = element_text(size = 13, vjust = 0))
 histo
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_hist_themes]({{ site.baseurl }}/images/plot_hist_themes-1.png)
 

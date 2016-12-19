@@ -19,7 +19,7 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_facets]({{ site.baseurl }}/images/plot_facets-1.png)
 
@@ -39,7 +39,7 @@ ggplot(data = surveys_dm,
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_facets_2]({{ site.baseurl }}/images/plot_facets_2-1.png)
 
@@ -62,7 +62,7 @@ ggplot(data = surveys_dm,
        y = "Weight (g)") +
   guides(fill = FALSE)								 
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_facets_3]({{ site.baseurl }}/images/plot_facets_3-1.png)
 

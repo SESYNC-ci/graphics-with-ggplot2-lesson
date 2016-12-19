@@ -5,7 +5,7 @@
 
 The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It is then possible to add new elements to it with the `+` operator. We will use this method to try different color scales for the previous plot
 
-```{r plot_lm_scales, title="{{ site.worksheet }}"}
+```{r plot_lm_scales, title="{{ site.handouts }}"}
 year_wgt <- ggplot(data = surveys_dm,
                    aes(x = year,
                    y = weight,
@@ -24,7 +24,7 @@ year_wgt +
 
 By overwriting the `year_wgt` variable, the stored plot gets updated with the black and red color scale.
 
-```{r plot_lm_scales_2, title="{{ site.worksheet }}"}
+```{r plot_lm_scales_2, title="{{ site.handouts }}"}
 year_wgt <- year_wgt +
   scale_color_manual(values = c("black", "red"))
 year_wgt

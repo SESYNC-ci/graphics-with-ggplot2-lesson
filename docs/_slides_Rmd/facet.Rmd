@@ -6,7 +6,7 @@
 To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called *facets*.
 The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~'. First, we specify that *month* is a factor, rather than an integer, so grouping works.
 
-```{r plot_facets, message = FALSE, title="{{ site.worksheet }}"}
+```{r plot_facets, message = FALSE, title="{{ site.handouts }}"}
 surveys_dm$month <- as.factor(surveys_dm$month)
 levels(surveys_dm$month) <- c("January", "February", "March", "April", "May", "June",
                               "July", "August", "September", "October", "November", "December")
@@ -23,7 +23,7 @@ ggplot(data = surveys_dm,
 
 The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. *month*).
 
-```{r plot_facets_2, message = FALSE, title="{{ site.worksheet }}"}
+```{r plot_facets_2, message = FALSE, title="{{ site.handouts }}"}
 ggplot(data = surveys_dm,
        aes(x = weight)) +
   geom_histogram(data = select(surveys_dm, -month),
@@ -39,7 +39,7 @@ ggplot(data = surveys_dm,
 
 Finally, let's show off with some nice styling and the very unusual `..density..` argument in the aesthetic. The notation signifies the ggplot is to calculate the probability density, rather than plot frequency as before.
 
-```{r plot_facets_3, message = FALSE, title="{{ site.worksheet }}"}
+```{r plot_facets_3, message = FALSE, title="{{ site.handouts }}"}
 ggplot(data = surveys_dm,
        aes(x = weight, fill = month)) +
   geom_histogram(data = select(surveys_dm, -month),

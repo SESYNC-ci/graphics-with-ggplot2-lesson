@@ -8,13 +8,14 @@ Let's start by loading a few packages along with a sample dataset, which is the 
 We filter the data to remove rows that have missing values for the species\_id, sex, or weight columns. (This is not strictly necessary, but it will prevent ggplot from returning missing values warnings.)
 {:.notes}
 
+
 ~~~r
 library(dplyr)
 library(ggplot2)
 surveys <- read.csv("data/surveys.csv", na.strings = "") %>%
     filter(!is.na(species_id), !is.na(sex), !is.na(weight))
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ===
 
@@ -27,7 +28,7 @@ ggplot(data = surveys,
        aes(x = species_id, y = weight)) +
   geom_point()
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_pt]({{ site.baseurl }}/images/plot_pt-1.png)
 
@@ -46,7 +47,7 @@ ggplot(data = surveys,
              fun.y = "mean",
              color = "red")
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_box]({{ site.baseurl }}/images/plot_box-1.png)
 

@@ -6,7 +6,7 @@
 The code below shows one graph answering the question in the exercise.
 Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
 
-```{r plot_lm, title="{{ site.worksheet }}"}
+```{r plot_lm, title="{{ site.handouts }}"}
 surveys_dm <- filter(surveys, species_id == "DM")
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
@@ -21,7 +21,7 @@ ggplot(data = surveys_dm,
 
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
 
-```{r plot_lm_group, title="{{ site.worksheet }}"}
+```{r plot_lm_group, title="{{ site.handouts }}"}
 ggplot(data = surveys_dm,
        aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
@@ -35,7 +35,7 @@ ggplot(data = surveys_dm,
 
 Even better would be to distinguish the two lines by color:
 
-```{r plot_lm_color, title="{{ site.worksheet }}"}
+```{r plot_lm_color, title="{{ site.handouts }}"}
 ggplot(data = surveys_dm,
        aes(x = year,
            y = weight,

@@ -17,7 +17,7 @@ ggplot(data = surveys_dm,
              fun.y = "mean") +
   geom_smooth(method = "lm")
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_lm]({{ site.baseurl }}/images/plot_lm-1.png)
 
@@ -35,7 +35,7 @@ ggplot(data = surveys_dm,
              fun.y = "mean") +
   geom_smooth(aes(group = sex), method = "lm")
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_lm_group]({{ site.baseurl }}/images/plot_lm_group-1.png)
 
@@ -55,7 +55,7 @@ ggplot(data = surveys_dm,
 	     fun.y = "mean") +
   geom_smooth(method = "lm")
 ~~~
-{:.text-document title="{{ site.worksheet }}"}
+{:.text-document title="{{ site.handouts }}"}
 
 ![plot of chunk plot_lm_color]({{ site.baseurl }}/images/plot_lm_color-1.png)
 

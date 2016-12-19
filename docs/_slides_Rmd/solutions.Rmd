@@ -5,7 +5,7 @@
 
 ### Solution 1
 
-```{r sol1, title="{{ site.worksheet }}"}
+```{r sol1, title="{{ site.handouts }}"}
 filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = year, y = weight, color = sex)) +
   geom_line(stat = "summary", fun.y = "mean")
@@ -15,7 +15,7 @@ filter(surveys, species_id == "DM") %>%
 
 ### Solution 2
 
-```{r sol2, message = FALSE, title="{{ site.worksheet }}"}
+```{r sol2, message = FALSE, title="{{ site.handouts }}"}
 filter(surveys, species_id == "DM") %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
@@ -25,7 +25,7 @@ filter(surveys, species_id == "DM") %>%
 
 ### Solution 3
 
-```{r sol3, message = FALSE, title="{{ site.worksheet }}"}
+```{r sol3, message = FALSE, title="{{ site.handouts }}"}
 filter(surveys, species_id %in% c("DM", "PB")) %>%
   ggplot(aes(x = weight)) +
   geom_histogram() +
