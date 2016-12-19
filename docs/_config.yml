@@ -1,7 +1,7 @@
-# Site
+# Lesson
 
 title: Visualizations the ggplot Way
-worksheet: worksheet.R
+handouts: worksheet.R
 tag: v0.0
 lesson: 5
 instructor: Ian Carroll
@@ -20,7 +20,6 @@ slide_sorter:
   - facet
   - conclude
   - solutions
-  
 
 #####################################
 # Only modify content above or risk #
@@ -29,7 +28,7 @@ slide_sorter:
 
 # Style
 
-styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.1
+styleurl: https://cdn.rawgit.com/sesync-ci/lesson-style/1.1/docs
 reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.3.0
 
 # Jekyll

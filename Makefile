@@ -1,41 +1,54 @@
-require(knitr)
-require(yaml)
-require(stringr)
+# look up slides, lesson number and handouts in Jekyll _config.yml
+SLIDES := $(shell ruby -e "require 'yaml';puts YAML.load_file('docs/_config.yml')['slide_sorter']")
+LESSON := $(shell ruby -e "require 'yaml';puts YAML.load_file('docs/_config.yml')['lesson']")
+HANDOUTS := $(shell ruby -e "require 'yaml';puts YAML.load_file('docs/_config.yml')['handouts']")
 
-config = yaml.load_file("_config.yml")
-render_markdown(fence_char = "~")
-opts_knit$set(base.url = paste0(config$baseurl, "/"))
-opts_chunk$set(
-    comment = NA,
-    fig.path = "images/",
-    block_ial = c("{:.input}", "{:.output}"))
+# list available RMarkdown slides and data
+SLIDES_RMD := $(shell find . -path "./docs/_slides_Rmd/*.Rmd")
+DATA := $(shell find . -path "./data/*")
 
-current_chunk = knit_hooks$get("chunk")
-chunk = function(x, options) {
-    x <- current_chunk(x, options)
-    if (!is.null(options$title)) {
-        x <- gsub("~~~(\n*$)",
-                  paste0("~~~\n{:.text-document title=\"", options$title, "\"}\\1"),
-                  x)
-        return(x)
-    }
-    x <- gsub("~~~\n(\n+~~~)",
-              paste0("~~~\n", options$block_ial[1], "\\1"),
-              x)
-    if (str_count(x, "~~~") > 2) {
-        idx <- 2
-    } else {
-        idx <- 1
-    }
-    x <- gsub("~~~(\n*$)",
-              paste0("~~~\n", options$block_ial[idx], "\\1"),
-              x)
-    return(x)
-}
-knit_hooks$set(chunk = chunk)
+# make target "course" copies handouts to ../../
+# adding a lesson number to any "worksheet"
+# it is intended to be called in the handouts Makefile
+HANDOUTS := $(addprefix ../../, $(HANDOUTS:worksheet%=worksheet-$(LESSON)%))
 
-setwd("_slides")
+# do not run rules in parallel; because
+# - bin/build_slides.R runs over all .Rmd slides
+# - rsync -r only needs to run once
+.NOTPARALLEL:
+.DEFAULT_GOAL: slides
+.PHONY: course lesson slides archive
 
-for (f in config$slide_sorter) {
-    knit(paste0(f, ".Rmd"))
-}
+# this target exists for building .md slides
+# without commit and push 
+slides: $(SLIDES:%=docs/_slides/%.md)
+
+# cannot use a pattern as the target, because
+# this list is only a subset of docs/_slides/%.md
+$(subst _Rmd,,$(SLIDES_RMD:.Rmd=.md)): $(SLIDES_RMD)
+	@bin/build_slides.R
+
+# this target updates the lesson repo
+# on GitHub following a slide build
+lesson: slides
+	git pull
+	if [ -n "$$(git status -s)" ]; then git commit -am 'commit by make'; fi
+	git fetch upstream master:upstream
+	git merge --no-edit upstream
+	git push
+
+# this target inserts into handouts repo
+# with root assumed to be at ../
+course: lesson $(HANDOUTS)
+	if [ -d "data" ]; then rsync -au data/ ../data/; fi
+
+../../worksheet-$(LESSON)%: worksheet%
+	cp $< $@
+
+$(filter-out ../../worksheet%, $(HANDOUTS)): ../../%: %
+	cp $< $@
+
+# must call the archive target with a
+# command line parameter for DATE
+archive:
+	@curl "https://sesync-ci.github.io/$${PWD##*/}/class/archive.html" -o docs/_posts/$(DATE)-index.html
