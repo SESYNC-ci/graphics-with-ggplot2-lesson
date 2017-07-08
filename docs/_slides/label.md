@@ -14,7 +14,10 @@ histo
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_hist]({{ site.baseurl }}/images/plot_hist-1.png)
+{:.captioned}
 
 ===
 
@@ -32,7 +35,10 @@ histo
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_hist_axes]({{ site.baseurl }}/images/plot_hist_axes-1.png)
+{:.captioned}
 
 ===
 
@@ -52,6 +58,9 @@ histo
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_hist_themes]({{ site.baseurl }}/images/plot_hist_themes-1.png)
+{:.captioned}
 
 Note that position is relative to plot size (i.e. between 0 and 1).

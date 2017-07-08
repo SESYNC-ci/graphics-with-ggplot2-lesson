@@ -17,7 +17,10 @@ ggplot(data = animals_dm,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk sol1]({{ site.baseurl }}/images/sol1-1.png)
+{:.captioned}
 
 [Return](#exercise-1)
 {:.notes}
@@ -32,7 +35,10 @@ filter(animals, species_id == 'DM') %>%
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk sol2]({{ site.baseurl }}/images/sol2-1.png)
+{:.captioned}
 
 [Return](#exercise-2)
 {:.notes}
@@ -51,7 +57,10 @@ ggplot(data = animals_common,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk sol3]({{ site.baseurl }}/images/sol3-1.png)
+{:.captioned}
 
 [Return](#exercise-3)
 {:.notes}

@@ -30,9 +30,43 @@ ggplot(data = animals,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
-![plot of chunk plot_pt]({{ site.baseurl }}/images/plot_pt-1.png)
+===
 
-In `ggplot`, we specified a data frame (*animals*) and a number of aesthetic mappings (`aes`). The `aes` function associates variables from that data frame to visual elements in the plot: here, *species_id* on the x-axis and *weight* on the y-axis. The `ggplot` function by itself does not plot anything until we add a *geom* layer such as `geom_point`. In this particular case, individual points are hard to distinguish; what could we use instead? (Try `geom_boxplot`.)
+![plot of chunk plot_pt]({{ site.baseurl }}/images/plot_pt-1.png)
+{:.captioned}
+
+===
+
+
+~~~r
+ggplot(data = animals,
+       aes(x = species_id, y = weight)) +
+  geom_point()
+~~~
+{:.text-document title="{{ site.handouts }}"}
+
+In `ggplot`, we specify a data frame (`animals`) and an aesthetic mapping (`aes`).
+The `aes` function associates variables from that data frame to visual elements in the plot: here, `species_id` on the x-axis and `weight` on the y-axis.
+
+The `ggplot` function by itself does not plot anything until we add a `geom_*` layer such as `geom_point`.
+In this particular case, individual points are hard to distinguish; a boxplot might be a better visualization.
+
+===
+
+The only change here is the `geom_*`.
+
+
+~~~r
+ggplot(data = animals,
+       aes(x = species_id, y = weight)) +
+  geom_boxplot()
+~~~
+{:.text-document title="{{ site.handouts }}"}
+
+===
+
+![plot of chunk plot_box]({{ site.baseurl }}/images/plot_box-1.png)
+{:.captioned}
 
 ===
 
@@ -49,7 +83,10 @@ ggplot(data = animals,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
-![plot of chunk plot_box]({{ site.baseurl }}/images/plot_box-1.png)
+===
+
+![plot of chunk plot_pt_box]({{ site.baseurl }}/images/plot_pt_box-1.png)
+{:.captioned}
 
 ===
 
@@ -72,7 +109,10 @@ ggplot(data = animals,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_box_color]({{ site.baseurl }}/images/plot_box_color-1.png)
+{:.captioned}
 
 ===
 

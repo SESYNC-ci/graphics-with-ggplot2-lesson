@@ -19,7 +19,10 @@ ggplot(data = animals_dm,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_lm]({{ site.baseurl }}/images/plot_lm-1.png)
+{:.captioned}
 
 ===
 
@@ -37,7 +40,10 @@ ggplot(data = animals_dm,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_lm_group]({{ site.baseurl }}/images/plot_lm_group-1.png)
+{:.captioned}
 
 ===
 
@@ -57,6 +63,9 @@ ggplot(data = animals_dm,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_lm_color]({{ site.baseurl }}/images/plot_lm_color-1.png)
+{:.captioned}
 
 Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).

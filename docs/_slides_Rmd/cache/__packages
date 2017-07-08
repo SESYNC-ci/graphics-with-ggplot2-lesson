@@ -1,7 +1,0 @@
-base
-knitr
-yaml
-stringr
-dplyr
-ggplot2
-bindrcpp

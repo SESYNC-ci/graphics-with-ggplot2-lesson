@@ -19,7 +19,10 @@ ggplot(data = animals_common,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_facets]({{ site.baseurl }}/images/plot_facets-1.png)
+{:.captioned}
 
 ===
 
@@ -39,7 +42,10 @@ ggplot(data = animals_common,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_facets_2]({{ site.baseurl }}/images/plot_facets_2-1.png)
+{:.captioned}
 
 ===
 
@@ -63,7 +69,10 @@ ggplot(data = animals_common,
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_facets_3]({{ site.baseurl }}/images/plot_facets_3-1.png)
+{:.captioned}
 
 ===
 

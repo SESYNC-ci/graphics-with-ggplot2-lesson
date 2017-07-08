@@ -22,7 +22,10 @@ year_wgt +
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_lm_scales]({{ site.baseurl }}/images/plot_lm_scales-1.png)
+{:.captioned}
 
 ===
 
@@ -36,7 +39,10 @@ year_wgt
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
+===
+
 ![plot of chunk plot_lm_scales_2]({{ site.baseurl }}/images/plot_lm_scales_2-1.png)
+{:.captioned}
 
 ===
 
