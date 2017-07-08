@@ -3,36 +3,43 @@
 
 ## Exercise solutions
 
-### Solution 1
+===
 
-```{r sol1, title="{{ site.handouts }}"}
-filter(surveys, species_id == "DM") %>%
-  ggplot(aes(x = year, y = weight, color = sex)) +
-  geom_line(stat = "summary", fun.y = "mean")
+## Solution 1
+
+```{r sol1, title='{{ site.handouts }}'}
+animals_dm <- filter(animals, species_id == 'DM')
+ggplot(data = animals_dm,
+       aes(x = year, y = weight, color = sex)) +
+  geom_line(stat = 'summary',
+            fun.y = 'mean')
 ```
 
 [Return](#exercise-1)
+{:.notes}
 
-### Solution 2
+## Solution 2
 
-```{r sol2, message = FALSE, title="{{ site.handouts }}"}
-filter(surveys, species_id == "DM") %>%
+```{r sol2, message = FALSE, title='{{ site.handouts }}'}
+filter(animals, species_id == 'DM') %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
 ```
 
 [Return](#exercise-2)
+{:.notes}
 
-### Solution 3
+## Solution 3
 
-```{r sol3, message = FALSE, title="{{ site.handouts }}"}
-filter(surveys, species_id %in% c("DM", "PB")) %>%
-  ggplot(aes(x = weight)) +
+```{r sol3, message = FALSE, title='{{ site.handouts }}'}
+ggplot(data = animals_common,
+       aes(x = weight)) +
   geom_histogram() +
   facet_grid(sex ~ species_id) +
-  labs(title = "DM and RO weight distribution by sex",
-       x = "Count",
-       y = "Weight (g)")
+  labs(title = 'Weight of common species by sex',
+       x = 'Count',
+       y = 'Weight (g)')
 ```
 
 [Return](#exercise-3)
+{:.notes}

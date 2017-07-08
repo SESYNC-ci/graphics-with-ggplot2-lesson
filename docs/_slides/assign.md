@@ -7,7 +7,7 @@ The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It
 
 
 ~~~r
-year_wgt <- ggplot(data = surveys_dm,
+year_wgt <- ggplot(data = animals_dm,
                    aes(x = year,
                    y = weight,
                    color = sex)) + 
@@ -42,6 +42,7 @@ year_wgt
 
 ## Exercise 2
 
-Create a histogram, using a `geom_histogram()` layer, of the weights of individuals of species *DM* and divide the data by sex. Note that instead of using `color` in the aesthetic, you'll use `fill` to distinguish the sexes. Also look at the [documentation](http://docs.ggplot2.org/current/geom_histogram.html) and determine how to explicitly set the bin width.
+Create a histogram, using a `geom_histogram()` layer, of the weights of individuals of species *DM* and divide the data by sex. Note that instead of using `color` in the aesthetic, you'll use `fill` to distinguish the sexes. Also open the help with `?geom_histogram` and determine how to explicitly set the bin width.
 
 [View solution](#solution-2)
+{:.notes}

@@ -7,7 +7,7 @@ Let's start from the histogram like the one generated in the exercise.
 
 
 ~~~r
-histo <- ggplot(data = surveys_dm,
+histo <- ggplot(data = animals_dm,
                 aes(x = weight, fill = sex)) +
     geom_histogram(binwidth = 3, color = "white")
 histo

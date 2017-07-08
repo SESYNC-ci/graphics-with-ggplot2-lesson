@@ -6,7 +6,7 @@
 Let's start from the histogram like the one generated in the exercise.
 
 ```{r plot_hist, title="{{ site.handouts }}"}
-histo <- ggplot(data = surveys_dm,
+histo <- ggplot(data = animals_dm,
                 aes(x = weight, fill = sex)) +
     geom_histogram(binwidth = 3, color = "white")
 histo

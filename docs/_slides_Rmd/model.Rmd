@@ -4,47 +4,47 @@
 ## Adding a regression line
 
 The code below shows one graph answering the question in the exercise.
-Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
+Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
 
-```{r plot_lm, title="{{ site.handouts }}"}
-surveys_dm <- filter(surveys, species_id == "DM")
-ggplot(data = surveys_dm,
+```{r plot_lm, title='{{ site.handouts }}'}
+animals_dm <- filter(animals, species_id == 'DM')
+ggplot(data = animals_dm,
        aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
-  geom_smooth(method = "lm")
+             stat = 'summary',
+             fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 ```
 
 ===
 
 To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
 
-```{r plot_lm_group, title="{{ site.handouts }}"}
-ggplot(data = surveys_dm,
+```{r plot_lm_group, title='{{ site.handouts }}'}
+ggplot(data = animals_dm,
        aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
-  geom_smooth(aes(group = sex), method = "lm")
+             stat = 'summary',
+             fun.y = 'mean') +
+  geom_smooth(aes(group = sex), method = 'lm')
 ```
 
 ===
 
 Even better would be to distinguish the two lines by color:
 
-```{r plot_lm_color, title="{{ site.handouts }}"}
-ggplot(data = surveys_dm,
+```{r plot_lm_color, title='{{ site.handouts }}'}
+ggplot(data = animals_dm,
        aes(x = year,
            y = weight,
            color = sex)) + 
   geom_point(aes(shape = sex),
              size = 3,
-	     stat = "summary",
-	     fun.y = "mean") +
-  geom_smooth(method = "lm")
+	     stat = 'summary',
+	     fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 ```
 
 Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).

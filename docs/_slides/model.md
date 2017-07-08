@@ -4,18 +4,18 @@
 ## Adding a regression line
 
 The code below shows one graph answering the question in the exercise.
-Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = "lm"` parameter specifies that a linear model is used for smoothing.
+Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
 
 
 ~~~r
-surveys_dm <- filter(surveys, species_id == "DM")
-ggplot(data = surveys_dm,
+animals_dm <- filter(animals, species_id == 'DM')
+ggplot(data = animals_dm,
        aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
-  geom_smooth(method = "lm")
+             stat = 'summary',
+             fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
@@ -27,13 +27,13 @@ To get separate regression lines for females and males, we could add a *group* a
 
 
 ~~~r
-ggplot(data = surveys_dm,
+ggplot(data = animals_dm,
        aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
-  geom_smooth(aes(group = sex), method = "lm")
+             stat = 'summary',
+             fun.y = 'mean') +
+  geom_smooth(aes(group = sex), method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
@@ -45,15 +45,15 @@ Even better would be to distinguish the two lines by color:
 
 
 ~~~r
-ggplot(data = surveys_dm,
+ggplot(data = animals_dm,
        aes(x = year,
            y = weight,
            color = sex)) + 
   geom_point(aes(shape = sex),
              size = 3,
-	     stat = "summary",
-	     fun.y = "mean") +
-  geom_smooth(method = "lm")
+	     stat = 'summary',
+	     fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 

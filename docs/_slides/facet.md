@@ -4,18 +4,16 @@
 ## Facets
 
 To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called *facets*.
-The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~'. First, we specify that *month* is a factor, rather than an integer, so grouping works.
+The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~' using a factor in the data.
 
 
 ~~~r
-surveys_dm$month <- as.factor(surveys_dm$month)
-levels(surveys_dm$month) <- c("January", "February", "March", "April", "May", "June",
-                              "July", "August", "September", "October", "November", "December")
-ggplot(data = surveys_dm,
+animals_common <- filter(animals, species_id %in% c('DM', 'PP', 'DO'))
+ggplot(data = animals_common,
        aes(x = weight)) +
   geom_histogram() +
-  facet_wrap( ~ month) +
-  labs(title = "DM weight distribution by month",
+  facet_wrap( ~ species_id) +
+  labs(title = "Weight of most common species",
        x = "Count",
        y = "Weight (g)")
 ~~~
@@ -29,13 +27,13 @@ The un-grouped data may be added as a layer on each panel, but you have to drop 
 
 
 ~~~r
-ggplot(data = surveys_dm,
+ggplot(data = animals_common,
        aes(x = weight)) +
-  geom_histogram(data = select(surveys_dm, -month),
+  geom_histogram(data = select(animals_common, -species_id),
                  alpha = 0.2) +
   geom_histogram() +
-  facet_wrap( ~ month) +
-  labs(title = "DM weight distribution by month",
+  facet_wrap( ~ species_id) +
+  labs(title = "Weight of most common species",
        x = "Count",
        y = "Weight (g)")
 ~~~
@@ -45,19 +43,20 @@ ggplot(data = surveys_dm,
 
 ===
 
-Finally, let's show off with some nice styling and the very unusual `..density..` argument in the aesthetic. The notation signifies the ggplot is to calculate the probability density, rather than plot frequency as before.
+Finally, let's show off some additional styling and the very unusual `..density..` argument in the aesthetic.
+The `..` notation signifies that ggplot is to calculate the probability density, rather than plot frequency as before.
 
 
 ~~~r
-ggplot(data = surveys_dm,
-       aes(x = weight, fill = month)) +
-  geom_histogram(data = select(surveys_dm, -month),
+ggplot(data = animals_common,
+       aes(x = weight, fill = species_id)) +
+  geom_histogram(data = select(animals_common, -month),
                  aes(y = ..density..),
                  fill = "black") +
   geom_histogram(aes(y = ..density..),
                  alpha = 0.8) +
-  facet_wrap( ~ month) +
-  labs(title = "DM weight distribution by month",
+  facet_wrap( ~ species_id) +
+  labs(title = "Weight of most common species",
        x = "Count",
        y = "Weight (g)") +
   guides(fill = FALSE)								 
@@ -70,6 +69,7 @@ ggplot(data = surveys_dm,
 
 ## Exercise 3
 
-Here's a take-home challenge for you to try later. For records with species_id "DM" and "PB", create facets along two categorical variables, species_id and sex, using `facet_grid` instead of `facet_wrap`.
+The formula notation for `facet_grid` (different from `facet_wrap`) interprets left-side variables as one axis and right-side variables as another. For these three common animals, create facets in the weight histogram along two categorical variables, with a row for each sex and a column for each species.
 
 [View solution](#solution-3)
+{:.notes}
