@@ -25,6 +25,8 @@ ggplot(data = animals_dm,
 [Return](#exercise-1)
 {:.notes}
 
+===
+
 ## Solution 2
 
 
@@ -42,6 +44,8 @@ filter(animals, species_id == 'DM') %>%
 
 [Return](#exercise-2)
 {:.notes}
+
+===
 
 ## Solution 3
 
