@@ -1,8 +1,8 @@
-## Libraries and data
+## Getting started
 
 library(dplyr)
 library(...)
-surveys <- read.csv(..., na.strings = "") %>%
+animals <- read.csv(..., na.strings = '') %>%
   filter(!is.na(species_id), !is.na(sex), !is.na(weight))
 
 ## Constructing layered graphics in ggplot
@@ -11,12 +11,22 @@ ggplot(...,
        ...) +
   ...
 
-ggplot(data = surveys,
+ggplot(data = animals,
        aes(x = species_id, y = weight)) +
   ...
+
+ggplot(data = animals,
+       aes(x = species_id, y = weight)) +
+  geom_boxplot() ...
   geom_point(...,
              ...,
              ...)
+
+ggplot(data = animals,
+       aes(x = species_id, y = weight, ...)) +
+  geom_boxplot() +
+  geom_point(stat = 'summary',
+             fun.y = 'mean')
 
 ## Exercise 1
 
@@ -24,37 +34,45 @@ ggplot(data = surveys,
 
 ## Adding a regression line
 
-levels(surveys$sex) <- c("Female", "Male")
-surveys_dm <- filter(surveys, ...)
+levels(animals$sex) <- c('Female', 'Male')
+animals_dm <- filter(animals, ...)
 ggplot(...,
        aes(x = year, y = weight)) +
   geom_point(...,
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
+             stat = 'summary',
+             fun.y = 'mean') +
   ...
 
-ggplot(data = surveys_dm,
-       aes(...,
-           ...,
-           ...)) +
+ggplot(data = animals_dm,
+       aes(x = year, y = weight)) + 
   geom_point(aes(shape = sex),
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
-  geom_smooth(method = "lm")
+             stat = 'summary',
+             fun.y = 'mean') +
+  geom_smooth(...)
+
+ggplot(data = animals_dm,
+       aes(...,
+           ...,
+           ...) + 
+  geom_point(aes(shape = sex),
+             size = 3,
+	           stat = 'summary',
+	           fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 
 # Storing and re-plotting
 
-year_wgt <- ggplot(data = surveys_dm,
+year_wgt <- ggplot(data = animals_dm,
                    aes(x = year,
                        y = weight,
                        color = sex)) +
   geom_point(aes(shape = sex),
              size = 3,
-             stat = "summary",
-             fun.y = "mean") +
-  geom_smooth(method = "lm")
+             stat = 'summary',
+             fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 
 year_wgt +
   ...
@@ -69,15 +87,15 @@ year_wgt
 
 ## Axes, labels and themes
 
-histo <- ggplot(data = surveys_dm,
+histo <- ggplot(data = animals_dm,
                 aes(x = weight, fill = sex)) +
   geom_...
 histo
 
 histo <- histo +
-  ...(title = "Dipodomys merriami weight distribution",
-       x = "Weight (g)",
-       y = "Count") +
+  ...(title = 'Dipodomys merriami weight distribution',
+       x = 'Weight (g)',
+       y = 'Count') +
   scale_x_continuous(limits = c(20, 60),
                      breaks = c(20, 30, 40, 50, 60))
 histo
@@ -92,26 +110,33 @@ histo
 
 ## Facets
 
-surveys_dm$month <- as.factor(surveys_dm$month)
-levels(surveys_dm$month) <- c("January", "February", "March", "April", "May", "June",
-                              "July", "August", "September", "October", "November", "December")
-
-ggplot(data = surveys_dm,
-       aes(x = weight)) +
+animals_common <- filter(animals, ...)
+ggplot(data = ...,
+       ...) +
   geom_histogram() +
   ...
-  labs(title = "DM weight distribution by month",
+  labs(title = "Weight of most common species",
        x = "Count",
        y = "Weight (g)")
 
-ggplot(data = surveys_dm,
-       aes(x = weight, fill = month)) +
-  ...
-  facet_wrap( ~ month) +
-  labs(title = "DM weight distribution by month",
+ggplot(data = animals_common,
+       aes(x = weight)) +
+  geom_histogram(...,
+                 ...) +
+  geom_histogram() +
+  facet_wrap( ~ species_id) +
+  labs(title = "Weight of most common species",
+       x = "Count",
+       y = "Weight (g)")
+
+ggplot(data = animals_common,
+       aes(x = weight, ...)) +
+  geom_histogram(...) +
+  facet_wrap( ~ species_id) +
+  labs(title = "Weight of most common species",
        x = "Count",
        y = "Weight (g)") +
-  guides(fill = FALSE)
+  guides(fill = FALSE)		
 
 ## Exercise 3
 

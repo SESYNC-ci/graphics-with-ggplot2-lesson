@@ -35,17 +35,13 @@ ggplot(data = animals_common,
 
 ===
 
-Finally, let's show off some additional styling and the very unusual `..density..` argument in the aesthetic.
-The `..` notation signifies that ggplot is to calculate the probability density, rather than plot frequency as before.
+Finally, let's show off some additional styling with `fill` and the very unusual `..density..` argument in the aesthetic.
+The `..` notation is shared by several ggplot functions that perform calculation, in this case the probability density rather than the frequency used before.
 
 ```{r plot_facets_3, message = FALSE, title="{{ site.handouts }}"}
 ggplot(data = animals_common,
        aes(x = weight, fill = species_id)) +
-  geom_histogram(data = select(animals_common, -month),
-                 aes(y = ..density..),
-                 fill = "black") +
-  geom_histogram(aes(y = ..density..),
-                 alpha = 0.8) +
+  geom_histogram(aes(y = ..density..)) +
   facet_wrap( ~ species_id) +
   labs(title = "Weight of most common species",
        x = "Count",

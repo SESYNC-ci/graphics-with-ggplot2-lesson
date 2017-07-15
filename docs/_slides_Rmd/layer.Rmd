@@ -20,6 +20,7 @@ animals <- read.csv("data/animals.csv", na.strings = "") %>%
 ## Constructing layered graphics in ggplot
 
 As a first example, this code plots the inviduals' weights by species:
+
 ```{r plot_pt, title="{{ site.handouts }}"}
 ggplot(data = animals,
        aes(x = species_id, y = weight)) +
@@ -27,12 +28,6 @@ ggplot(data = animals,
 ```
 
 ===
-
-```{r eval = FALSE, title="{{ site.handouts }}"}
-ggplot(data = animals,
-       aes(x = species_id, y = weight)) +
-  geom_point()
-```
 
 In `ggplot`, we specify a data frame (`animals`) and an aesthetic mapping (`aes`).
 The `aes` function associates variables from that data frame to visual elements in the plot: here, `species_id` on the x-axis and `weight` on the y-axis.
