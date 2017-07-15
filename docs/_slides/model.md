@@ -47,7 +47,7 @@ ggplot(data = animals_dm,
 
 ===
 
-Even better would be to distinguish the two lines by color:
+Even better would be to distinguish everything (points and lines) by color:
 
 
 ~~~r

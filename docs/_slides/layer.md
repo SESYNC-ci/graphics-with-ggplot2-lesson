@@ -23,6 +23,7 @@ animals <- read.csv("data/animals.csv", na.strings = "") %>%
 
 As a first example, this code plots the inviduals' weights by species:
 
+
 ~~~r
 ggplot(data = animals,
        aes(x = species_id, y = weight)) +
@@ -36,14 +37,6 @@ ggplot(data = animals,
 {:.captioned}
 
 ===
-
-
-~~~r
-ggplot(data = animals,
-       aes(x = species_id, y = weight)) +
-  geom_point()
-~~~
-{:.text-document title="{{ site.handouts }}"}
 
 In `ggplot`, we specify a data frame (`animals`) and an aesthetic mapping (`aes`).
 The `aes` function associates variables from that data frame to visual elements in the plot: here, `species_id` on the x-axis and `weight` on the y-axis.
