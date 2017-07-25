@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualizations the ggplot Way</title>
+<meta name="description" content="Craft publication-quality graphics with ggplot2">
+<link rel="canonical" href="https://sesync-ci.github.io/graphics-with-ggplot2-lesson/course/archive.html">
+<link rel="stylesheet" href="/graphics-with-ggplot2-lesson/css/default.css">
+<link rel="stylesheet" href="/graphics-with-ggplot2-lesson/css/static.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+
+	  <link rel="stylesheet" href="https://cdn.rawgit.com/sesync-ci/lesson-style/1.1/docs/css/static.css">
+  </head>
+  <body>
+	  <div class="page-content">
+	    <div class="wrapper">
+        
+        
+<h1 style="text-transform: none;" id="visualizations-the-ggplot-way">Visualizations the ggplot Way</h1>
+
+<p>Lesson 5 with <em>Mary Shelly</em></p>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li><a href="#/slides/intro">Objective</a></li>
+  <li><a href="#/slides/layer">Getting started</a></li>
+  <li><a href="#/slides/model">Adding a regression line</a></li>
+  <li><a href="#/slides/assign">Storing and re-plotting</a></li>
+  <li><a href="#/slides/label">Axes, labels and themes</a></li>
+  <li><a href="#/slides/facet">Facets</a></li>
+  <li><a href="#/slides/conclude">Additional information</a></li>
+  <li><a href="#/slides/solutions">Exercise solutions</a></li>
+</ul>
+
+<hr />
+
+<p><a name="/slides/intro"></a></p>
+
+<h2 id="objective">Objective</h2>
+
+<p>This lesson is a brief overview of the <strong>ggplot2</strong> package, which is a R implementation of the “grammar of graphics”. In base R, there are different functions for different types of graphics (<code class="highlighter-rouge">plot</code>, <code class="highlighter-rouge">boxplot</code>, <code class="highlighter-rouge">hist</code>, etc.) and each may have their own specific parameters in addition to general plot options. In contrast, ggplot2 constructs plots one <em>layer</em> at a time; for example, the output of a linear regression could be plotted by defining the axes, then adding individual points, tracing the line of best fit, and finally specifying overall layout parameters such as font sizes and background color.</p>
+
+<p>This layered approach allows for highly customizable graphics. Even when a plot requires several lines of code, that code is broken down in simple components that are easy to interpret.</p>
+
+<p class="ToS"><a href="#/slides/intro">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/layer"></a></p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>Let’s start by loading a few packages along with a sample dataset, which is the <em>animals</em> table from the <a href="https://figshare.com/articles/Portal_Project_Teaching_Database/1314459">Portal Project Teaching Database</a>.</p>
+
+<p class="notes">We filter the data to remove rows that have missing values for the species_id, sex, or weight columns. (This is not strictly necessary, but it will prevent ggplot from returning missing values warnings.)</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
+</span><span class="n">animals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read.csv</span><span class="p">(</span><span class="s2">"data/animals.csv"</span><span class="p">,</span><span class="w"> </span><span class="n">na.strings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">""</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+    </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">species_id</span><span class="p">),</span><span class="w"> </span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">sex</span><span class="p">),</span><span class="w"> </span><span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">weight</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<h2 id="constructing-layered-graphics-in-ggplot">Constructing layered graphics in ggplot</h2>
+
+<p>As a first example, this code plots the inviduals’ weights by species:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species_id</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_pt-1.png" alt="plot of chunk plot_pt" /></p>
+
+<p>In <code class="highlighter-rouge">ggplot</code>, we specify a data frame (<code class="highlighter-rouge">animals</code>) and an aesthetic mapping (<code class="highlighter-rouge">aes</code>).
+The <code class="highlighter-rouge">aes</code> function associates variables from that data frame to visual elements in the plot: here, <code class="highlighter-rouge">species_id</code> on the x-axis and <code class="highlighter-rouge">weight</code> on the y-axis.</p>
+
+<p>The <code class="highlighter-rouge">ggplot</code> function by itself does not plot anything until we add a <code class="highlighter-rouge">geom_*</code> layer such as <code class="highlighter-rouge">geom_point</code>.
+In this particular case, individual points are hard to distinguish; a boxplot might be a better visualization.</p>
+
+<p>The only change here is the <code class="highlighter-rouge">geom_*</code>.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species_id</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_box-1.png" alt="plot of chunk plot_box" /></p>
+
+<p>Multiple geom layers can be combined in a single plot:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species_id</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"summary"</span><span class="p">,</span><span class="w">
+             </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mean"</span><span class="p">,</span><span class="w">
+             </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"red"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_pt_box-1.png" alt="plot of chunk plot_pt_box" /></p>
+
+<p>The <code class="highlighter-rouge">geom_point</code> layer definition illustrates a couple new features:</p>
+
+<ul>
+  <li>With <code class="highlighter-rouge">stat = "summary"</code>, we can plot a summary statistic (defined by <code class="highlighter-rouge">fun.y</code>) instead of the raw data.</li>
+  <li>Setting <code class="highlighter-rouge">color = red</code> applies one color to the whole layer.</li>
+</ul>
+
+<p>To associate color (or some other attribute, like point shape) to a variable, it needs to be specified within an <code class="highlighter-rouge">aes</code> function.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species_id</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species_id</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"summary"</span><span class="p">,</span><span class="w">
+             </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mean"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_box_color-1.png" alt="plot of chunk plot_box_color" /></p>
+
+<!--
+### Quick plotting with qplot
+
+The `qplot` function provides a shortcut to `ggplot` that looks more like the base R `plot` function, e.g. `qplot(x = species_id, y = weight, data = animals, geom = "boxplot")`. This can be useful to quickly produce simple graphs, especially those with a single geom.
+
+===
+-->
+
+<h2 id="exercise-1">Exercise 1</h2>
+
+<p>Using <code class="highlighter-rouge">dplyr</code> and <code class="highlighter-rouge">ggplot</code> show how the mean weight of individuals of the species <em>DM</em> changes over time, with males and females shown in different colors.</p>
+
+<p class="notes"><a href="#solution-1">View solution</a></p>
+
+<p class="ToS"><a href="#/slides/layer">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/model"></a></p>
+
+<h2 id="adding-a-regression-line">Adding a regression line</h2>
+
+<p>The code below shows one graph answering the question in the exercise.
+Adding a <code class="highlighter-rouge">geom_smooth</code> layer displays a regression line with confidence intervals (95% CI by default). The <code class="highlighter-rouge">method = 'lm'</code> parameter specifies that a linear model is used for smoothing.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">animals_dm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="n">animals</span><span class="p">,</span><span class="w"> </span><span class="n">species_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'DM'</span><span class="p">)</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_dm</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">),</span><span class="w">
+             </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w">
+             </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+             </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'mean'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lm'</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_lm-1.png" alt="plot of chunk plot_lm" /></p>
+
+<p>To get separate regression lines for females and males, we could add a <em>group</em> aesthetic mapping to <code class="highlighter-rouge">geom_smooth</code>:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_dm</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">),</span><span class="w">
+             </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w">
+             </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+             </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'mean'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">),</span><span class="w"> </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lm'</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_lm_group-1.png" alt="plot of chunk plot_lm_group" /></p>
+
+<p>Even better would be to distinguish everything (points and lines) by color:</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_dm</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w">
+           </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w">
+           </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">),</span><span class="w">
+             </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w">
+	     </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+	     </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'mean'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lm'</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_lm_color-1.png" alt="plot of chunk plot_lm_color" /></p>
+
+<p>Notice that by adding the aesthetic mapping in the <code class="highlighter-rouge">ggplot</code> command, it is applied to all layers that recognize that aesthetic (color).</p>
+
+<p class="ToS"><a href="#/slides/model">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/assign"></a></p>
+
+<h2 id="storing-and-re-plotting">Storing and re-plotting</h2>
+
+<p>The output of <code class="highlighter-rouge">ggplot</code> can be assigned to a variable (here, it’s <code class="highlighter-rouge">year_wgt</code>). It is then possible to add new elements to it with the <code class="highlighter-rouge">+</code> operator. We will use this method to try different color scales for the previous plot</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">year_wgt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_dm</span><span class="p">,</span><span class="w">
+                   </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w">
+                   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w">
+                   </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+              </span><span class="n">geom_point</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">),</span><span class="w">
+                         </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w">
+	                 </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"summary"</span><span class="p">,</span><span class="w">
+	                 </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mean"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+              </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"lm"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">year_wgt</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"darkblue"</span><span class="p">,</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">))</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_lm_scales-1.png" alt="plot of chunk plot_lm_scales" /></p>
+
+<p>By overwriting the <code class="highlighter-rouge">year_wgt</code> variable, the stored plot gets updated with the black and red color scale.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">year_wgt</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">year_wgt</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"black"</span><span class="p">,</span><span class="w"> </span><span class="s2">"red"</span><span class="p">))</span><span class="w">
+</span><span class="n">year_wgt</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_lm_scales_2-1.png" alt="plot of chunk plot_lm_scales_2" /></p>
+
+<h2 id="exercise-2">Exercise 2</h2>
+
+<p>Create a histogram, using a <code class="highlighter-rouge">geom_histogram()</code> layer, of the weights of individuals of species <em>DM</em> and divide the data by sex. Note that instead of using <code class="highlighter-rouge">color</code> in the aesthetic, you’ll use <code class="highlighter-rouge">fill</code> to distinguish the sexes. Also open the help with <code class="highlighter-rouge">?geom_histogram</code> and determine how to explicitly set the bin width.</p>
+
+<p class="notes"><a href="#solution-2">View solution</a></p>
+
+<p class="ToS"><a href="#/slides/assign">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/label"></a></p>
+
+<h2 id="axes-labels-and-themes">Axes, labels and themes</h2>
+
+<p>Let’s start from the histogram like the one generated in the exercise.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">histo</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_dm</span><span class="p">,</span><span class="w">
+                </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+    </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">binwidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"white"</span><span class="p">)</span><span class="w">
+</span><span class="n">histo</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_hist-1.png" alt="plot of chunk plot_hist" /></p>
+
+<p>We change the title and axis labels with the <code class="highlighter-rouge">labs</code> function. We have various functions related to the scale of each axis, i.e. the range, breaks and any transformations of the values on the axis. Here, we use <code class="highlighter-rouge">scale_x_continuous</code> to modify a continuous (as opposed to discrete) x-axis.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">histo</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">histo</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Dipodomys merriami weight distribution"</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight (g)"</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Count"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="m">60</span><span class="p">),</span><span class="w">
+                     </span><span class="n">breaks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">20</span><span class="p">,</span><span class="w"> </span><span class="m">30</span><span class="p">,</span><span class="w"> </span><span class="m">40</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">,</span><span class="w"> </span><span class="m">60</span><span class="p">))</span><span class="w">
+</span><span class="n">histo</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_hist_axes-1.png" alt="plot of chunk plot_hist_axes" /></p>
+
+<p>For information on how to add special symbols and formatting to plot labels, see <code class="highlighter-rouge">?plotmath</code>.</p>
+
+<p>Many plot-level options in <code class="highlighter-rouge">ggplot</code>, from background color to font sizes, are defined as part of <em>themes</em>. The next modification to <em>histo</em> changes the base theme of the plot to <code class="highlighter-rouge">theme_bw</code> (replacing the default <code class="highlighter-rouge">theme_grey</code>) and set a few options manually with the <code class="highlighter-rouge">theme</code> function. Try <code class="highlighter-rouge">?theme</code> for a list of available theme options.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">histo</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">histo</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0.2</span><span class="p">,</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span><span class="w">
+        </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"bold"</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">),</span><span class="w">
+        </span><span class="n">axis.title.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> 
+        </span><span class="n">axis.title.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">))</span><span class="w">
+</span><span class="n">histo</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_hist_themes-1.png" alt="plot of chunk plot_hist_themes" /></p>
+
+<p>Note that position is relative to plot size (i.e. between 0 and 1).</p>
+
+<p class="ToS"><a href="#/slides/label">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/facet"></a></p>
+
+<h2 id="facets">Facets</h2>
+
+<p>To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called <em>facets</em>.
+The <code class="highlighter-rouge">facet_wrap</code> function takes a <em>formula</em> argument that specifies the grouping on either side of a ‘~’ using a factor in the data.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">animals_common</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="n">animals</span><span class="p">,</span><span class="w"> </span><span class="n">species_id</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'DM'</span><span class="p">,</span><span class="w"> </span><span class="s1">'PP'</span><span class="p">,</span><span class="w"> </span><span class="s1">'DO'</span><span class="p">))</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_common</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">species_id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight of most common species"</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Count"</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight (g)"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_facets-1.png" alt="plot of chunk plot_facets" /></p>
+
+<p>The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. <em>month</em>).</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_common</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">select</span><span class="p">(</span><span class="n">animals_common</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">species_id</span><span class="p">),</span><span class="w">
+                 </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">species_id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight of most common species"</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Count"</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight (g)"</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_facets_2-1.png" alt="plot of chunk plot_facets_2" /></p>
+
+<p>Finally, let’s show off some additional styling with <code class="highlighter-rouge">fill</code> and the very unusual <code class="highlighter-rouge">..density..</code> argument in the aesthetic.
+The <code class="highlighter-rouge">..</code> notation is shared by several ggplot functions that perform calculation, in this case the probability density rather than the frequency used before.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_common</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">species_id</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">..density..</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">species_id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight of most common species"</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Count"</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Weight (g)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">guides</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span><span class="w">								 
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/plot_facets_3-1.png" alt="plot of chunk plot_facets_3" /></p>
+
+<h2 id="exercise-3">Exercise 3</h2>
+
+<p>The formula notation for <code class="highlighter-rouge">facet_grid</code> (different from <code class="highlighter-rouge">facet_wrap</code>) interprets left-side variables as one axis and right-side variables as another. For these three common animals, create facets in the weight histogram along two categorical variables, with a row for each sex and a column for each species.</p>
+
+<p class="notes"><a href="#solution-3">View solution</a></p>
+
+<p class="ToS"><a href="#/slides/facet">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/conclude"></a></p>
+
+<h2 id="additional-information">Additional information</h2>
+
+<ul>
+  <li>
+    <p><a href="http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">Data visualization with ggplot2 (RStudio cheat sheet)</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.cookbook-r.com/Graphs/">Cookbook for R - Graphs</a> A useful reference on how to customize different graph elements in ggplot2.</p>
+  </li>
+  <li>
+    <p><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html">Introduction to cowplot</a> Vignette for an add-on package for customizing ggplot figures.</p>
+  </li>
+</ul>
+
+<p class="ToS"><a href="#/slides/conclude">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/solutions"></a></p>
+
+<h2 id="exercise-solutions">Exercise solutions</h2>
+
+<h2 id="solution-1">Solution 1</h2>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">animals_dm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="n">animals</span><span class="p">,</span><span class="w"> </span><span class="n">species_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'DM'</span><span class="p">)</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_dm</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_line</span><span class="p">(</span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+            </span><span class="n">fun.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'mean'</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/sol1-1.png" alt="plot of chunk sol1" /></p>
+
+<p class="notes"><a href="#exercise-1">Return</a></p>
+
+<h2 id="solution-2">Solution 2</h2>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">filter</span><span class="p">(</span><span class="n">animals</span><span class="p">,</span><span class="w"> </span><span class="n">species_id</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'DM'</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w">
+  </span><span class="n">ggplot</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sex</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">         
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">binwidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/sol2-1.png" alt="plot of chunk sol2" /></p>
+
+<p class="notes"><a href="#exercise-2">Return</a></p>
+
+<h2 id="solution-3">Solution 3</h2>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-5.R"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animals_common</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_grid</span><span class="p">(</span><span class="n">sex</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">species_id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Weight of common species by sex'</span><span class="p">,</span><span class="w">
+       </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Count'</span><span class="p">,</span><span class="w">
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Weight (g)'</span><span class="p">)</span><span class="w">
+</span></code></pre>
+</div>
+
+<p class="captioned"><img src="/graphics-with-ggplot2-lesson/images/sol3-1.png" alt="plot of chunk sol3" /></p>
+
+<p class="notes"><a href="#exercise-3">Return</a></p>
+
+<p class="ToS"><a href="#/slides/solutions">Top of Section</a></p>
+
+<hr />
+
+
+
+	    </div>
+	  </div>
+  </body>
+</html>
