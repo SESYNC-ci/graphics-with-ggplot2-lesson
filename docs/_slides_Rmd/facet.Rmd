@@ -3,50 +3,56 @@
 
 ## Facets
 
-To conclude this overview of ggplot2, here are a few examples that show different subsets of the data in panels called *facets*.
-The `facet_wrap` function takes a *formula* argument that specifies the grouping on either side of a '~' using a factor in the data.
+To conclude this overview of ggplot2, we'll apply the same plotting instructions to different subsets of the data in panels called "facets".
+The `facet_wrap` function takes a `formula` argument that specifies the grouping on either side of a '~' using a factor in the data.
 
-```{r plot_facets, message = FALSE, title="{{ site.handouts }}"}
-animals_common <- filter(animals, species_id %in% c('DM', 'PP', 'DO'))
-ggplot(data = animals_common,
-       aes(x = weight)) +
+===
+
+```{r, title = '{{ site.handouts }}'}
+animals_common <- filter(animals,
+  species_id %in% c('DM', 'PP', 'DO'))
+faceted <- ggplot(animals_common, aes(x = weight)) +
   geom_histogram() +
   facet_wrap( ~ species_id) +
   labs(title = "Weight of most common species",
        x = "Count",
        y = "Weight (g)")
 ```
-
-===
-
-The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. *month*).
-
-```{r plot_facets_2, message = FALSE, title="{{ site.handouts }}"}
-ggplot(data = animals_common,
-       aes(x = weight)) +
-  geom_histogram(data = select(animals_common, -species_id),
-                 alpha = 0.2) +
-  geom_histogram() +
-  facet_wrap( ~ species_id) +
-  labs(title = "Weight of most common species",
-       x = "Count",
-       y = "Weight (g)")
+```{r plot_facets, message = FALSE}
+faceted
 ```
 
 ===
 
-Finally, let's show off some additional styling with `fill` and the very unusual `..density..` argument in the aesthetic.
-The `..` notation is shared by several ggplot functions that perform calculation, in this case the probability density rather than the frequency used before.
+The un-grouped data may be added as a layer on each panel, but you have to drop the grouping variable (i.e. `month`).
 
-```{r plot_facets_3, message = FALSE, title="{{ site.handouts }}"}
-ggplot(data = animals_common,
-       aes(x = weight, fill = species_id)) +
+```{r, title = '{{ site.handouts }}'}
+faceted_all <- faceted + geom_histogram(
+  data = select(animals_common, -species_id),
+  alpha = 0.2)
+```
+```{r plot_facets_all, message = FALSE}
+faceted_all
+```
+
+===
+
+Finally, let's show off some additional styling with `fill` and the very unusual `..density..` aesthetic.
+The `..` notation is shared by several ggplot functions that perform a calculation. Using `..density..` as the y-axis variable allows a geometry to display the probability density of variable assigned to the x-axis.
+
+===
+
+```{r, title = '{{ site.handouts }}'}
+faceted_density <- ggplot(animals_common,
+    aes(x = weight, fill = species_id)) +
   geom_histogram(aes(y = ..density..)) +
   facet_wrap( ~ species_id) +
   labs(title = "Weight of most common species",
-       x = "Count",
-       y = "Weight (g)") +
-  guides(fill = FALSE)								 
+    x = "Count",
+    y = "Weight (g)")
+```
+```{r plot_facets_density, message = FALSE}
+faceted_density
 ```
 
 ===

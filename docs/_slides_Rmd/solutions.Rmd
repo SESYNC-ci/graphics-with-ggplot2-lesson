@@ -9,7 +9,7 @@
 
 ```{r sol1, title='{{ site.handouts }}'}
 animals_dm <- filter(animals, species_id == 'DM')
-ggplot(data = animals_dm,
+ggplot(animals_dm,
        aes(x = year, y = weight, color = sex)) +
   geom_line(stat = 'summary',
             fun.y = 'mean')
@@ -36,7 +36,7 @@ filter(animals, species_id == 'DM') %>%
 ## Solution 3
 
 ```{r sol3, message = FALSE, title='{{ site.handouts }}'}
-ggplot(data = animals_common,
+ggplot(animals_common,
        aes(x = weight)) +
   geom_histogram() +
   facet_grid(sex ~ species_id) +

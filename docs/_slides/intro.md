@@ -1,8 +1,18 @@
 ---
 ---
 
-## Objective
+## Objectives for this lesson
 
-This lesson is a brief overview of the **ggplot2** package, which is a R implementation of the "grammar of graphics". In base R, there are different functions for different types of graphics (`plot`, `boxplot`, `hist`, etc.) and each may have their own specific parameters in addition to general plot options. In contrast, ggplot2 constructs plots one *layer* at a time; for example, the output of a linear regression could be plotted by defining the axes, then adding individual points, tracing the line of best fit, and finally specifying overall layout parameters such as font sizes and background color.
+- Meet the "grammar of graphics" for [ggplot2](){:.rpkg}
+- Trust that this is better than base R's `plot`
+- Learn to **layer** visual elements on top of tidy data
+- Glimpse the vast collection of [ggplot2](){:.rpkg} options
 
-This layered approach allows for highly customizable graphics. Even when a plot requires several lines of code, that code is broken down in simple components that are easy to interpret.
+===
+
+## Specific achievements
+
+- Create several "aesthetics" or mappings for different plots
+- Build boxplots, scatterplots, smoothed lines and histograms
+- Style plots with colors
+- Repeat plots for different subsets of data

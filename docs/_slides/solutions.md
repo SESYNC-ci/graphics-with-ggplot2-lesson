@@ -10,14 +10,12 @@
 
 ~~~r
 animals_dm <- filter(animals, species_id == 'DM')
-ggplot(data = animals_dm,
+ggplot(animals_dm,
        aes(x = year, y = weight, color = sex)) +
   geom_line(stat = 'summary',
             fun.y = 'mean')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
-
-===
 
 ![plot of chunk sol1]({{ site.baseurl }}/images/sol1-1.png)
 {:.captioned}
@@ -37,8 +35,6 @@ filter(animals, species_id == 'DM') %>%
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
-===
-
 ![plot of chunk sol2]({{ site.baseurl }}/images/sol2-1.png)
 {:.captioned}
 
@@ -51,7 +47,7 @@ filter(animals, species_id == 'DM') %>%
 
 
 ~~~r
-ggplot(data = animals_common,
+ggplot(animals_common,
        aes(x = weight)) +
   geom_histogram() +
   facet_grid(sex ~ species_id) +
@@ -60,8 +56,6 @@ ggplot(data = animals_common,
        y = 'Weight (g)')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
-
-===
 
 ![plot of chunk sol3]({{ site.baseurl }}/images/sol3-1.png)
 {:.captioned}

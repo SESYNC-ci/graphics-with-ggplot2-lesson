@@ -1,48 +1,33 @@
 ---
 ---
 
-## Adding a regression line
+## Smooth lines
 
-The code below shows one graph answering the question in the exercise.
-Adding a `geom_smooth` layer displays a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
+The `geom_smooth` layer adds a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
+
+===
+
+Prepare some data in dplyr as for a linear model with a categorical predictor.
 
 
 ~~~r
+levels(animals$sex) <- c('Female', 'Male')
 animals_dm <- filter(animals, species_id == 'DM')
-ggplot(data = animals_dm,
-       aes(x = year, y = weight)) + 
-  geom_point(aes(shape = sex),
-             size = 3,
-             stat = 'summary',
-             fun.y = 'mean') +
+~~~
+{:.text-document title="{{ site.handouts }}"}
+
+===
+
+
+~~~r
+ggplot(animals_dm,
+  aes(x = year, y = weight, shape = sex)) + 
+  geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
   geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
-===
-
 ![plot of chunk plot_lm]({{ site.baseurl }}/images/plot_lm-1.png)
-{:.captioned}
-
-===
-
-To get separate regression lines for females and males, we could add a *group* aesthetic mapping to `geom_smooth`:
-
-
-~~~r
-ggplot(data = animals_dm,
-       aes(x = year, y = weight)) + 
-  geom_point(aes(shape = sex),
-             size = 3,
-             stat = 'summary',
-             fun.y = 'mean') +
-  geom_smooth(aes(group = sex), method = 'lm')
-~~~
-{:.text-document title="{{ site.handouts }}"}
-
-===
-
-![plot of chunk plot_lm_group]({{ site.baseurl }}/images/plot_lm_group-1.png)
 {:.captioned}
 
 ===
@@ -51,21 +36,15 @@ Even better would be to distinguish everything (points and lines) by color:
 
 
 ~~~r
-ggplot(data = animals_dm,
-       aes(x = year,
-           y = weight,
-           color = sex)) + 
-  geom_point(aes(shape = sex),
-             size = 3,
-	     stat = 'summary',
-	     fun.y = 'mean') +
+ggplot(animals_dm,
+  aes(x = year, y = weight,
+    shape = sex, color = sex)) + 
+  geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
   geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts }}"}
 
-===
-
 ![plot of chunk plot_lm_color]({{ site.baseurl }}/images/plot_lm_color-1.png)
 {:.captioned}
 
-Notice that by adding the aesthetic mapping in the `ggplot` command, it is applied to all layers that recognize that aesthetic (color).
+Notice that by adding aesthetic mappings in the base aesthetic (in the `ggplot` command), it is applied to any layer that recognizes the parameter.
