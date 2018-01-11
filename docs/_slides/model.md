@@ -14,7 +14,7 @@ Prepare some data in dplyr as for a linear model with a categorical predictor.
 levels(animals$sex) <- c('Female', 'Male')
 animals_dm <- filter(animals, species_id == 'DM')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ===
 
@@ -25,7 +25,7 @@ ggplot(animals_dm,
   geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
   geom_smooth(method = 'lm')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_lm]({{ site.baseurl }}/images/plot_lm-1.png)
 {:.captioned}
@@ -42,7 +42,7 @@ ggplot(animals_dm,
   geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
   geom_smooth(method = 'lm')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_lm_color]({{ site.baseurl }}/images/plot_lm_color-1.png)
 {:.captioned}

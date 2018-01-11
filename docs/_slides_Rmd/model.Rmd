@@ -9,14 +9,14 @@ The `geom_smooth` layer adds a regression line with confidence intervals (95% CI
 
 Prepare some data in dplyr as for a linear model with a categorical predictor.
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 levels(animals$sex) <- c('Female', 'Male')
 animals_dm <- filter(animals, species_id == 'DM')
 ```
 
 ===
 
-```{r plot_lm, title = '{{ site.handouts }}'}
+```{r plot_lm, title = '{{ site.handouts[0] }}'}
 ggplot(animals_dm,
   aes(x = year, y = weight, shape = sex)) + 
   geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
@@ -27,7 +27,7 @@ ggplot(animals_dm,
 
 Even better would be to distinguish everything (points and lines) by color:
 
-```{r plot_lm_color, title='{{ site.handouts }}'}
+```{r plot_lm_color, title='{{ site.handouts[0] }}'}
 ggplot(animals_dm,
   aes(x = year, y = weight,
     shape = sex, color = sex)) + 

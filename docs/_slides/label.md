@@ -13,7 +13,7 @@ histo <- ggplot(animals_dm,
   aes(x = weight, fill = sex)) +
   geom_histogram(binwidth = 3, color = 'white')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 histo
@@ -36,7 +36,7 @@ histo <- histo + labs(
   x = 'Weight (g)',
   y = 'Count')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 histo
@@ -59,7 +59,7 @@ histo <- histo + scale_x_continuous(
   limits = c(20, 60),
   breaks = c(20, 30, 40, 50, 60))
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 histo
@@ -83,7 +83,7 @@ histo <- histo + theme_bw() + theme(
   axis.title.y = element_text(size = 13, vjust = 1), 
   axis.title.x = element_text(size = 13, vjust = 0))
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 histo

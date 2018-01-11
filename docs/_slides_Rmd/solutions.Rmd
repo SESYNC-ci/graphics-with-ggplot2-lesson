@@ -7,7 +7,7 @@
 
 ## Solution 1
 
-```{r sol1, title='{{ site.handouts }}'}
+```{r sol1, title='{{ site.handouts[0] }}'}
 animals_dm <- filter(animals, species_id == 'DM')
 ggplot(animals_dm,
        aes(x = year, y = weight, color = sex)) +
@@ -22,7 +22,7 @@ ggplot(animals_dm,
 
 ## Solution 2
 
-```{r sol2, message = FALSE, title='{{ site.handouts }}'}
+```{r sol2, message = FALSE, title='{{ site.handouts[0] }}'}
 filter(animals, species_id == 'DM') %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
@@ -35,7 +35,7 @@ filter(animals, species_id == 'DM') %>%
 
 ## Solution 3
 
-```{r sol3, message = FALSE, title='{{ site.handouts }}'}
+```{r sol3, message = FALSE, title='{{ site.handouts[0] }}'}
 ggplot(animals_common,
        aes(x = weight)) +
   geom_histogram() +

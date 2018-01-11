@@ -7,7 +7,7 @@ The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It
 
 ===
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 year_wgt <- ggplot(animals_dm,
   aes(x = year, y = weight,
     color = sex, shape = sex)) + 
@@ -29,7 +29,7 @@ year_wgt
 
 By overwriting the `year_wgt` variable, the stored plot gets updated with the black and red color scale.
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 year_wgt <- year_wgt +
   scale_color_manual(values = c("black", "red"))
 ```

@@ -7,7 +7,7 @@ Let's start by loading a few packages along with a sample dataset, which is the 
 
 ===
 
-```{r message = FALSE, title="{{ site.handouts }}"}
+```{r message = FALSE, title="{{ site.handouts[0] }}"}
 library(dplyr)
 animals <- read.csv('data/animals.csv', na.strings = '') %>%
   select(year, species_id, sex, weight) %>%
@@ -23,7 +23,7 @@ Omitting rows that have missing values for the `species_id`, `sex`, and `weight`
 
 As a first example, this code plots each invidual's weight by species:
 
-```{r plot_pt, title = '{{ site.handouts }}'}
+```{r plot_pt, title = '{{ site.handouts[0] }}'}
 library(ggplot2)
 ggplot(animals,
        aes(x = species_id, y = weight)) +
@@ -42,7 +42,7 @@ The `ggplot` function by itself does not display anything until we add a `geom_*
 
 Individual points are hard to distinguish in this plot. Might a boxplot be a better visualization? The only change needed is in the `geom_*` layer.
 
-```{r plot_box, title = '{{ site.handouts }}'}
+```{r plot_box, title = '{{ site.handouts[0] }}'}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot()
@@ -52,7 +52,7 @@ ggplot(animals,
 
 Add `geom_*` layers together to create a multi-layered plot:
 
-```{r plot_pt_box_plain, title = '{{ site.handouts }}'}
+```{r plot_pt_box_plain, title = '{{ site.handouts[0] }}'}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot() +
@@ -65,7 +65,7 @@ Each `geom_*` object accepts some general and some specialized arguments. For st
 
 ===
 
-```{r plot_pt_box, title = '{{ site.handouts }}'}
+```{r plot_pt_box, title = '{{ site.handouts[0] }}'}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot() +
@@ -88,7 +88,7 @@ Associating color (or any attribute, like the shape of points) to a variable is 
 
 ===
 
-```{r plot_box_color, title = '{{ site.handouts }}'}
+```{r plot_box_color, title = '{{ site.handouts[0] }}'}
 ggplot(animals,
        aes(x = species_id, y = weight,
            color = species_id)) +

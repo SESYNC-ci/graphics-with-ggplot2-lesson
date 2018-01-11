@@ -17,7 +17,7 @@ year_wgt <- ggplot(animals_dm,
     fun.y = "mean") +
   geom_smooth(method = "lm")
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ===
 
@@ -41,7 +41,7 @@ By overwriting the `year_wgt` variable, the stored plot gets updated with the bl
 year_wgt <- year_wgt +
   scale_color_manual(values = c("black", "red"))
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 year_wgt

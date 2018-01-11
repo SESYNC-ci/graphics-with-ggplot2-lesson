@@ -7,7 +7,7 @@ Let's start from the histogram like the one generated in the exercise.
 
 ===
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 histo <- ggplot(animals_dm,
   aes(x = weight, fill = sex)) +
   geom_histogram(binwidth = 3, color = 'white')
@@ -22,7 +22,7 @@ We change the title and axis labels with the `labs` function. We have various fu
 
 ===
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 histo <- histo + labs(
   title = 'Dipodomys merriami weight distribution',
   x = 'Weight (g)',
@@ -39,7 +39,7 @@ For information on how to add special symbols and formatting to plot labels, see
 
 Here, we use `scale_x_continuous` to modify the continuous (as opposed to discrete) x-axis.
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 histo <- histo + scale_x_continuous(
   limits = c(20, 60),
   breaks = c(20, 30, 40, 50, 60))
@@ -54,7 +54,7 @@ Many plot-level options in `ggplot`, from background color to font sizes, are de
 
 ===
 
-```{r, title = '{{ site.handouts }}'}
+```{r, title = '{{ site.handouts[0] }}'}
 histo <- histo + theme_bw() + theme(
   legend.position = c(0.2, 0.5),
   plot.title = element_text(face = 'bold', vjust = 2),

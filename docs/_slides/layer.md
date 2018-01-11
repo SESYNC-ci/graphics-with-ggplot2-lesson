@@ -14,7 +14,7 @@ animals <- read.csv('data/animals.csv', na.strings = '') %>%
   select(year, species_id, sex, weight) %>%
   na.omit()
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 Omitting rows that have missing values for the `species_id`, `sex`, and `weight` columns is not strictly necessary, but it will prevent ggplot from returning missing values warnings.
 {:.notes}
@@ -32,7 +32,7 @@ ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_point()
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_pt]({{ site.baseurl }}/images/plot_pt-1.png)
 {:.captioned}
@@ -55,7 +55,7 @@ ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot()
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_box]({{ site.baseurl }}/images/plot_box-1.png)
 {:.captioned}
@@ -71,7 +71,7 @@ ggplot(animals,
   geom_boxplot() +
   geom_point()
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_pt_box_plain]({{ site.baseurl }}/images/plot_pt_box_plain-1.png)
 {:.captioned}
@@ -92,7 +92,7 @@ ggplot(animals,
     stat = 'summary',
     fun.y = 'mean')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_pt_box]({{ site.baseurl }}/images/plot_pt_box-1.png)
 {:.captioned}
@@ -119,7 +119,7 @@ ggplot(animals,
   geom_point(stat = 'summary',
              fun.y = 'mean')
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ![plot of chunk plot_box_color]({{ site.baseurl }}/images/plot_box_color-1.png)
 {:.captioned}

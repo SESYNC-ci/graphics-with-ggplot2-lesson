@@ -19,7 +19,7 @@ faceted <- ggplot(animals_common, aes(x = weight)) +
        x = "Count",
        y = "Weight (g)")
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 faceted
@@ -39,7 +39,7 @@ faceted_all <- faceted + geom_histogram(
   data = select(animals_common, -species_id),
   alpha = 0.2)
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 faceted_all
@@ -66,7 +66,7 @@ faceted_density <- ggplot(animals_common,
     x = "Count",
     y = "Weight (g)")
 ~~~
-{:.text-document title="{{ site.handouts }}"}
+{:.text-document title="{{ site.handouts[0] }}"}
 
 ~~~r
 faceted_density
