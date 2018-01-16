@@ -10,7 +10,8 @@ Let's start by loading a few packages along with a sample dataset, which is the 
 
 ~~~r
 library(dplyr)
-animals <- read.csv('data/animals.csv', na.strings = '') %>%
+animals <- read.csv('data/animals.csv',
+  na.strings = '') %>%
   select(year, species_id, sex, weight) %>%
   na.omit()
 ~~~

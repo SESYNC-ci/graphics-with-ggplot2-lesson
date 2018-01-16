@@ -31,7 +31,8 @@ By overwriting the `year_wgt` variable, the stored plot gets updated with the bl
 
 ```{r, title = '{{ site.handouts[0] }}'}
 year_wgt <- year_wgt +
-  scale_color_manual(values = c("black", "red"))
+  scale_color_manual(
+    values = c("black", "red"))
 ```
 ```{r plot_lm_scales_2}
 year_wgt

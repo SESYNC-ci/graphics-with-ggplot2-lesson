@@ -12,7 +12,8 @@ Prepare some data in dplyr as for a linear model with a categorical predictor.
 
 ~~~r
 levels(animals$sex) <- c('Female', 'Male')
-animals_dm <- filter(animals, species_id == 'DM')
+animals_dm <- filter(animals,
+  species_id == 'DM')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
 
@@ -22,7 +23,8 @@ animals_dm <- filter(animals, species_id == 'DM')
 ~~~r
 ggplot(animals_dm,
   aes(x = year, y = weight, shape = sex)) + 
-  geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
+  geom_point(size = 3,
+    stat = 'summary', fun.y = 'mean') +
   geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
@@ -39,7 +41,8 @@ Even better would be to distinguish everything (points and lines) by color:
 ggplot(animals_dm,
   aes(x = year, y = weight,
     shape = sex, color = sex)) + 
-  geom_point(size = 3, stat = 'summary', fun.y = 'mean') +
+  geom_point(size = 3,
+    stat = 'summary', fun.y = 'mean') +
   geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}

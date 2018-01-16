@@ -3,8 +3,10 @@
 
 ## Facets
 
-To conclude this overview of ggplot2, we'll apply the same plotting instructions to different subsets of the data in panels called "facets".
-The `facet_wrap` function takes a `formula` argument that specifies the grouping on either side of a '~' using a factor in the data.
+To conclude this overview of ggplot2, we'll apply the same plotting instructions
+to different subsets of the data in panels called "facets". The `facet_wrap`
+function takes a `formula` argument that specifies the grouping on either side
+of a '~' using a factor in the data.
 
 ===
 
@@ -12,10 +14,12 @@ The `facet_wrap` function takes a `formula` argument that specifies the grouping
 ~~~r
 animals_common <- filter(animals,
   species_id %in% c('DM', 'PP', 'DO'))
-faceted <- ggplot(animals_common, aes(x = weight)) +
+faceted <- ggplot(
+  animals_common, aes(x = weight)) +
   geom_histogram() +
   facet_wrap( ~ species_id) +
-  labs(title = "Weight of most common species",
+  labs(title =
+       "Weight of most common species",
        x = "Count",
        y = "Weight (g)")
 ~~~
@@ -35,9 +39,10 @@ The un-grouped data may be added as a layer on each panel, but you have to drop 
 
 
 ~~~r
-faceted_all <- faceted + geom_histogram(
-  data = select(animals_common, -species_id),
-  alpha = 0.2)
+faceted_all <- faceted +
+  geom_histogram(data =
+    select(animals_common, -species_id),
+    alpha = 0.2)
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
 
@@ -51,18 +56,22 @@ faceted_all
 
 ===
 
-Finally, let's show off some additional styling with `fill` and the very unusual `..density..` aesthetic.
-The `..` notation is shared by several ggplot functions that perform a calculation. Using `..density..` as the y-axis variable allows a geometry to display the probability density of variable assigned to the x-axis.
+Finally, let's show off some additional styling with `fill` and the very unusual
+`..density..` aesthetic. The `..` notation is shared by several ggplot functions
+that perform a calculation. Using `..density..` as the y-axis variable allows a
+geometry to display the probability density of variable assigned to the x-axis.
 
 ===
 
 
 ~~~r
-faceted_density <- ggplot(animals_common,
-    aes(x = weight, fill = species_id)) +
+faceted_density <- ggplot(
+  animals_common,
+  aes(x = weight, fill = species_id)) +
   geom_histogram(aes(y = ..density..)) +
   facet_wrap( ~ species_id) +
-  labs(title = "Weight of most common species",
+  labs(title =
+    "Weight of most common species",
     x = "Count",
     y = "Weight (g)")
 ~~~

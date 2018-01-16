@@ -31,8 +31,8 @@ We change the title and axis labels with the `labs` function. We have various fu
 
 
 ~~~r
-histo <- histo + labs(
-  title = 'Dipodomys merriami weight distribution',
+histo <- histo + labs(title =
+  'Dipodomys merriami weight distribution',
   x = 'Weight (g)',
   y = 'Count')
 ~~~
@@ -79,9 +79,12 @@ Many plot-level options in `ggplot`, from background color to font sizes, are de
 ~~~r
 histo <- histo + theme_bw() + theme(
   legend.position = c(0.2, 0.5),
-  plot.title = element_text(face = 'bold', vjust = 2),
-  axis.title.y = element_text(size = 13, vjust = 1), 
-  axis.title.x = element_text(size = 13, vjust = 0))
+  plot.title = element_text(
+    face = 'bold', vjust = 2),
+  axis.title.y = element_text(
+    size = 13, vjust = 1), 
+  axis.title.x = element_text(
+    size = 13, vjust = 0))
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
 
