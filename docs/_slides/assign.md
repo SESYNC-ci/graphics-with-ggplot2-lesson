@@ -8,28 +8,30 @@ The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It
 ===
 
 
+
 ~~~r
 year_wgt <- ggplot(animals_dm,
   aes(x = year, y = weight,
     color = sex, shape = sex)) + 
   geom_point(size = 3,
-    stat = "summary",
-    fun.y = "mean") +
-  geom_smooth(method = "lm")
+    stat = 'summary',
+    fun.y = 'mean') +
+  geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
+
 
 ===
 
 The plot information stored in `year_wgt` can be used on its own, or with additional layers.
 
 
-~~~r
-year_wgt
-~~~
-{:.input}
 
-![plot of chunk plot_scale_color_manual]({{ site.baseurl }}/images/plot_scale_color_manual-1.png)
+~~~r
+> year_wgt
+~~~
+{:.input title="Console"}
+![ ]({{ site.baseurl }}/images/assign/plot_scale_color_manual-1.png)
 {:.captioned}
 
 ===
@@ -37,26 +39,40 @@ year_wgt
 By overwriting the `year_wgt` variable, the stored plot gets updated with the black and red color scale.
 
 
+
 ~~~r
 year_wgt <- year_wgt +
   scale_color_manual(
-    values = c("black", "red"))
+    values = c('black', 'red'))
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
 
-~~~r
-year_wgt
-~~~
-{:.input}
 
-![plot of chunk plot_lm_scales_2]({{ site.baseurl }}/images/plot_lm_scales_2-1.png)
+
+~~~r
+> year_wgt
+~~~
+{:.input title="Console"}
+![ ]({{ site.baseurl }}/images/assign/plot_lm_scales_2-1.png)
 {:.captioned}
 
 ===
 
-## Exercise 2
+Figures are constructed in [ggplot2](){:.rlib} as layers of shapes, from the
+axes on up through the `geom_*` elements. Natural file types for storing these
+figures at "infinite" resolution are PDF (for print) or SVG (for online).
 
-Create a histogram, using a `geom_histogram` layer, of the weights of individuals of species DM and divide the data by sex. Note that instead of using `color` in the aesthetic, you'll use `fill` to distinguish the sexes. To silence that warning, open the help with `?geom_histogram` and determine how to explicitly set the bin width.
 
-[View solution](#solution-2)
+
+~~~r
+ggsave(filename = 'year_wgt.pdf',
+       plot = year_wgt,
+       width = 4, height = 3)
+~~~
+{:.text-document title="{{ site.handouts[0] }}"}
+
+
+The `plot` argument is unnecessary if the target is the most recently displayed
+plot. When a raster file type is necessary (e.g. a PNG, JPG, or TIFF) use the
+`dpi` argument to specify an image resolution.
 {:.notes}

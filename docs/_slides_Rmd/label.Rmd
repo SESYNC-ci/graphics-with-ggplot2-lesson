@@ -3,14 +3,17 @@
 
 ## Axes, labels and themes
 
-Let's start from the histogram like the one generated in the exercise.
+Let's start looking at annotation and other customizations on a new `geom_*`,
+one that creates a histogram. Due to the nature of histograms, the base
+aesthetic does not require a mapping for `y`.
 
 ===
 
 ```{r, title = '{{ site.handouts[0] }}'}
 histo <- ggplot(animals_dm,
   aes(x = weight, fill = sex)) +
-  geom_histogram(binwidth = 3, color = 'white')
+  geom_histogram(binwidth = 3,
+    color = 'white')
 ```
 ```{r plot_hist, warning = FALSE}
 histo
@@ -18,13 +21,14 @@ histo
 
 ===
 
-We change the title and axis labels with the `labs` function. We have various functions related to the scale of each axis, i.e. the range, breaks and any transformations of the values on the axis.
+Set the title and axis labels with the `labs` function, which accepts names for
+any elements (e.g. `x` and `y`) in your plot.
 
 ===
 
 ```{r, title = '{{ site.handouts[0] }}'}
 histo <- histo + labs(title =
-  'Dipodomys merriami weight distribution',
+  'Size of Dipodomys merriami',
   x = 'Weight (g)',
   y = 'Count')
 ```
@@ -37,7 +41,9 @@ For information on how to add special symbols and formatting to plot labels, see
 
 ===
 
-Here, we use `scale_x_continuous` to modify the continuous (as opposed to discrete) x-axis.
+We have various functions related to the scale of each axis, i.e. the range,
+breaks and any transformations of the values on the axis. Here, we use
+`scale_x_continuous` to modify the continuous (as opposed to discrete) x-axis.
 
 ```{r, title = '{{ site.handouts[0] }}'}
 histo <- histo + scale_x_continuous(
@@ -50,7 +56,35 @@ histo
 
 ===
 
-Many plot-level options in `ggplot`, from background color to font sizes, are defined as part of *themes*. The next modification to *histo* changes the base theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a few options manually with the `theme` function. Try `?theme` for a list of available theme options.
+If we prefer a histogram showing probability, rather than counts, as the scale
+on the vertical axis, the aesthetic itself must be modified to include this
+non-default mapping for the `y` element.
+
+===
+
+```{r, title = '{{ site.handouts[0] }}'}
+histo <- ggplot(animals_dm,
+  aes(x = weight,
+      y = stat(density),
+      fill = sex)) +
+  geom_histogram(binwidth = 3,
+    color = 'white') +
+  labs(title =
+    'Size of Dipodomys merriami',
+    x = 'Weight (g)',
+    y = 'Density')
+```
+```{r warning = FALSE}
+histo
+```
+
+===
+
+Many plot-level options in `ggplot`, from background color to font sizes, are
+defined as part of *themes*. The next modification to *histo* changes the base
+theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a
+few options manually with the `theme` function. Try `?theme` for a list of
+available theme options.
 
 ===
 

@@ -7,7 +7,9 @@ The `geom_smooth` layer adds a regression line with confidence intervals (95% CI
 
 ===
 
-Prepare some data in dplyr as for a linear model with a categorical predictor.
+Load some data you might use for a linear model with a categorical predictor of
+a continuous response.
+
 
 
 ~~~r
@@ -17,7 +19,13 @@ animals_dm <- filter(animals,
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
 
+
 ===
+
+With the categorical predicted mapped to an aesthetic element, the `geom_smooth`
+will separately apply the `lm` method. The result hints at the importance of
+the predictor.
+
 
 
 ~~~r
@@ -28,13 +36,13 @@ ggplot(animals_dm,
   geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
-
-![plot of chunk plot_lm]({{ site.baseurl }}/images/plot_lm-1.png)
+![ ]({{ site.baseurl }}/images/model/plot_lm-1.png)
 {:.captioned}
 
 ===
 
-Even better would be to distinguish everything (points and lines) by color:
+Even better would be to distinguish everything (points and lines) by color.
+
 
 
 ~~~r
@@ -46,8 +54,9 @@ ggplot(animals_dm,
   geom_smooth(method = 'lm')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
-
-![plot of chunk plot_lm_color]({{ site.baseurl }}/images/plot_lm_color-1.png)
+![ ]({{ site.baseurl }}/images/model/plot_lm_color-1.png)
 {:.captioned}
 
-Notice that by adding aesthetic mappings in the base aesthetic (in the `ggplot` command), it is applied to any layer that recognizes the parameter.
+Notice that by adding aesthetic mappings in the base aesthetic (in the `ggplot`
+command), it is applied to any layer that recognizes the parameter.
+{:.notes}

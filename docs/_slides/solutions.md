@@ -8,6 +8,7 @@
 ## Solution 1
 
 
+
 ~~~r
 animals_dm <- filter(animals, species_id == 'DM')
 ggplot(animals_dm,
@@ -16,8 +17,7 @@ ggplot(animals_dm,
             fun.y = 'mean')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
-
-![plot of chunk sol1]({{ site.baseurl }}/images/sol1-1.png)
+![ ]({{ site.baseurl }}/images/solutions/sol1-1.png)
 {:.captioned}
 
 [Return](#exercise-1)
@@ -28,14 +28,14 @@ ggplot(animals_dm,
 ## Solution 2
 
 
+
 ~~~r
 filter(animals, species_id == 'DM') %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
-
-![plot of chunk sol2]({{ site.baseurl }}/images/sol2-1.png)
+![ ]({{ site.baseurl }}/images/solutions/sol2-1.png)
 {:.captioned}
 
 [Return](#exercise-2)
@@ -44,6 +44,7 @@ filter(animals, species_id == 'DM') %>%
 ===
 
 ## Solution 3
+
 
 
 ~~~r
@@ -56,8 +57,7 @@ ggplot(animals_common,
        y = 'Weight (g)')
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
-
-![plot of chunk sol3]({{ site.baseurl }}/images/sol3-1.png)
+![ ]({{ site.baseurl }}/images/solutions/sol3-1.png)
 {:.captioned}
 
 [Return](#exercise-3)

@@ -5,9 +5,9 @@ handouts:
   - worksheet.R
   - data/animals.csv
   - data/README.md
-tag: v0.2
-lesson: 4
-instructor: Ian Carroll
+tag: v0.3
+lesson: 2
+instructor: Elizabeth Green
 authors:
  - Philippe Marchand
  - Ian Carroll
@@ -22,7 +22,7 @@ slide_sorter:
   - label
   - facet
   - conclude
-  - solutions
+  - exercise
 
 #####################################
 # Only modify content above or risk #
