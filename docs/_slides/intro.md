@@ -1,7 +1,7 @@
 ---
 ---
 
-## Objectives for this lesson
+## Lesson Objectives
 
 - Meet the "grammar of graphics" for [ggplot2](){:.rpkg}
 - Trust that this is better than base R's `plot`
@@ -10,7 +10,7 @@
 
 ===
 
-## Specific achievements
+## Specific Achievements
 
 - Create several "aesthetics" or mappings for different plots
 - Build boxplots, scatterplots, smoothed lines and histograms
