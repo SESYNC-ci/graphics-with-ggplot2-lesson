@@ -6,7 +6,7 @@ animals <- read.csv('data/animals.csv',
   select(...) %>%
   na.omit()
 
-## Constructing layered graphics in ggplot
+## Layered graphics
 
 library(...)
 ggplot(...,
@@ -18,28 +18,36 @@ ggplot(animals,
   ...
 
 ggplot(animals,
-  aes(x = species_id, y = weight)) +
+       aes(x = species_id, y = weight)) +
   geom_boxplot() ...
-  geom_point(...,
-             ...,
-             ...)
+  ...
 
 ggplot(animals,
-  aes(x = species_id, y = weight,
-    ...)) +
+       aes(x = species_id, y = weight)) +
+  geom_boxplot() +
+  geom_point(...)
+
+ggplot(animals,
+       aes(x = species_id, y = weight)) +
+  geom_boxplot() +
+  geom_point(
+    color = 'red',
+    ...,
+    ...)
+
+ggplot(animals,
+       aes(x = species_id, y = weight,
+           ...)) +
   geom_boxplot() +
   geom_point(stat = 'summary',
              fun.y = 'mean')
 
-## Exercise 1
-
-...
-
-## Adding a regression line
+## Smooth lines
 
 levels(animals$sex) <- c('Female', 'Male')
 animals_dm <- filter(animals,
   ...)
+
 ggplot(...,
   aes(x = year, y = weight, ...)) +
   geom_point(...,
@@ -55,7 +63,7 @@ ggplot(animals_dm,
 
 # Storing and re-plotting
 
-year_wgt <- ggplot(animals_dm,
+... ggplot(animals_dm,
   aes(x = year, y = weight,
     color = sex, shape = sex)) +
   geom_point(size = 3,
@@ -67,9 +75,9 @@ year_wgt <- year_wgt +
   scale_color_manual(
     ... = c("black", ...))
 
-## Exercise 2
-
-...
+...(filename = 'year_wgt.pdf',
+    ...
+    width = 4, height = 3)
 
 ## Axes, labels and themes
 
@@ -78,13 +86,24 @@ histo <- ggplot(animals_dm,
   geom_...
 
 histo <- histo + ...(title =
-  'Dipodomys merriami weight distribution',
-  x = 'Weight (g)',
+  'Size of Dipodomys merriami',
+  ...
   y = 'Count')
 
 histo <- histo + scale_x_continuous(
   ...,
   ... = c(20, 30, 40, 50, 60))
+
+... ggplot(animals_dm,
+  aes(x = weight,
+      ...,
+      ...) +
+  geom_histogram(binwidth = 3,
+    color = 'white') +
+  labs(title = 
+    'Size of Dipodomys merriami',
+    x = 'Weight (g)',
+    ...)
 
 histo <- histo + ... + theme(
   legend.position = c(0.2, 0.5),
@@ -97,8 +116,7 @@ histo <- histo + ... + theme(
 
 ## Facets
 
-animals_common <- filter(
-  animals,
+animals_common <- filter(animals,
   ... %in% c(...))
 faceted <- ggplot(...,
   ...) +
@@ -114,16 +132,3 @@ faceted_all <- faceted +
     ...,
   ...)
 
-faceted_density <- ggplot(
-  animals_common,
-  aes(x = weight, ...)) +
-  geom_histogram(...) +
-  facet_wrap( ~ species_id) +
-  labs(title =
-       "Weight of most common species",
-       x = "Count",
-       y = "Weight (g)")
-
-## Exercise 3
-
-...
