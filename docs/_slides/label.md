@@ -1,7 +1,7 @@
 ---
 ---
 
-## Axes, labels and themes
+## Axes, Labels and Themes
 
 Let's start looking at annotation and other customizations on a new `geom_*`,
 one that creates a histogram. Due to the nature of histograms, the base

@@ -10,7 +10,7 @@
 
 ===
 
-## Additional information
+## Additional Resources
 
 - [Data Visualization with ggplot2] RStudio Cheat Sheet
 - [Cookbook for R - Graphs] Reference on customizations in ggplot

@@ -1,7 +1,7 @@
 ---
 ---
 
-## Smooth lines
+## Smooth Lines
 
 The `geom_smooth` layer adds a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
 
