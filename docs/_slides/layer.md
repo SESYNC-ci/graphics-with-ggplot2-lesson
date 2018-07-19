@@ -1,7 +1,7 @@
 ---
 ---
 
-## Getting started
+## Getting Started
 
 Let's start by loading a few packages along with a sample dataset, which is the *animals* table from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459).
 
@@ -24,7 +24,7 @@ Omitting rows that have missing values for the `species_id`, `sex`, and `weight`
 
 ===
 
-## Layered graphics
+### Layered Graphics
 
 As a first example, this code plots each invidual's weight by species:
 

@@ -31,7 +31,7 @@ histo <- ggplot(animals_dm,
 ===
 
 Set the title and axis labels with the `labs` function, which accepts names for
-any elements (e.g. `x` and `y`) in your plot.
+labeled elements in your plot (e.g. `x`, `y`, `title`) as arguments.
 
 ===
 
@@ -116,11 +116,10 @@ histo <- ggplot(animals_dm,
 
 ===
 
-Many plot-level options in `ggplot`, from background color to font sizes, are
-defined as part of *themes*. The next modification to *histo* changes the base
-theme of the plot to `theme_bw` (replacing the default `theme_grey`) and set a
-few options manually with the `theme` function. Try `?theme` for a list of
-available theme options.
+Many plot-level options in [ggplot2](){:.rlib}, from background color to font
+sizes, are defined as part of "themes". The next modification to `histo` changes
+the base theme of the plot to `theme_bw` (replacing the default `theme_grey`)
+and sets a few options manually with the `theme` function.
 
 ===
 
@@ -130,11 +129,11 @@ available theme options.
 histo <- histo + theme_bw() + theme(
   legend.position = c(0.2, 0.5),
   plot.title = element_text(
-    face = 'bold', vjust = 2),
+    face = 'bold', hjust = 0.5),
   axis.title.y = element_text(
-    size = 13, vjust = 1), 
+    size = 13, hjust = 0.1), 
   axis.title.x = element_text(
-    size = 13, vjust = 0))
+    size = 13, hjust = 0.1))
 ~~~
 {:.text-document title="{{ site.handouts[0] }}"}
 
@@ -147,5 +146,7 @@ histo <- histo + theme_bw() + theme(
 ![ ]({{ site.baseurl }}/images/label/plot_hist_themes-1.png)
 {:.captioned}
 
-Note that position is relative to plot size (i.e. between 0 and 1).
+Use `?theme` for a list of available theme options. Note that position (both
+`legend.position` and `hjust` for horizontal justification) should be given as a
+proportion of the plot window (i.e. between 0 and 1).
 {:.notes}

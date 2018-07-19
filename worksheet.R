@@ -2,8 +2,8 @@
 
 library(dplyr)
 animals <- read.csv('data/animals.csv',
-  na.strings = '') %>%
-  select(...) %>%
+    na.strings = '') %>%
+  select(year, species_id, sex, weight) %>%
   na.omit()
 
 ## Layered graphics
@@ -44,9 +44,9 @@ ggplot(animals,
 
 ## Smooth lines
 
-levels(animals$sex) <- c('Female', 'Male')
+...(animals$sex) <- c('Female', 'Male')
 animals_dm <- filter(animals,
-  ...)
+  species_id == 'DM')
 
 ggplot(...,
   aes(x = year, y = weight, ...)) +
@@ -94,10 +94,10 @@ histo <- histo + scale_x_continuous(
   ...,
   ... = c(20, 30, 40, 50, 60))
 
-... ggplot(animals_dm,
+histo <- ggplot(animals_dm,
   aes(x = weight,
       ...,
-      ...) +
+      ...)) +
   geom_histogram(binwidth = 3,
     color = 'white') +
   labs(title = 
@@ -117,7 +117,7 @@ histo <- histo + ... + theme(
 ## Facets
 
 animals_common <- filter(animals,
-  ... %in% c(...))
+  species_id %in% c('DM', 'PP', 'DO'))
 faceted <- ggplot(...,
   ...) +
   geom_histogram() +
@@ -129,6 +129,6 @@ faceted <- ggplot(...,
 
 faceted_all <- faceted +
   geom_histogram(data =
-    ...,
+    select(animals_common, ...),
   ...)
 

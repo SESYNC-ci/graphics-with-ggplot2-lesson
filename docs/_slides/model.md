@@ -22,9 +22,9 @@ animals_dm <- filter(animals,
 
 ===
 
-With the categorical predicted mapped to an aesthetic element, the `geom_smooth`
-will separately apply the `lm` method. The result hints at the importance of
-the predictor.
+With a categorical predictor mapped to an aesthetic element, the `geom_smooth`
+call will separately apply the `lm` method. The result hints at the significance
+of the predictor.
 
 
 

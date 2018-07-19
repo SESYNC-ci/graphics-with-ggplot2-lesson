@@ -1,6 +1,6 @@
 # Site
 
-title: Visualizations the ggplot Way
+title: Visualizing Tabular Data
 handouts:
   - worksheet.R
   - data/animals.csv

@@ -1,7 +1,7 @@
 ---
 ---
 
-## Smooth lines
+## Smooth Lines
 
 The `geom_smooth` layer adds a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
 
@@ -18,9 +18,9 @@ animals_dm <- filter(animals,
 
 ===
 
-With the categorical predicted mapped to an aesthetic element, the `geom_smooth`
-will separately apply the `lm` method. The result hints at the importance of
-the predictor.
+With a categorical predictor mapped to an aesthetic element, the `geom_smooth`
+call will separately apply the `lm` method. The result hints at the significance
+of the predictor.
 
 ```{r plot_lm, title = '{{ site.handouts[0] }}'}
 ggplot(animals_dm,

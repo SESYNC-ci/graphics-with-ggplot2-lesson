@@ -1,9 +1,11 @@
 ---
 ---
 
-## Storing and re-plotting
+## Storing and Re-plotting
 
-The output of `ggplot` can be assigned to a variable (here, it's `year_wgt`). It is then possible to add new elements to it with the `+` operator. We will use this method to try different color scales for the previous plot.
+The output of `ggplot` can be assigned to a variable. It is then possible to add
+new elements to it with the `+` operator. We will use this method to try
+different color scales for a stored plot.
 
 ===
 
@@ -23,7 +25,8 @@ year_wgt <- ggplot(animals_dm,
 
 ===
 
-The plot information stored in `year_wgt` can be used on its own, or with additional layers.
+The plot information stored in `year_wgt` can be used on its own, or with
+additional layers.
 
 
 
@@ -36,7 +39,8 @@ The plot information stored in `year_wgt` can be used on its own, or with additi
 
 ===
 
-By overwriting the `year_wgt` variable, the stored plot gets updated with the black and red color scale.
+By overwriting the `year_wgt` variable, the stored plot gets updated with the
+black and red color scale.
 
 
 
