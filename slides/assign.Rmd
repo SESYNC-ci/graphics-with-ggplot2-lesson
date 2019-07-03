@@ -9,9 +9,7 @@ different color scales for a stored plot.
 
 ===
 
-
-
-~~~r
+```{r, handout = 0}
 year_wgt <- ggplot(animals_dm,
   aes(x = year, y = weight,
     color = sex, shape = sex)) + 
@@ -19,46 +17,30 @@ year_wgt <- ggplot(animals_dm,
     stat = 'summary',
     fun.y = 'mean') +
   geom_smooth(method = 'lm')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
+```
 
 ===
 
 The plot information stored in `year_wgt` can be used on its own, or with
 additional layers.
 
-
-
-~~~r
-> year_wgt
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/assign/plot_scale_color_manual-1.png" %})
-{:.captioned}
+```{r plot_scale_color_manual}
+year_wgt
+```
 
 ===
 
 By overwriting the `year_wgt` variable, the stored plot gets updated with the
 black and red color scale.
 
-
-
-~~~r
+```{r, handout = 0}
 year_wgt <- year_wgt +
   scale_color_manual(
     values = c('black', 'red'))
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> year_wgt
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/assign/plot_lm_scales_2-1.png" %})
-{:.captioned}
+```
+```{r plot_lm_scales_2}
+year_wgt
+```
 
 ===
 
@@ -66,15 +48,11 @@ Figures are constructed in [ggplot2](){:.rlib} as layers of shapes, from the
 axes on up through the `geom_*` elements. Natural file types for storing these
 figures at "infinite" resolution are PDF (for print) or SVG (for online).
 
-
-
-~~~r
+```{r, handout = 0}
 ggsave(filename = 'year_wgt.pdf',
        plot = year_wgt,
        width = 4, height = 3)
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
+```
 
 The `plot` argument is unnecessary if the target is the most recently displayed
 plot. When a raster file type is necessary (e.g. a PNG, JPG, or TIFF) use the

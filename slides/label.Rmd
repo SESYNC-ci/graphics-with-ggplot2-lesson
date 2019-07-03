@@ -9,24 +9,15 @@ aesthetic does not require a mapping for `y`.
 
 ===
 
-
-
-~~~r
+```{r, handout = 0}
 histo <- ggplot(animals_dm,
   aes(x = weight, fill = sex)) +
   geom_histogram(binwidth = 3,
     color = 'white')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_hist-1.png" %})
-{:.captioned}
+```
+```{r plot_hist, warning = FALSE}
+histo
+```
 
 ===
 
@@ -35,24 +26,15 @@ labeled elements in your plot (e.g. `x`, `y`, `title`) as arguments.
 
 ===
 
-
-
-~~~r
+```{r, handout = 0}
 histo <- histo + labs(title =
   'Size of Dipodomys merriami',
   x = 'Weight (g)',
   y = 'Count')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_labs-1.png" %})
-{:.captioned}
+```
+```{r plot_labs, warning = FALSE}
+histo
+```
 
 For information on how to add special symbols and formatting to plot labels, see `?plotmath`.
 {:.notes}
@@ -63,23 +45,14 @@ We have various functions related to the scale of each axis, i.e. the range,
 breaks and any transformations of the values on the axis. Here, we use
 `scale_x_continuous` to modify the continuous (as opposed to discrete) x-axis.
 
-
-
-~~~r
+```{r, handout = 0}
 histo <- histo + scale_x_continuous(
   limits = c(20, 60),
   breaks = c(20, 30, 40, 50, 60))
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_hist_axes-1.png" %})
-{:.captioned}
+```
+```{r plot_hist_axes, warning = FALSE}
+histo
+```
 
 ===
 
@@ -89,9 +62,7 @@ non-default mapping for the `y` element.
 
 ===
 
-
-
-~~~r
+```{r, handout = 0}
 histo <- ggplot(animals_dm,
   aes(x = weight,
       y = stat(density),
@@ -102,17 +73,10 @@ histo <- ggplot(animals_dm,
     'Size of Dipodomys merriami',
     x = 'Weight (g)',
     y = 'Density')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
-{:.captioned}
+```
+```{r warning = FALSE}
+histo
+```
 
 ===
 
@@ -123,9 +87,7 @@ and sets a few options manually with the `theme` function.
 
 ===
 
-
-
-~~~r
+```{r, handout = 0}
 histo <- histo + theme_bw() + theme(
   legend.position = c(0.2, 0.5),
   plot.title = element_text(
@@ -134,17 +96,10 @@ histo <- histo + theme_bw() + theme(
     size = 13, hjust = 0.1), 
   axis.title.x = element_text(
     size = 13, hjust = 0.1))
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_hist_themes-1.png" %})
-{:.captioned}
+```
+```{r plot_hist_themes, warning = FALSE}
+histo
+```
 
 Use `?theme` for a list of available theme options. Note that position (both
 `legend.position` and `hjust` for horizontal justification) should be given as a

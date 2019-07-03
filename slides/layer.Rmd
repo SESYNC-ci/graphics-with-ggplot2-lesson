@@ -7,17 +7,13 @@ Let's start by loading a few packages along with a sample dataset, which is the 
 
 ===
 
-
-
-~~~r
+```{r message = FALSE, handout = 0}
 library(dplyr)
 animals <- read.csv('data/animals.csv',
   na.strings = '') %>%
   select(year, species_id, sex, weight) %>%
   na.omit()
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
+```
 
 Omitting rows that have missing values for the `species_id`, `sex`, and `weight` columns is not strictly necessary, but it will prevent ggplot from returning missing values warnings.
 {:.notes}
@@ -28,17 +24,12 @@ Omitting rows that have missing values for the `species_id`, `sex`, and `weight`
 
 As a first example, this code plots each invidual's weight by species:
 
-
-
-~~~r
+```{r plot_pt, message = FALSE, handout = 0}
 library(ggplot2)
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_point()
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_pt-1.png" %})
-{:.captioned}
+```
 
 ===
 
@@ -52,32 +43,22 @@ The `ggplot` function by itself does not display anything until we add a `geom_*
 
 Individual points are hard to distinguish in this plot. Might a boxplot be a better visualization? The only change needed is in the `geom_*` layer.
 
-
-
-~~~r
+```{r plot_box, handout = 0}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot()
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_box-1.png" %})
-{:.captioned}
+```
 
 ===
 
 Add `geom_*` layers together to create a multi-layered plot:
 
-
-
-~~~r
+```{r plot_pt_box_plain, handout = 0}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot() +
   geom_point()
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_pt_box_plain-1.png" %})
-{:.captioned}
+```
 
 ===
 
@@ -85,17 +66,12 @@ Each `geom_*` object accepts arguments to customize that layer. Many arguments a
 common to multiple `geom_*` functions, such as those for adding blanket styling 
 to the layer.
 
-
-
-~~~r
+```{r handout = 0}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot() +
   geom_point(color = 'red')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-2-1.png" %})
-{:.captioned}
+```
 
 The `color` specification was not part of aesthetic mapping between data and
 visual elements, so it applies to the entire layer.
@@ -106,9 +82,7 @@ visual elements, so it applies to the entire layer.
 The `stat` parameter, in conjunction with `fun.y`, provide the ability
 to perform on-the-fly data transformations.
 
-
-
-~~~r
+```{r handout = 0}
 ggplot(animals,
        aes(x = species_id, y = weight)) +
   geom_boxplot() +
@@ -116,10 +90,7 @@ ggplot(animals,
     color = 'red',
     stat = 'summary',
     fun.y = 'mean')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
-{:.captioned}
+```
 
 ===
 
@@ -137,16 +108,11 @@ function works quite differently than assiging color to a `geom_*`.
 
 ===
 
-
-
-~~~r
+```{r plot_box_color, handout = 0}
 ggplot(animals,
        aes(x = species_id, y = weight,
            color = species_id)) +
   geom_boxplot() +
   geom_point(stat = 'summary',
              fun.y = 'mean')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_box_color-1.png" %})
-{:.captioned}
+```

@@ -1,0 +1,20 @@
+title: Visualizing Tabular Data
+handouts:
+  - worksheet.R
+  - data/animals.csv
+  - data/README.md
+tag: v0.3
+lesson: 2
+instructor: Elizabeth Green
+authors:
+ - Philippe Marchand
+ - Ian Carroll
+sorter:
+  - intro
+  - layer
+  - model
+  - assign
+  - label
+  - facet
+  - conclude
+  - exercise

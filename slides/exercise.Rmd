@@ -48,18 +48,13 @@ with a row for each sex and a column for each species.
 
 ### Solution 1
 
-
-
-~~~r
+```{r sol1, handout = 0}
 animals_dm <- filter(animals, species_id == 'DM')
 ggplot(animals_dm,
        aes(x = year, y = weight, color = sex)) +
   geom_line(stat = 'summary',
             fun.y = 'mean')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/exercise/sol1-1.png" %})
-{:.captioned}
+```
 
 [Return](#exercise-1)
 {:.notes}
@@ -68,16 +63,11 @@ ggplot(animals_dm,
 
 ### Solution 2
 
-
-
-~~~r
+```{r sol2, message = FALSE, handout = 0}
 filter(animals, species_id == 'DM') %>%
   ggplot(aes(x = weight, fill = sex)) +         
   geom_histogram(binwidth = 1)
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/exercise/sol2-1.png" %})
-{:.captioned}
+```
 
 [Return](#exercise-2)
 {:.notes}
@@ -86,9 +76,7 @@ filter(animals, species_id == 'DM') %>%
 
 ### Solution 3
 
-
-
-~~~r
+```{r sol3, message = FALSE, handout = 0}
 ggplot(animals_common,
        aes(x = weight)) +
   geom_histogram() +
@@ -96,10 +84,7 @@ ggplot(animals_common,
   labs(title = 'Weight of common species by sex',
        x = 'Count',
        y = 'Weight (g)')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/exercise/sol3-1.png" %})
-{:.captioned}
+```
 
 [Return](#exercise-3)
 {:.notes}

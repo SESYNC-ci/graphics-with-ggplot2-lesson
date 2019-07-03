@@ -10,9 +10,7 @@ relates a variable in the dataset to a visual element, the panels.
 
 ===
 
-
-
-~~~r
+```{r, handout = 0}
 animals_common <- filter(animals,
   species_id %in% c('DM', 'PP', 'DO'))
 faceted <- ggplot(
@@ -23,38 +21,22 @@ faceted <- ggplot(
        'Weight of most common species',
        x = 'Count',
        y = 'Weight (g)')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> faceted
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/facet/plot_facets-1.png" %})
-{:.captioned}
+```
+```{r plot_facets, message = FALSE}
+faceted
+```
 
 ===
 
 The un-grouped data may be added as a layer on each panel, but you have to drop
 the grouping variable (i.e. `month`).
 
-
-
-~~~r
+```{r, handout = 0}
 faceted_all <- faceted +
   geom_histogram(data =
     select(animals_common, -species_id),
     alpha = 0.2)
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> faceted_all
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/facet/plot_facets_all-1.png" %})
-{:.captioned}
+```
+```{r plot_facets_all, message = FALSE}
+faceted_all
+```
