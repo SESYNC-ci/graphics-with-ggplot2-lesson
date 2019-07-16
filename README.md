@@ -22,5 +22,5 @@ mission. Visit [www.sesync.org] to learn more about SESYNC and
 [www.sesync.org]: https://www.sesync.org
 [cyberhelp.sesync.org]: https://cyberhelp.sesync.org
 [dataset]: https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_pums_csv_2013_2017&prodType=document
-[direct link]: https://www2.census.gov/programs-surveys/acs/data/pums/2017/5-Year/csv_pus.zip
+[download link]: https://www2.census.gov/programs-surveys/acs/data/pums/2017/5-Year/csv_pus.zip
 [documentation is available online]: https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html
