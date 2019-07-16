@@ -1,134 +1,129 @@
-## Getting started
+# Getting Started
 
-library(dplyr)
-animals <- read.csv('data/animals.csv',
-    na.strings = '') %>%
-  select(year, species_id, sex, weight) %>%
-  na.omit()
+library(readr)
+person <- read_csv(
+  file = 'data/census_pums/psam_pusa.csv',
+  n_max = 10^4,
+  col_types = cols_only(
+    ... = 'i',
+    ... = 'd',
+    ... = 'c',
+    ... = 'c'))
 
-## Layered graphics
+## Layered Grammar
 
 library(...)
-ggplot(...,
-       ...) +
+...(person, ...(x = WAGP)) +
+  ..._histogram()
+
+library(dplyr)
+person <- filter(
+  person,
+  WAGP > 0,
+  WAGP < max(WAGP, na.rm = TRUE))
+
+ggplot(person,
+  aes(...)) +
+  geom_point()
+
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
   ...
 
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  ...
+## Layer Customization
 
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_boxplot() ...
-  ...
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
+  geom_point(...) +
+  geom_boxplot()
 
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_boxplot() +
-  geom_point(...)
-
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
   geom_boxplot() +
   geom_point(
-    color = 'red',
-    ...,
-    ...)
+    ... = 'red',
+    ... = 'summary',
+    fun.y = ...)
 
-ggplot(animals,
-       aes(x = species_id, y = weight,
-           ...)) +
-  geom_boxplot() +
-  geom_point(stat = 'summary',
-             fun.y = 'mean')
+## Adding Aesthetics
 
-## Smooth lines
+ggplot(person,
+  aes(x = SCHL, y = WAGP, ...)) +
+  geom_boxplot()
 
-...(animals$sex) <- c('Female', 'Male')
-animals_dm <- filter(animals,
-  species_id == 'DM')
+person$SEX <- factor(person$SEX)
+... <- list(
+  'Female' = '2',
+  'Male' = '1')
+
+ggplot(person,
+  aes(x = SCHL, y = WAGP, color = SEX)) +
+  geom_boxplot()
+
+# Storing and Re-plotting
+
+... ggplot(person,
+  aes(x = SCHL, y = WAGP, color = SEX)) +
+  geom_point(
+    stat = 'summary',
+    fun.y = 'mean')
+
+schl_wagp <- ... +
+  scale_color_manual(
+    values = c('black', 'red'))
+
+ggsave(...,
+  plot = ...,
+  width = 4, height = 3)
+
+# Smooth Lines
+
+ggplot(person,
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  ...(
+    method = ...,
+    aes(group = 0))
+
+# Axes, Labels and Themes
+
+sex_wagp <- ggplot(person,
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  geom_smooth(
+    method = 'lm',
+    aes(group = 0))
+
+sex_wagp + ...(
+  ... = 'Wage Gap',
+  x = ...,
+  ... = 'Wages (Unadjusted USD)')
+
+sex_wagp + ...(
+  trans = 'log10')
+
+sex_wagp + ...()
+
+sex_wagp + theme_bw() +
+  labs(title = 'Wage Gap') +
+  theme(
+    ... = element_text(
+      face = 'bold',
+      hjust = 0.5))
+
+# Facets
+
+person$SCHL <- factor(person$SCHL)
+levels(person$SCHL) <- list(
+  'High School' = '16',
+  'Bachelor\'s' = '21',
+  'Master\'s' = '22',
+  'Doctorate' = '24')
 
 ggplot(...,
-  aes(x = year, y = weight, ...)) +
-  geom_point(...,
-    stat = 'summary', fun.y = 'mean') +
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  geom_smooth(
+    method = 'lm',
+    aes(group = 0)) +
   ...
-
-ggplot(animals_dm,
-  aes(x = year, y = weight,
-    shape = sex, color = sex)) +
-  geom_point(size = 3,
-    stat = 'summary', fun.y = 'mean') +
-  geom_smooth(...)
-
-# Storing and re-plotting
-
-... ggplot(animals_dm,
-  aes(x = year, y = weight,
-    color = sex, shape = sex)) +
-  geom_point(size = 3,
-    stat = 'summary',
-    fun.y = 'mean') +
-  geom_smooth(method = 'lm')
-
-year_wgt <- year_wgt +
-  scale_color_manual(
-    ... = c("black", ...))
-
-...(filename = 'year_wgt.pdf',
-    ...
-    width = 4, height = 3)
-
-## Axes, labels and themes
-
-histo <- ggplot(animals_dm,
-  aes(x = weight, fill = sex)) +
-  geom_...
-
-histo <- histo + ...(title =
-  'Size of Dipodomys merriami',
-  ...
-  y = 'Count')
-
-histo <- histo + scale_x_continuous(
-  ...,
-  ... = c(20, 30, 40, 50, 60))
-
-histo <- ggplot(animals_dm,
-  aes(x = weight,
-      ...,
-      ...)) +
-  geom_histogram(binwidth = 3,
-    color = 'white') +
-  labs(title = 
-    'Size of Dipodomys merriami',
-    x = 'Weight (g)',
-    ...)
-
-histo <- histo + ... + theme(
-  legend.position = c(0.2, 0.5),
-  plot.title = ...(
-    ...),
-  ... = element_text(
-    ...),
-  ... = element_text(
-    size = 13, vjust = 0))
-
-## Facets
-
-animals_common <- filter(animals,
-  species_id %in% c('DM', 'PP', 'DO'))
-faceted <- ggplot(...,
-  ...) +
-  geom_histogram() +
-  ...
-  labs(title =
-       "Weight of most common species",
-       x = "Count",
-       y = "Weight (g)")
-
-faceted_all <- faceted +
-  geom_histogram(data =
-    select(animals_common, ...),
-  ...)
-

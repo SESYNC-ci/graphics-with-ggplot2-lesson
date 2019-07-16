@@ -7,99 +7,89 @@
 
 ### Exercise 1
 
-Use dplyr to filter down to the animals with `species_id` equal to DM. Use
-`ggplot` to show how the mean weight of this species changes each year, showing
-males and females in different colors. (Hint: Baby steps! Start with a
-scatterplot of weight by year. Then expand your code to plot only the means.
-Then try to distinguish sexes.)
-
-[View solution](#solution-1)
-{:.notes}
+Use `ggplot` to show how the mean wage earned in the U.S. varies with age,
+showing males and females in different colors. (Hint: Baby steps! Start with a
+scatterplot of wage by age. Then expand your code to plot only the means. Then
+distinguish sexes by color.)
 
 ===
 
 ### Exercise 2
 
-Create a histogram, using a `geom_histogram` layer, of the weights of
-individuals of species DM and divide the data by sex. Note that instead of using
-`color` in the aesthetic, you'll use `fill` to distinguish the sexes. To silence
-that warning, open the help with `?geom_histogram` and determine how to
-explicitly set the bin width.
-
-[View solution](#solution-2)
-{:.notes}
+Create a histogram, using a `geom_histogram` layer, of the wages earned by
+females and males, with sex distinguished by the color of the bar's interior. To
+silence that warning you're getting, open the help with `?geom_histogram` and
+determine how to explicitly set the bin width.
 
 ===
 
 ### Exercise 3
 
 The `facet_grid` layer (different from `facet_wrap`) requires an argument for
-both row and column varaibles, creating a grid of panels. For these three common
-animals, create facets in the weight histogram along two categorical variables,
-with a row for each sex and a column for each species.
-
-[View solution](#solution-3)
-{:.notes}
+both row and column varaibles, creating a grid of panels. Create a plot with 8
+facets, each displaying a single histogram of wage earned by women or men having
+one of the four education attainment levels. Make the grid have 2 rows and 4
+columns. *Advanced challenge*: add a second, partially transparent, histogram to
+the background of each facet that provides a comparison to the whole population.
+(Hint: the second histogram should not inherit the dataset from the `ggplot`
+foundation.)
 
 ===
+
 ## Solutions
-
-===
-
-### Solution 1
 
 
 
 ~~~r
-animals_dm <- filter(animals, species_id == 'DM')
-ggplot(animals_dm,
-       aes(x = year, y = weight, color = sex)) +
+ggplot(person,
+  aes(x = AGEP, y = WAGP, color = SEX)) +
   geom_line(stat = 'summary',
             fun.y = 'mean')
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/exercise/sol1-1.png" %})
+{:title="Solution 1" .text-document}
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-1-1.png" %})
 {:.captioned}
-
-[Return](#exercise-1)
-{:.notes}
-
-===
-
-### Solution 2
 
 
 
 ~~~r
-filter(animals, species_id == 'DM') %>%
-  ggplot(aes(x = weight, fill = sex)) +         
-  geom_histogram(binwidth = 1)
+ggplot(person,
+  aes(x = WAGP, fill = SEX)) +
+  geom_histogram(binwidth = 10000)
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/exercise/sol2-1.png" %})
+{:title="Solution 2" .text-document}
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-2-1.png" %})
 {:.captioned}
-
-[Return](#exercise-2)
-{:.notes}
-
-===
-
-### Solution 3
 
 
 
 ~~~r
-ggplot(animals_common,
-       aes(x = weight)) +
-  geom_histogram() +
-  facet_grid(vars(sex), vars(species_id)) +
-  labs(title = 'Weight of common species by sex',
-       x = 'Count',
-       y = 'Weight (g)')
+ggplot(na.omit(person),
+  aes(x = WAGP)) +
+  geom_histogram(bins = 20) +
+  facet_grid(vars(SEX), vars(SCHL))
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/exercise/sol3-1.png" %})
+{:title="Solution 3" .text-document}
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
-[Return](#exercise-3)
-{:.notes}
+For the advanced challenge, you must supply a dataset to a second gemo_histogram
+that does not have the variable specified in `facet_grid`. Note that
+`facet_grid` affects the entire plot, including layers added "after faceting",
+as in the solution below.
+
+
+
+~~~r
+ggplot(na.omit(person),
+  aes(x = WAGP)) +
+  geom_histogram(bins = 20) +
+  facet_grid(vars(SEX), vars(SCHL)) +
+  geom_histogram(
+    bins = 20,
+    data = na.omit(person['WAGP']),
+    alpha = 0.5)
+~~~
+{:title="Solution 3 (challenge)" .text-document}
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-4-1.png" %})
+{:.captioned}
