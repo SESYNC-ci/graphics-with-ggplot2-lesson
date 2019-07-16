@@ -2,7 +2,7 @@
 
 Plots of tabular data take many common forms--line graphs, histograms, scatter
 plots, box plots, etc. The purpose of this lesson is to teach the basic
-principles of the ggplot2 package's "Grammar of Graphics", so that creating
+principles of the ggplot2 package's "Layered Grammar of Graphics", so that creating
 visualizations in R begins to seem down-right orderly.
 
 ## Instructor Notes
