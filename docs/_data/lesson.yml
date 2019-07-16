@@ -1,8 +1,7 @@
 title: Visualizing Tabular Data
 handouts:
   - worksheet.R
-  - data/animals.csv
-  - data/README.md
+  - data/census_pums/sample.csv
 tag: v1.0
 lesson: 2
 instructor: Rachael Blake

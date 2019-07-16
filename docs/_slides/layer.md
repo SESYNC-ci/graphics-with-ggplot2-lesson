@@ -22,8 +22,7 @@ employment, ethnicity, and much more.
 ~~~r
 library(readr)
 person <- read_csv(
-  file = 'data/census_pums/psam_pusa.csv',
-  n_max = 10^4,
+  file = 'data/census_pums/sample.csv',
   col_types = cols_only(
     AGEP = 'i',
     WAGP = 'd',
@@ -59,6 +58,18 @@ ggplot(person, aes(x = WAGP)) +
   geom_histogram()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+~~~
+{:.output}
+
+
+~~~
+Warning: Removed 1681 rows containing non-finite values (stat_bin).
+~~~
+{:.output}
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
 {:.captioned}
 

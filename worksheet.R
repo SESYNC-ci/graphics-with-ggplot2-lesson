@@ -2,8 +2,7 @@
 
 library(readr)
 person <- read_csv(
-  file = 'data/census_pums/psam_pusa.csv',
-  n_max = 10^4,
+  file = 'data/census_pums/sample.csv',
   col_types = cols_only(
     ... = 'i',
     ... = 'd',
