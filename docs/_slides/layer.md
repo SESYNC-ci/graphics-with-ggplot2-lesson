@@ -1,152 +1,298 @@
 ---
 ---
 
+
+
 ## Getting Started
 
-Let's start by loading a few packages along with a sample dataset, which is the *animals* table from the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459).
+The dataset you will plot is an example of Public Use Microdata Sample (PUMS)
+produced by the US Census Beaurea. We'll explore the wage gap between men and
+women.
+
+The file to be loaded contains individuals' anonymized responses to the 5 Year
+American Community Survy (ACS) completed in 2017. Their are over a hundred
+variables giving individual level data on household members income, education,
+employment, ethnicity, and much more.
+{:.notes}
 
 ===
 
 
 
 ~~~r
-library(dplyr)
-animals <- read.csv('data/animals.csv',
-  na.strings = '') %>%
-  select(year, species_id, sex, weight) %>%
-  na.omit()
+library(readr)
+person <- read_csv(
+  file = 'data/census_pums/psam_pusa.csv',
+  n_max = 10^4,
+  col_types = cols_only(
+    AGEP = 'i',
+    WAGP = 'd',
+    SCHL = 'c',
+    SEX = 'c'))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-Omitting rows that have missing values for the `species_id`, `sex`, and `weight` columns is not strictly necessary, but it will prevent ggplot from returning missing values warnings.
+The [readr](){:.rlib} package gives additional flexibility and spead over the
+base R `read.csv` function. The CSV contains 4 million rows, equating to several
+gigabytes, so a sample suffices while developing ideas for visualiztion.
 {:.notes}
 
 ===
 
-### Layered Graphics
+### Layered Grammar
 
-As a first example, this code plots each invidual's weight by species:
+The code to plot each invidual's wage or salary income by their education
+attainment calls three functions: `ggplot`, `aes`, and `geom_point` from the [ggplot2](){:.rlib} package.
+
+===
+
+- `ggplot` creates the foundation
+- `aes` specifies an aesthetic mapping
+- `geom_histogram` adds a layer of visual elements
 
 
 
 ~~~r
 library(ggplot2)
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_point()
+ggplot(person, aes(x = WAGP)) +
+  geom_histogram()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_pt-1.png" %})
-{:.captioned}
-
-===
-
-The `ggplot` command expects a data frame and an aesthetic mapping. The `aes` function creates the aesthetic, a mapping between variables in the data frame and visual elements in the plot. Here, the aesthetic maps `species_id` to the x-axis and `weight` to the y-axis.
-
-===
-
-The `ggplot` function by itself does not display anything until we add a `geom_*` layer, in this example a `geom_point`. Layers are literally added, with `+`, to the object created by the `ggplot` function.
-
-===
-
-Individual points are hard to distinguish in this plot. Might a boxplot be a better visualization? The only change needed is in the `geom_*` layer.
 
 
-
-~~~r
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_boxplot()
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_box-1.png" %})
-{:.captioned}
-
-===
-
-Add `geom_*` layers together to create a multi-layered plot:
-
-
-
-~~~r
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_boxplot() +
-  geom_point()
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_pt_box_plain-1.png" %})
-{:.captioned}
-
-===
-
-Each `geom_*` object accepts arguments to customize that layer. Many arguments are
-common to multiple `geom_*` functions, such as those for adding blanket styling 
-to the layer.
+{:.output}
 
 
-
-~~~r
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_boxplot() +
-  geom_point(color = 'red')
 ~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-2-1.png" %})
+Warning: Removed 1681 rows containing non-finite values (stat_bin).
+~~~
+{:.output}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
-The `color` specification was not part of aesthetic mapping between data and
-visual elements, so it applies to the entire layer.
+The `ggplot` command expects a data frame and an aesthetic mapping. The `aes`
+function creates the aesthetic, a mapping between variables in the data frame
+and visual elements in the plot. Here, the aesthetic maps `WAGP` to the
+x-axis; a histogram only needs one variable mapped.
+{:.notes}
+
+The `ggplot` function by itself only creates the axes, because only the
+aesthetic map has been defined. No data are plotted until the addition of a
+`geom_*` layer, in this example a `geom_histogram`. Layers are literally added,
+with `+`, to the object created by the `ggplot` function.
 {:.notes}
 
 ===
 
-The `stat` parameter, in conjunction with `fun.y`, provide the ability
-to perform on-the-fly data transformations.
+Plotting histograms is always a good idea when exploring data. The zeros and
+the "top coded" value used for high wage-earners in PUMS are outliers.
 
 
 
 ~~~r
-ggplot(animals,
-       aes(x = species_id, y = weight)) +
-  geom_boxplot() +
-  geom_point(
-    color = 'red',
-    stat = 'summary',
-    fun.y = 'mean')
+library(dplyr)
+person <- filter(
+  person,
+  WAGP > 0,
+  WAGP < max(WAGP, na.rm = TRUE))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
+
+
+The [dplyr](){:.rlib} package provides tools for manipulating tabular data. It
+is an essential accompaniment to [ggplot2](){:.rlib}.
+{:.notes}
+
+===
+
+The `geom_histogram` aesthetic only involves one variable. A scatterplot
+requires two, both an `x` and a `y`.
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
+  geom_point()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-5-1.png" %})
+{:.captioned}
+
+The `aes` function can map variable to more than just the `x` and `y` axes in a
+plot. There are several other "scales" that exist, although whether and how they
+show up depends on the `geom_*` layer. Commonly used arguments are `color` for
+line or edge color and `fill` for interior colors, but [many more are
+available](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html).
+{:.notes}
+
+===
+
+Question
+: What happens if you supply `fill = SEX` to the aesthetic map in the histogram?
+
+Answer
+: {:.fragment} A stacked histogram with two different fill colors, and a legend.
+
+===
+
+Individual points are hard to distinguish in the scatterplot. Might a boxplot be
+a better visualization? The only change needed is in the `geom_*` layer.
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
+  geom_boxplot()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-6-1.png" %})
+{:.captioned}
+
+In both the scatterplot and boxplot, the `geom_*` functions take no arguments.
+Every layer added on top of the foundation generated by the call to `ggplot`
+inherits the dataset and aesthetics of the foundation.
+{:.notes}
+
+===
+
+Multiple `geom_*` layers create a plot with multiple visual elements.
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
+  geom_boxplot() +
+  geom_point()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-7-1.png" %})
 {:.captioned}
 
 ===
 
-The `geom_point` layer definition illustrates two features:
+### Layer Customization
 
-- With `stat = 'summary'`, the plot replaces the raw data with the result of a
-  summary function, defined by `fun.y`.
-- Setting `color = red` applies one color to the whole layer.
-
-===
-
-Associating color (or any attribute, like the shape of points) to a variable is
-another kind of aesthetic mapping. Passing the `color` argument to the `aes`
-function works quite differently than assiging color to a `geom_*`.
+Each `geom_*` object accepts arguments to customize that layer. Many arguments
+are common to multiple `geom_*` functions, such as changing the layer's color.
 
 ===
 
 
 
 ~~~r
-ggplot(animals,
-       aes(x = species_id, y = weight,
-           color = species_id)) +
-  geom_boxplot() +
-  geom_point(stat = 'summary',
-             fun.y = 'mean')
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
+  geom_point(color = 'red') +
+  geom_boxplot()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/plot_box_color-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-8-1.png" %})
+{:.captioned}
+
+The `color` specification was not part of aesthetic mapping between data and
+visual elements, so 1) it applies to every record (or person) and 2) only the
+elements in the scatterplot layer are affected.
+{:.notes}
+
+===
+
+The `stat` parameter, in conjunction with `fun.y`, provides the ability to
+perform on-the-fly data transformations.
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SCHL, y = WAGP)) +
+  geom_boxplot() +
+  geom_point(
+    color = 'red',
+    stat = 'summary',
+    fun.y = mean)
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-9-1.png" %})
+{:.captioned}
+
+With `stat = 'summary'`, the plot replaces the raw data with the result of a
+summary function applied to whatever "grouping" is defined in the aesthetic. In
+this case, it's the ordinal x-axis that defines education attainment groups. The
+`fun.y` argument determines what function, here the function `mean`, with which
+you want to summarize each group.
+{:.notes}
+
+===
+
+### Adding Aesthetics
+
+The true power of [ggplot2](){:.rlib} is the natural connection it provides
+between variables and visuals.
+
+Associating color (or any attribute, like the shape of points) to a variable is
+another kind of aesthetic mapping. Passing the `color` argument to the `aes`
+function works quite differently than assiging color to a `geom_*`.
+{:.notes}
+
+===
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SCHL, y = WAGP, color = SEX)) +
+  geom_boxplot()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-10-1.png" %})
+{:.captioned}
+
+===
+
+Question
+: What sex do you think is coded as "1"?
+
+Answer
+: {:.fragment}![]({% include asset.html path = 'images/rapinoe.jpg' %})
+
+===
+
+The aesthetic and the geometry are entirely independent, making it easy to
+experiment with very different kinds of visual representations.
+
+
+
+~~~r
+ggplot(person,
+  aes(x = as.integer(SCHL), y = WAGP, color = SEX)) +
+  geom_smooth(method = 'loess')
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-11-1.png" %})
+{:.captioned}
+
+===
+
+Properties of the data itself are similarly independent of the aesthetic mapping
+and the visual elements, while still affecting the output.
+
+
+
+~~~r
+person$SEX <- factor(person$SEX)
+levels(person$SEX) <- list(
+  'Female' = '2',
+  'Male' = '1')
+ggplot(person,
+  aes(x = SCHL, y = WAGP, color = SEX)) +
+  geom_boxplot()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/layer/unnamed-chunk-12-1.png" %})
 {:.captioned}

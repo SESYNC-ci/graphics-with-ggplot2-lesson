@@ -3,60 +3,54 @@
 
 ## Smooth Lines
 
-The `geom_smooth` layer adds a regression line with confidence intervals (95% CI by default). The `method = 'lm'` parameter specifies that a linear model is used for smoothing.
+The `geom_smooth` layer used above can add various kinds of regression lines and
+confidence intervals. A `method = 'lm'` argument specifies a linear model.
 
-===
-
-Load some data you might use for a linear model with a categorical predictor of
-a continuous response.
-
-
-
-~~~r
-levels(animals$sex) <- c('Female', 'Male')
-animals_dm <- filter(animals,
-  species_id == 'DM')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-===
-
-With a categorical predictor mapped to an aesthetic element, the `geom_smooth`
-call will separately apply the `lm` method. The result hints at the significance
-of the predictor.
-
-
-
-~~~r
-ggplot(animals_dm,
-  aes(x = year, y = weight, shape = sex)) + 
-  geom_point(size = 3,
-    stat = 'summary', fun.y = 'mean') +
-  geom_smooth(method = 'lm')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/model/plot_lm-1.png" %})
-{:.captioned}
-
-===
-
-Even better would be to distinguish everything (points and lines) by color.
-
-
-
-~~~r
-ggplot(animals_dm,
-  aes(x = year, y = weight,
-    shape = sex, color = sex)) + 
-  geom_point(size = 3,
-    stat = 'summary', fun.y = 'mean') +
-  geom_smooth(method = 'lm')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/model/plot_lm_color-1.png" %})
-{:.captioned}
-
-Notice that by adding aesthetic mappings in the base aesthetic (in the `ggplot`
-command), it is applied to any layer that recognizes the parameter.
+Note, however, that with a categorical predictor mapped to an aesthetic element,
+the `geom_smooth` call would separately perform a linear regression (ANOVA)
+within each group. The call to `aes` must override the "group" aesthetic so the
+regression is run once.
 {:.notes}
+
+===
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  geom_smooth(
+    method = 'lm',
+    aes(group = 0))
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/model/unnamed-chunk-1-1.png" %})
+{:.captioned}
+
+Is there really a confidence interval? Yes, it's just pretty narrow and hard to
+see. You could add a `size = 0.5` argument to `geom_smooth` to see there is a
+gray interval around the line. Or, as the next step shows, you could change
+the size of the confidence interval for a better visual representation of the
+variability.
+{:.notes}
+
+===
+
+The `level` argument for `geom_smooth` controls the limits of the confidence
+interval, defaulting to 95%.
+
+
+
+~~~r
+ggplot(person,
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  geom_smooth(
+    method = 'lm',
+    level = 0.99,
+    aes(group = 0))
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/model/unnamed-chunk-2-1.png" %})
+{:.captioned}

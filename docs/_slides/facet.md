@@ -4,57 +4,64 @@
 ## Facets
 
 To conclude this overview of [ggplot2](){:.rlib}, we'll apply the same plotting
-instructions to different subsets of the data, creating panels or "facets". The
-`facet_wrap` function takes a `vars` argument that, like the `aes` function
-relates a variable in the dataset to a visual element, the panels.
+instructions to different subsets of the data, creating panels or "facets".
+
+The `facet_wrap` function takes a `vars` argument that, like the `aes` function,
+relates a variable in the dataset to a visual element, the panels. The
+`facet_grid` function works like `facet_wrap`, but expects two variables to
+facet by the interaction of a row variable by a column variable.
+{:.notes}
 
 ===
+
+The gender wage gap apparent in the US Census PUMS data is probably not
+consistent across people who obtained different levels of education.
 
 
 
 ~~~r
-animals_common <- filter(animals,
-  species_id %in% c('DM', 'PP', 'DO'))
-faceted <- ggplot(
-  animals_common, aes(x = weight)) +
-  geom_histogram() +
-  facet_wrap(vars(species_id)) +
-  labs(title =
-       'Weight of most common species',
-       x = 'Count',
-       y = 'Weight (g)')
+person$SCHL <- factor(person$SCHL)
+levels(person$SCHL) <- list(
+  'High School' = '16',
+  'Bachelor\'s' = '21',
+  'Master\'s' = '22',
+  'Doctorate' = '24')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
+The [technical
+documenation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
+for the PUMS data includes a data dictionary, explaining the codes used for
+education attainment, and everything else you'ld like to know about the dataset.
+{:.notes}
+
+===
+
+The `sex_wagp` plot created above stored it's own copy of the data, so create a
+new `ggplot` foundation using a cleaned up dataset.
+
+
 
 ~~~r
-> faceted
+ggplot(na.omit(person),
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  geom_smooth(
+    method = 'lm',
+    aes(group = 0)) +
+  facet_wrap(vars(SCHL))
 ~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/facet/plot_facets-1.png" %})
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/facet/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
 ===
 
-The un-grouped data may be added as a layer on each panel, but you have to drop
-the grouping variable (i.e. `month`).
+Question
+: What wage gap trend do you think is worth investigating, and how might you
+do it?
 
-
-
-~~~r
-faceted_all <- faceted +
-  geom_histogram(data =
-    select(animals_common, -species_id),
-    alpha = 0.2)
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> faceted_all
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/facet/plot_facets_all-1.png" %})
-{:.captioned}
+Answer
+: {:.fragment} There are so many possibilities! For example, a scatterplot of
+wage against age colored by sex that includes a fitted regression model.

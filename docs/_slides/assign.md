@@ -3,22 +3,19 @@
 
 ## Storing and Re-plotting
 
-The output of `ggplot` can be assigned to a variable. It is then possible to add
-new elements to it with the `+` operator. We will use this method to try
-different color scales for a stored plot.
+The output of `ggplot` can be assigned to a variable, which works with `+` to
+add layers.
 
 ===
 
 
 
 ~~~r
-year_wgt <- ggplot(animals_dm,
-  aes(x = year, y = weight,
-    color = sex, shape = sex)) + 
-  geom_point(size = 3,
+schl_wagp <- ggplot(person,
+  aes(x = SCHL, y = WAGP, color = SEX)) +
+  geom_point(
     stat = 'summary',
-    fun.y = 'mean') +
-  geom_smooth(method = 'lm')
+    fun.y = 'mean')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -31,21 +28,20 @@ additional layers.
 
 
 ~~~r
-> year_wgt
+> schl_wagp
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/assign/plot_scale_color_manual-1.png" %})
+![ ]({% include asset.html path="images/assign/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
 ===
 
-By overwriting the `year_wgt` variable, the stored plot gets updated with the
-black and red color scale.
+Store additional layers by overwriting the variable (or creating a new one).
 
 
 
 ~~~r
-year_wgt <- year_wgt +
+schl_wagp <- schl_wagp +
   scale_color_manual(
     values = c('black', 'red'))
 ~~~
@@ -54,29 +50,30 @@ year_wgt <- year_wgt +
 
 
 ~~~r
-> year_wgt
+> schl_wagp
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/assign/plot_lm_scales_2-1.png" %})
+![ ]({% include asset.html path="images/assign/unnamed-chunk-4-1.png" %})
 {:.captioned}
 
 ===
 
 Figures are constructed in [ggplot2](){:.rlib} as layers of shapes, from the
-axes on up through the `geom_*` elements. Natural file types for storing these
+axes on up through the `geom_*` elements. The natural file type for storing such
 figures at "infinite" resolution are PDF (for print) or SVG (for online).
 
 
 
 ~~~r
-ggsave(filename = 'year_wgt.pdf',
-       plot = year_wgt,
-       width = 4, height = 3)
+ggsave(filename = 'schl_wagp.pdf',
+  plot = schl_wagp,
+  width = 4, height = 3)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
 The `plot` argument is unnecessary if the target is the most recently displayed
-plot. When a raster file type is necessary (e.g. a PNG, JPG, or TIFF) use the
-`dpi` argument to specify an image resolution.
+plot, but a little verbosity is not out-of-place here. When a raster file type
+is necessary (e.g. a PNG, JPG, or TIFF) use the `dpi` argument to specify an
+image resolution.
 {:.notes}

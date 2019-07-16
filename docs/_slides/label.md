@@ -3,147 +3,100 @@
 
 ## Axes, Labels and Themes
 
-Let's start looking at annotation and other customizations on a new `geom_*`,
-one that creates a histogram. Due to the nature of histograms, the base
-aesthetic does not require a mapping for `y`.
+The `aes` and the `geom_*` functions do their best with annotations and styling,
+but precise control comes from `labs`, `scale_*`, and `theme_*`.
 
 ===
 
+First, store a plot to simplify experiments with the labels.
+
 
 
 ~~~r
-histo <- ggplot(animals_dm,
-  aes(x = weight, fill = sex)) +
-  geom_histogram(binwidth = 3,
-    color = 'white')
+sex_wagp <- ggplot(person,
+  aes(x = SEX, y = WAGP)) + 
+  geom_point() +
+  geom_smooth(
+    method = 'lm',
+    aes(group = 0))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_hist-1.png" %})
-{:.captioned}
 
 ===
 
 Set the title and axis labels with the `labs` function, which accepts names for
 labeled elements in your plot (e.g. `x`, `y`, `title`) as arguments.
 
-===
-
 
 
 ~~~r
-histo <- histo + labs(title =
-  'Size of Dipodomys merriami',
-  x = 'Weight (g)',
-  y = 'Count')
+sex_wagp + labs(
+  title = 'Wage Gap',
+  x = NULL,
+  y = 'Wages (Unadjusted USD)')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_labs-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
-For information on how to add special symbols and formatting to plot labels, see `?plotmath`.
+For information on how to add special symbols and formatting to plot labels, see
+`?plotmath`.
 {:.notes}
 
 ===
 
-We have various functions related to the scale of each axis, i.e. the range,
-breaks and any transformations of the values on the axis. Here, we use
-`scale_x_continuous` to modify the continuous (as opposed to discrete) x-axis.
+Functions related to the axes, i.e. their limits, breaks, and any transformation
+are all `scale_*` functions. To modify any property of a continuous y-axis, add
+a call to `scale_y_continuous`.
 
 
 
 ~~~r
-histo <- histo + scale_x_continuous(
-  limits = c(20, 60),
-  breaks = c(20, 30, 40, 50, 60))
+sex_wagp + scale_y_continuous(
+  trans = 'log10')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_hist_axes-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
 ===
 
-If we prefer a histogram showing probability, rather than counts, as the scale
-on the vertical axis, the aesthetic itself must be modified to include this
-non-default mapping for the `y` element.
+"Look and feel" options in [ggplot2](){:.rlib}, from background color to font
+sizes, can be set with `theme_*` functions. 
+
+
+
+~~~r
+sex_wagp + theme_bw()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/label/unnamed-chunk-4-1.png" %})
+{:.captioned}
+
+Start typing `theme_` on the console to see what themes are available in the
+pop-up menu. The default theme is `theme_grey`. A popular "minimal" theme is
+`theme_bw`. Any option set by a `theme_*` function can also be set by calling
+`theme` itself with the option and value as an argument.
+{:.notes}
 
 ===
 
+The options available directly through `theme` offer limitless possibilities
+for customization.
+
 
 
 ~~~r
-histo <- ggplot(animals_dm,
-  aes(x = weight,
-      y = stat(density),
-      fill = sex)) +
-  geom_histogram(binwidth = 3,
-    color = 'white') +
-  labs(title =
-    'Size of Dipodomys merriami',
-    x = 'Weight (g)',
-    y = 'Density')
+sex_wagp + theme_bw() +
+  labs(title = 'Wage Gap') +
+  theme(
+    plot.title = element_text(
+      face = 'bold',
+      hjust = 0.5))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
 ![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
-{:.captioned}
-
-===
-
-Many plot-level options in [ggplot2](){:.rlib}, from background color to font
-sizes, are defined as part of "themes". The next modification to `histo` changes
-the base theme of the plot to `theme_bw` (replacing the default `theme_grey`)
-and sets a few options manually with the `theme` function.
-
-===
-
-
-
-~~~r
-histo <- histo + theme_bw() + theme(
-  legend.position = c(0.2, 0.5),
-  plot.title = element_text(
-    face = 'bold', hjust = 0.5),
-  axis.title.y = element_text(
-    size = 13, hjust = 0.1), 
-  axis.title.x = element_text(
-    size = 13, hjust = 0.1))
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-
-~~~r
-> histo
-~~~
-{:title="Console" .input}
-![ ]({% include asset.html path="images/label/plot_hist_themes-1.png" %})
 {:.captioned}
 
 Use `?theme` for a list of available theme options. Note that position (both
