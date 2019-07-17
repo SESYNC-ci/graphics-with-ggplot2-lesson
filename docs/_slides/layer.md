@@ -10,7 +10,7 @@ produced by the US Census Beaurea. We'll explore the wage gap between men and
 women.
 
 The file to be loaded contains individuals' anonymized responses to the 5 Year
-American Community Survy (ACS) completed in 2017. Their are over a hundred
+American Community Survey (ACS) completed in 2017. There are over a hundred
 variables giving individual level data on household members income, education,
 employment, ethnicity, and much more.
 {:.notes}
@@ -58,18 +58,6 @@ ggplot(person, aes(x = WAGP)) +
   geom_histogram()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-~~~
-{:.output}
-
-
-~~~
-Warning: Removed 1681 rows containing non-finite values (stat_bin).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
@@ -276,6 +264,7 @@ Question
 : What sex do you think is coded as "1"?
 
 Answer
+: ... Megan is skeptical about the answer!
 : {:.fragment}![]({% include asset.html path = 'images/rapinoe.jpg' %})
 
 ===
@@ -286,10 +275,7 @@ and the visual elements, while still affecting the output.
 
 
 ~~~r
-person$SEX <- factor(person$SEX)
-levels(person$SEX) <- list(
-  'Female' = '2',
-  'Male' = '1')
+person$SEX <- factor(person$SEX, levels = c("2", "1"))
 
 ggplot(person,
   aes(x = SCHL, y = WAGP, color = SEX)) +
@@ -298,3 +284,7 @@ ggplot(person,
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-12-1.png" %})
 {:.captioned}
+
+There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.    
+{:.notes}
+
