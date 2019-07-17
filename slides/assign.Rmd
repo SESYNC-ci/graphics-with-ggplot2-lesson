@@ -18,7 +18,7 @@ schl_wagp <- ggplot(person,
 
 ===
 
-The plot information stored in `year_wgt` can be used on its own, or with
+The plot information stored in `schl_wagp` can be used on its own, or with
 additional layers.
 
 ```{r}

@@ -218,6 +218,7 @@ Question
 : What sex do you think is coded as "1"?
 
 Answer
+: ... Megan is skeptical about the answer!
 : {:.fragment}![]({% include asset.html path = 'images/rapinoe.jpg' %})
 
 ===
@@ -226,12 +227,13 @@ Properties of the data itself are similarly independent of the aesthetic mapping
 and the visual elements, while still affecting the output.
 
 ```{r, handout = 0}
-person$SEX <- factor(person$SEX)
-levels(person$SEX) <- list(
-  'Female' = '2',
-  'Male' = '1')
+person$SEX <- factor(person$SEX, levels = c("2", "1"))
 
 ggplot(person,
   aes(x = SCHL, y = WAGP, color = SEX)) +
   geom_boxplot()
 ```
+
+There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.    
+{:.notes}
+
