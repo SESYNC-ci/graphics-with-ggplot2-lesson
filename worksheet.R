@@ -50,10 +50,7 @@ ggplot(person,
   aes(x = SCHL, y = WAGP, ...)) +
   geom_boxplot()
 
-person$SEX <- factor(person$SEX)
-... <- list(
-  'Female' = '2',
-  'Male' = '1')
+person$SEX <- factor(person$SEX, levels = ...)
 
 ggplot(person,
   aes(x = SCHL, y = WAGP, color = SEX)) +

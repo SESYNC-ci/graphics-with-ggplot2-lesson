@@ -8,7 +8,7 @@ opts_chunk$set(message = FALSE, warning = FALSE)
 ## Getting Started
 
 The dataset you will plot is an example of Public Use Microdata Sample (PUMS)
-produced by the US Census Beaurea. We'll explore the wage gap between men and
+produced by the US Census Bureau. We'll explore the wage gap between men and
 women.
 
 The file to be loaded contains individuals' anonymized responses to the 5 Year
@@ -234,6 +234,6 @@ ggplot(person,
   geom_boxplot()
 ```
 
-There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.    
+There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.  More on modifying plots with `scale_*` later in the [lesson](#axes-labels-and-themes).      
 {:.notes}
 
