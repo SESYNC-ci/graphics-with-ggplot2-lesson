@@ -33,8 +33,8 @@ ggplot(person,
 
 ggplot(person,
   aes(x = SCHL, y = WAGP)) +
-  geom_point(...) +
-  geom_boxplot()
+  geom_boxplot(...) +
+  geom_point()
 
 ggplot(person,
   aes(x = SCHL, y = WAGP)) +
