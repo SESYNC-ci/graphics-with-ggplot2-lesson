@@ -12,7 +12,7 @@ produced by the US Census Beaurea. We'll explore the wage gap between men and
 women.
 
 The file to be loaded contains individuals' anonymized responses to the 5 Year
-American Community Survy (ACS) completed in 2017. Their are over a hundred
+American Community Survey (ACS) completed in 2017. There are over a hundred
 variables giving individual level data on household members income, education,
 employment, ethnicity, and much more.
 {:.notes}
