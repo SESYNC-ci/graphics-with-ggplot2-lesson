@@ -30,7 +30,7 @@ person <- read_csv(
     SEX = 'c'))
 ```
 
-The [readr](){:.rlib} package gives additional flexibility and spead over the
+The [readr](){:.rlib} package gives additional flexibility and speed over the
 base R `read.csv` function. The CSV contains 4 million rows, equating to several
 gigabytes, so a sample suffices while developing ideas for visualiztion.
 {:.notes}
@@ -40,7 +40,7 @@ gigabytes, so a sample suffices while developing ideas for visualiztion.
 ### Layered Grammar
 
 The code to plot each invidual's wage or salary income by their education
-attainment calls three functions: `ggplot`, `aes`, and `geom_point` from the [ggplot2](){:.rlib} package.
+attainment calls three functions: `ggplot`, `aes`, and `geom_histogram` from the [ggplot2](){:.rlib} package.
 
 ===
 
