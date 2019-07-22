@@ -85,6 +85,10 @@ pop-up menu. The default theme is `theme_grey`. A popular "minimal" theme is
 The options available directly through `theme` offer limitless possibilities
 for customization.
 
+Do be aware that if `theme` comes after other custom specifications, it will overwrite
+those customizations.  Check the order if your plot isn't looking how you'd like it to look.  
+{:.notes}
+
 
 
 ~~~r

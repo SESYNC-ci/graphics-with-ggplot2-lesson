@@ -6,7 +6,7 @@
 ## Getting Started
 
 The dataset you will plot is an example of Public Use Microdata Sample (PUMS)
-produced by the US Census Beaurea. We'll explore the wage gap between men and
+produced by the US Census Bureau. We'll explore the wage gap between men and
 women.
 
 The file to be loaded contains individuals' anonymized responses to the 5 Year
@@ -32,7 +32,7 @@ person <- read_csv(
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
 
-The [readr](){:.rlib} package gives additional flexibility and spead over the
+The [readr](){:.rlib} package gives additional flexibility and speed over the
 base R `read.csv` function. The CSV contains 4 million rows, equating to several
 gigabytes, so a sample suffices while developing ideas for visualiztion.
 {:.notes}
@@ -42,7 +42,7 @@ gigabytes, so a sample suffices while developing ideas for visualiztion.
 ### Layered Grammar
 
 The code to plot each invidual's wage or salary income by their education
-attainment calls three functions: `ggplot`, `aes`, and `geom_point` from the [ggplot2](){:.rlib} package.
+attainment calls three functions: `ggplot`, `aes`, and `geom_histogram` from the [ggplot2](){:.rlib} package.
 
 ===
 
@@ -58,6 +58,18 @@ ggplot(person, aes(x = WAGP)) +
   geom_histogram()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+~~~
+{:.output}
+
+
+~~~
+Warning: Removed 1681 rows containing non-finite values (stat_bin).
+~~~
+{:.output}
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
@@ -285,6 +297,6 @@ ggplot(person,
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-12-1.png" %})
 {:.captioned}
 
-There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.    
+There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.  More on modifying plots with `scale_*` later in the [lesson](#axes-labels-and-themes).      
 {:.notes}
 
