@@ -3,7 +3,7 @@
 
 ## Smooth Lines
 
-The `geom_smooth` layer used above can add various kinds of regression lines and
+The `geom_smooth` layer can add various kinds of regression lines and
 confidence intervals. A `method = 'lm'` argument specifies a linear model.
 
 Note, however, that with a categorical predictor mapped to an aesthetic element,
@@ -15,7 +15,7 @@ regression is run once.
 ===
 
 ```{r, handout = 0}
-ggplot(person,
+ggplot(pums,
   aes(x = SEX, y = WAGP)) + 
   geom_point() +
   geom_smooth(
