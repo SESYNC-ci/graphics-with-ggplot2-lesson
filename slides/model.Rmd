@@ -9,7 +9,7 @@ confidence intervals. A `method = 'lm'` argument specifies a linear model.
 Note, however, that with a categorical predictor mapped to an aesthetic element,
 the `geom_smooth` call would separately perform a linear regression (ANOVA)
 within each group. The call to `aes` must override the "group" aesthetic so the
-regression is run once.
+regression is run once. Here, we set the group to 0 so that all data points are in the same group instead of split by sex.
 {:.notes}
 
 ===

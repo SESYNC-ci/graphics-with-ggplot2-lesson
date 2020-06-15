@@ -191,7 +191,7 @@ ggplot(pums,
   geom_point(
     color = 'red',
     stat = 'summary',
-    fun.y = mean)
+    fun = mean)
 ```
 
 With `stat = 'summary'`, the plot replaces the raw data with the result of a

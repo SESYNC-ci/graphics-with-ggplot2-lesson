@@ -15,7 +15,7 @@ schl_wagp <- ggplot(pums,
   aes(x = SCHL, y = WAGP, color = SEX)) +
   geom_point(
     stat = 'summary',
-    fun.y = 'mean')
+    fun = 'mean')
 ```
 
 ===
