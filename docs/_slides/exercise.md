@@ -41,19 +41,31 @@ foundation.)
 
 
 ~~~r
-ggplot(person,
+ggplot(pums,
   aes(x = AGEP, y = WAGP, color = SEX)) +
   geom_line(stat = 'summary',
             fun.y = 'mean')
 ~~~
 {:title="Solution 1" .text-document}
+
+
+~~~
+Warning: Ignoring unknown parameters: fun.y
+~~~
+{:.output}
+
+
+~~~
+No summary function supplied, defaulting to `mean_se()`
+~~~
+{:.output}
 ![ ]({% include asset.html path="images/exercise/unnamed-chunk-1-1.png" %})
 {:.captioned}
 
 
 
 ~~~r
-ggplot(person,
+ggplot(pums,
   aes(x = WAGP, fill = SEX)) +
   geom_histogram(binwidth = 10000)
 ~~~
@@ -64,7 +76,7 @@ ggplot(person,
 
 
 ~~~r
-ggplot(na.omit(person),
+ggplot(na.omit(pums),
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL))
@@ -81,13 +93,13 @@ as in the solution below.
 
 
 ~~~r
-ggplot(na.omit(person),
+ggplot(na.omit(pums),
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL)) +
   geom_histogram(
     bins = 20,
-    data = na.omit(person['WAGP']),
+    data = na.omit(pums['WAGP']),
     alpha = 0.5)
 ~~~
 {:title="Solution 3 (challenge)" .text-document}

@@ -19,8 +19,8 @@ consistent across people who obtained different levels of education.
 
 Before we plot the data, we can recode the levels of school in `SCHL` from a numeric code to the highest education level as we want displayed. 
 ```{r, handout = 0}
-person$SCHL <- factor(person$SCHL)
-levels(person$SCHL) <- list(
+pums$SCHL <- factor(pums$SCHL)
+levels(pums$SCHL) <- list(
   'High School' = '16',
   'Bachelor\'s' = '21',
   'Master\'s' = '22',
@@ -28,7 +28,7 @@ levels(person$SCHL) <- list(
 ```
 
 The [technical
-documenation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
+documentation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
 for the PUMS data includes a data dictionary, explaining the codes used for
 education attainment, and everything else you'ld like to know about the dataset.
 {:.notes}

@@ -6,16 +6,18 @@
 The output of `ggplot` can be assigned to a variable, which works with `+` to
 add layers.
 
+Here, we will store a plot for the wage and level of schooling, only plotting the means for men and women.
+
 ===
 
 
 
 ~~~r
-schl_wagp <- ggplot(person,
+schl_wagp <- ggplot(pums,
   aes(x = SCHL, y = WAGP, color = SEX)) +
   geom_point(
     stat = 'summary',
-    fun.y = 'mean')
+    fun = 'mean')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -23,7 +25,7 @@ schl_wagp <- ggplot(person,
 ===
 
 The plot information stored in `schl_wagp` can be used on its own, or with
-additional layers.
+additional layers. To plot the data, simply run the name of the stored object.
 
 
 
@@ -56,11 +58,13 @@ schl_wagp <- schl_wagp +
 ![ ]({% include asset.html path="images/assign/unnamed-chunk-4-1.png" %})
 {:.captioned}
 
+In this plot, the colors were manually changed using `scale_color_manual` to black and red. Because there are two levels of `SEX`, two color are expected.
+
 ===
 
 Figures are constructed in [ggplot2](){:.rlib} as layers of shapes, from the
 axes on up through the `geom_*` elements. The natural file type for storing such
-figures at "infinite" resolution are PDF (for print) or SVG (for online).
+figures at "infinite" resolution are PDF (for print) or SVG (for online). Use the function `ggsave` to save as an image.  
 
 
 
@@ -73,7 +77,7 @@ ggsave(filename = 'schl_wagp.pdf',
 
 
 The `plot` argument is unnecessary if the target is the most recently displayed
-plot, but a little verbosity is not out-of-place here. When a raster file type
+plot, but adding `plot` will ensure that the correct plot is saved. When a raster file type
 is necessary (e.g. a PNG, JPG, or TIFF) use the `dpi` argument to specify an
-image resolution.
+image resolution. To save as a different file type, simply change the extension of the plot name (for example `filename = 'sch_wagp.png'`).
 {:.notes}

@@ -36,7 +36,7 @@ The `level` argument for `geom_smooth` controls the limits of the confidence
 interval, defaulting to 95%.
 
 ```{r, handout = 0}
-ggplot(person,
+ggplot(pums,
   aes(x = SEX, y = WAGP)) + 
   geom_point() +
   geom_smooth(

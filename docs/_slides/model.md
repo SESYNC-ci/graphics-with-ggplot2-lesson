@@ -3,13 +3,13 @@
 
 ## Smooth Lines
 
-The `geom_smooth` layer used above can add various kinds of regression lines and
+The `geom_smooth` layer can add various kinds of regression lines and
 confidence intervals. A `method = 'lm'` argument specifies a linear model.
 
 Note, however, that with a categorical predictor mapped to an aesthetic element,
 the `geom_smooth` call would separately perform a linear regression (ANOVA)
 within each group. The call to `aes` must override the "group" aesthetic so the
-regression is run once.
+regression is run once. Here, we set the group to 0 so that all data points are in the same group instead of split by sex.
 {:.notes}
 
 ===
@@ -17,7 +17,7 @@ regression is run once.
 
 
 ~~~r
-ggplot(person,
+ggplot(pums,
   aes(x = SEX, y = WAGP)) + 
   geom_point() +
   geom_smooth(
@@ -25,6 +25,12 @@ ggplot(person,
     aes(group = 0))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+`geom_smooth()` using formula 'y ~ x'
+~~~
+{:.output}
 ![ ]({% include asset.html path="images/model/unnamed-chunk-1-1.png" %})
 {:.captioned}
 
@@ -43,7 +49,7 @@ interval, defaulting to 95%.
 
 
 ~~~r
-ggplot(person,
+ggplot(pums,
   aes(x = SEX, y = WAGP)) + 
   geom_point() +
   geom_smooth(
@@ -52,5 +58,11 @@ ggplot(person,
     aes(group = 0))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+`geom_smooth()` using formula 'y ~ x'
+~~~
+{:.output}
 ![ ]({% include asset.html path="images/model/unnamed-chunk-2-1.png" %})
 {:.captioned}

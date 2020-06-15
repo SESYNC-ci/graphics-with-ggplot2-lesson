@@ -39,20 +39,20 @@ foundation.)
 ## Solutions
 
 ```{r, title = "Solution 1"}
-ggplot(person,
+ggplot(pums,
   aes(x = AGEP, y = WAGP, color = SEX)) +
   geom_line(stat = 'summary',
             fun.y = 'mean')
 ```
 
 ```{r, title = "Solution 2"}
-ggplot(person,
+ggplot(pums,
   aes(x = WAGP, fill = SEX)) +
   geom_histogram(binwidth = 10000)
 ```
 
 ```{r, title = "Solution 3"}
-ggplot(na.omit(person),
+ggplot(na.omit(pums),
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL))
@@ -64,12 +64,12 @@ that does not have the variable specified in `facet_grid`. Note that
 as in the solution below.
 
 ```{r, title = "Solution 3 (challenge)"}
-ggplot(na.omit(person),
+ggplot(na.omit(pums),
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL)) +
   geom_histogram(
     bins = 20,
-    data = na.omit(person['WAGP']),
+    data = na.omit(pums['WAGP']),
     alpha = 0.5)
 ```
