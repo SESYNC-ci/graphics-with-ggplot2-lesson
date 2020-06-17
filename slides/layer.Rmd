@@ -142,7 +142,7 @@ foundation.
 
 ===
 
-Multiple `geom_*` layers create a plot with multiple visual elements.
+Multiple `geom_*` layers create a plot with multiple visual elements. For example, the data points can be *added* on top of the boxplots.
 
 ```{r, handout = 0}
 ggplot(pums,
@@ -182,12 +182,11 @@ The `color` specification was not part of aesthetic mapping between data and vis
 ===
 
 The `stat` parameter, in conjunction with `fun`, provides the ability to
-perform quick data transformations while plotting.
+perform quick data transformations while plotting. Instead of using `geom_point` to display all the data points, we can add points for the mean at each educational level.
 
 ```{r, handout = 0}
 ggplot(pums,
   aes(x = SCHL, y = WAGP)) +
-  geom_boxplot() +
   geom_point(
     color = 'red',
     stat = 'summary',
@@ -214,12 +213,14 @@ function works quite differently than assiging color to a `geom_*`.
 
 ===
 
-Here, the color of each point is detemined by the variable in the `SEX` data column. This time, color is specificied in the `aes` function. 
+To show the difference in wages based on sex, we can color the points based on the `SEX` data column. This time, color is specificied in the `aes` function because we are aesthetically mapping the data to an visual element in the plot.
 
 ```{r, handout = 0}
 ggplot(pums,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_boxplot()
+  aes(x = SCHL, y = WAGP, color=SEX)) +
+  geom_point(
+    stat = 'summary',
+    fun = mean)
 ```
 
 ===
@@ -234,14 +235,16 @@ Answer
 ===
 
 Properties of the data itself are similarly independent of the aesthetic mapping
-and the visual elements, but they can still affect the output. For example, switching the order of the levels of `SEX` will likewise switch the order in the plot.
+and the visual elements, but they can still affect the output. For example, see what happens when we switching the order of the levels of `SEX` in the data and then replot.
 
 ```{r, handout = 0}
 pums$SEX <- factor(pums$SEX, levels = c("2", "1"))
 
 ggplot(pums,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_boxplot()
+  aes(x = SCHL, y = WAGP, color=SEX)) +
+  geom_point(
+    stat = 'summary',
+    fun = mean)
 ```
 
 There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.  More on modifying plots with `scale_*` later in the [lesson](#axes-labels-and-themes).      

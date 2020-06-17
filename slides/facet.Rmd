@@ -40,12 +40,12 @@ new `ggplot` foundation using a cleaned up dataset. The data for ggplot in this 
 
 ```{r, handout = 0}
 ggplot(na.omit(pums),
-  aes(x = SEX, y = WAGP)) + 
+  aes(x = AGEP, y = WAGP)) + 
   geom_point() +
   geom_smooth(
     method = 'lm',
-    aes(group = 0)) +
-  facet_wrap(vars(SCHL))
+    aes(color = SEX, fill=SEX)) +
+  facet_wrap(~SCHL)
 ```
 
 Adding `facet_wrap(vars(SCHL))` creates 4 separate plots, 1 for each level of eduction attainment.
@@ -57,5 +57,4 @@ Question
 do it?
 
 Answer
-: {:.fragment} There are so many possibilities! For example, a scatterplot of
-wage against age colored by sex that includes a fitted regression model.
+: {:.fragment} There are so many possibilities! 
