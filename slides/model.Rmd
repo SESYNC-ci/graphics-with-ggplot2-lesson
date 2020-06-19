@@ -27,14 +27,14 @@ Age_Wage
 Next, the regression line is added using `geom_smooth` using a linear model. 
 
 ```{r, handout = 0}
-agep_wagp + geom_smooth(method='lm')
+Age_Wage + geom_smooth(method='lm')
 ```
 
 ===
 We can also use the aesthetic mapping to explore how wages differ by sex. To do this, map the color and fill to `SEX`, using `aes` inside the `geom_smooth` layer. In `ggplot2`, `color` refers to the outline and `fill` the interior coloring.  
 
 ```{r, handout=0}
-wage_gap <- agep_wagp + 
+wage_gap <- Age_Wage + 
   geom_smooth(method='lm', aes(color=SEX, fill=SEX))
 ```
 

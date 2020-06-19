@@ -17,25 +17,7 @@ facet by the interaction of a row variable by a column variable.
 The gender wage gap apparent in the US Census PUMS data is probably not
 consistent across people who obtained different levels of education.
 
-Before we plot the data, we can recode the levels of school in `SCHL` from a numeric code to the highest education level as we want displayed. 
-```{r, handout = 0}
-pums$SCHL <- factor(pums$SCHL)
-levels(pums$SCHL) <- list(
-  'High School' = '16',
-  'Bachelor\'s' = '21',
-  'Master\'s' = '22',
-  'Doctorate' = '24')
-```
-
-The [technical
-documentation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
-for the PUMS data includes a data dictionary, explaining the codes used for
-education attainment, and everything else you'ld like to know about the dataset.
-{:.notes}
-
-===
-
-The `sex_wagp` plot created above stored it's own copy of the data, so create a
+The `wage_gap` plot created above stored it's own copy of the data. To plot the levels of education we will need to remove the rows with NA. Therefore, we need to create a
 new `ggplot` foundation using a cleaned up dataset. The data for ggplot in this case has the na's removed by using the command `na.omit`.
 
 ```{r, handout = 0}
@@ -45,7 +27,7 @@ ggplot(na.omit(pums),
   geom_smooth(
     method = 'lm',
     aes(color = SEX, fill=SEX)) +
-  facet_wrap(~SCHL)
+  facet_wrap(vars(SCHL))
 ```
 
 Adding `facet_wrap(vars(SCHL))` creates 4 separate plots, 1 for each level of eduction attainment.

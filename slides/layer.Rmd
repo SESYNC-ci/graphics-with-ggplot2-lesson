@@ -7,9 +7,6 @@ opts_chunk$set(message = FALSE, warning = FALSE)
 
 ## Getting Started
 
-The dataset you will plot is an example of Public Use Microdata Sample (PUMS)
-produced by the US Census Bureau. You can find more about this data [here] (https://www.census.gov/programs-surveys/acs/technical-documentation/pums/about.html). 
-
 In this lesson, we'll explore the wage gap between men and women.
 
 The file to be loaded contains individuals' anonymized responses to the 5 Year
@@ -18,8 +15,15 @@ variables giving individual level data on household members income, education,
 employment, ethnicity, and much more.
 {:.notes}
 
+The dataset is an example of Public Use Microdata Sample (PUMS)
+produced by the US Census Bureau. The [technical
+documentation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
+for the PUMS data includes a data dictionary, explaining the codes used for
+the variable, such as education attainment, and everything else you'ld like to know about the dataset.
+{:.notes}
+
 ===
-The data columns we will use in this lesson are age (AGEP), wages over the past 12 months (WAGP), educational attainment (SCHL),  and sex (SEX)
+The data columns we will use in this lesson are age (AGEP), wages over the past 12 months (WAGP), educational attainment (SCHL), sex (SEX), and travel time to work (JWMNP)
 
 ```{r, handout = 0}
 library(readr)
@@ -29,7 +33,8 @@ pums <- read_csv(
     AGEP = 'i',
     WAGP = 'd',
     SCHL = 'c',
-    SEX = 'c'))
+    SEX = 'c', 
+    JWMNP = 'd'))
 ```
 
 The [readr](){:.rlib} package gives additional flexibility and speed over the
@@ -126,10 +131,27 @@ ggplot(pums,
 
 ===
 
-For a discrete x-axis, a boxplot is often beter than a scatterplot. Here, we plot wage by the level of education (`SCHL`)
+For a discrete x-axis, a boxplot is often beter than a scatterplot. 
+
+First, we can simply the level of educational attainment `SCHL` variable' by only including some of the factor levels.  
 
 ```{r, handout = 0}
-ggplot(pums,
+pums$SCHL <- factor(pums$SCHL)
+levels(pums$SCHL) <- list(
+  'High School' = '16',
+  'Bachelor\'s' = '21',
+  'Master\'s' = '22',
+  'Doctorate' = '24')
+```
+
+We can recode  `SCHL` from a numeric code to the highest education level as we want displayed. All data from the other levels will be converted to NA in `SCHL`. To remove the NA's from the data in the ggplot object, use `na.omit.`
+
+===
+
+Here, we plot wage by the level of education (`SCHL`)
+
+```{r, handout = 0}
+ggplot(na.omit(pums),
   aes(x = SCHL, y = WAGP)) +
   geom_boxplot()
 ```
@@ -145,7 +167,7 @@ foundation.
 Multiple `geom_*` layers create a plot with multiple visual elements. For example, the data points can be *added* on top of the boxplots.
 
 ```{r, handout = 0}
-ggplot(pums,
+ggplot(na.omit(pums),
   aes(x = SCHL, y = WAGP)) +
   geom_boxplot() +
   geom_point()
@@ -170,7 +192,7 @@ are common to multiple `geom_*` functions, such as changing the layer's color or
 ===
 
 ```{r, handout = 0}
-ggplot(pums,
+ggplot(na.omit(pums),
   aes(x = SCHL, y = WAGP)) +
   geom_point(color = 'red') +
   geom_boxplot()
@@ -185,7 +207,7 @@ The `stat` parameter, in conjunction with `fun`, provides the ability to
 perform quick data transformations while plotting. Instead of using `geom_point` to display all the data points, we can add points for the mean at each educational level.
 
 ```{r, handout = 0}
-ggplot(pums,
+ggplot(na.omit(pums),
   aes(x = SCHL, y = WAGP)) +
   geom_point(
     color = 'red',
@@ -216,7 +238,7 @@ function works quite differently than assiging color to a `geom_*`.
 To show the difference in wages based on sex, we can color the points based on the `SEX` data column. This time, color is specificied in the `aes` function because we are aesthetically mapping the data to an visual element in the plot.
 
 ```{r, handout = 0}
-ggplot(pums,
+ggplot(na.omit(pums),
   aes(x = SCHL, y = WAGP, color=SEX)) +
   geom_point(
     stat = 'summary',
@@ -240,7 +262,7 @@ and the visual elements, but they can still affect the output. For example, see 
 ```{r, handout = 0}
 pums$SEX <- factor(pums$SEX, levels = c("2", "1"))
 
-ggplot(pums,
+ggplot(na.omit(pums),
   aes(x = SCHL, y = WAGP, color=SEX)) +
   geom_point(
     stat = 'summary',
