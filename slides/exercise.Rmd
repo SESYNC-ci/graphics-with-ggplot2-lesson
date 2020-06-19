@@ -52,11 +52,11 @@ ggplot(na.omit(pums), aes(x=SCIENGP, y=WAGP, color=SEX)) +
   scale_x_discrete(labels = c('Yes', 'No'))+
   labs(x = "Science or Engineering Degree", 
        y = "Wages (Unadjusted USD)") +
-  geom_hline(aes(yintercept= mean(WAGP)))
+  geom_hline(aes(yintercept= median(WAGP)))
 ```
 
 ```{r, title = "Solution 3"}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL))
@@ -68,12 +68,12 @@ that does not have the variable specified in `facet_grid`. Note that
 as in the solution below.
 
 ```{r, title = "Solution 3 (challenge)"}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL)) +
   geom_histogram(
     bins = 20,
-    data = na.omit(pums['WAGP']),
+    data = filter_SCHL['WAGP'],
     alpha = 0.5)
 ```

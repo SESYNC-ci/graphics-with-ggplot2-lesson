@@ -133,15 +133,12 @@ ggplot(pums,
 
 For a discrete x-axis, a boxplot is often beter than a scatterplot. 
 
-First, we can simply the level of educational attainment `SCHL` variable' by only including some of the factor levels.  
+First, we can simply the level of educational attainment `SCHL` variable' by only including some of the factor levels and saving in a new data frame `filter_SCHL`.   
+
+Here, we include only individuals where the highest level of educational attainment is high school (16), bachelor's degree (21), a masters degree (22), or a doctorate (24). {:.notes}
 
 ```{r, handout = 0}
-pums$SCHL <- factor(pums$SCHL)
-levels(pums$SCHL) <- list(
-  'High School' = '16',
-  'Bachelor\'s' = '21',
-  'Master\'s' = '22',
-  'Doctorate' = '24')
+filter_SCHL <- pums[pums$SCHL %in% c(16, 21, 22, 24),]
 ```
 
 We can recode  `SCHL` from a numeric code to the highest education level as we want displayed. All data from the other levels will be converted to NA in `SCHL`. To remove the NA's from the data in the ggplot object, use `na.omit.`
@@ -151,7 +148,7 @@ We can recode  `SCHL` from a numeric code to the highest education level as we w
 Here, we plot wage by the level of education (`SCHL`)
 
 ```{r, handout = 0}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_boxplot()
 ```
@@ -167,7 +164,7 @@ foundation.
 Multiple `geom_*` layers create a plot with multiple visual elements. For example, the data points can be *added* on top of the boxplots.
 
 ```{r, handout = 0}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_boxplot() +
   geom_point()
@@ -192,7 +189,7 @@ are common to multiple `geom_*` functions, such as changing the layer's color or
 ===
 
 ```{r, handout = 0}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_point(color = 'red') +
   geom_boxplot()
@@ -207,7 +204,7 @@ The `stat` parameter, in conjunction with `fun`, provides the ability to
 perform quick data transformations while plotting. Instead of using `geom_point` to display all the data points, we can add points for the mean at each educational level.
 
 ```{r, handout = 0}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_point(
     color = 'red',
@@ -238,7 +235,7 @@ function works quite differently than assiging color to a `geom_*`.
 To show the difference in wages based on sex, we can color the points based on the `SEX` data column. This time, color is specificied in the `aes` function because we are aesthetically mapping the data to an visual element in the plot.
 
 ```{r, handout = 0}
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP, color=SEX)) +
   geom_point(
     stat = 'summary',
@@ -260,9 +257,9 @@ Properties of the data itself are similarly independent of the aesthetic mapping
 and the visual elements, but they can still affect the output. For example, see what happens when we switching the order of the levels of `SEX` in the data and then replot.
 
 ```{r, handout = 0}
-pums$SEX <- factor(pums$SEX, levels = c("2", "1"))
+filter_SCHL$SEX <- factor(filter_SCHL$SEX, levels = c("2", "1"))
 
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP, color=SEX)) +
   geom_point(
     stat = 'summary',

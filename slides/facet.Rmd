@@ -17,11 +17,11 @@ facet by the interaction of a row variable by a column variable.
 The gender wage gap apparent in the US Census PUMS data is probably not
 consistent across people who obtained different levels of education.
 
-The `wage_gap` plot created above stored it's own copy of the data. To plot the levels of education we will need to remove the rows with NA. Therefore, we need to create a
-new `ggplot` foundation using a cleaned up dataset. The data for ggplot in this case has the na's removed by using the command `na.omit`.
+The `wage_gap` plot created above stored it's own copy of the data. To plot the simplified levels of education, we will need to change the input data. Therefore, we need to create a
+new `ggplot` foundation using a cleaned up dataset. We can either use the dataset we created earlier, `filter_SCHL` or we can specify the data in the `ggplot` command.
 
 ```{r, handout = 0}
-ggplot(na.omit(pums),
+ggplot(pums[pums$SCHL %in% c(16, 21, 22, 24),],
   aes(x = AGEP, y = WAGP)) + 
   geom_point() +
   geom_smooth(

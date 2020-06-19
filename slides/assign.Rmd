@@ -12,7 +12,7 @@ Here, we will recreate the plot for the wage and level of schooling we made befo
 First, we will store the plot, mapping only the boxplots for each education level. 
 
 ```{r, handout = 0}
-schl_wagp <- ggplot(pums,
+schl_wagp <- ggplot(filter_SCHL,
        aes(x = SCHL, y = WAGP)) +
   geom_boxplot() 
 ```
