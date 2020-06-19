@@ -34,7 +34,7 @@ pums <- read_csv(
     WAGP = 'd',
     SCHL = 'c',
     SEX = 'c', 
-    JWMNP = 'd'))
+    SCIENGP = 'c'))
 ```
 
 The [readr](){:.rlib} package gives additional flexibility and speed over the
