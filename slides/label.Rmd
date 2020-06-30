@@ -1,6 +1,10 @@
 ---
 ---
 
+```{r, include = FALSE}
+opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
 ## Axes, Labels and Themes
 
 The `aes` and the `geom_*` functions do their best with annotations and styling,

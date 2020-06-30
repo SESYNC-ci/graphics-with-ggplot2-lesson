@@ -1,6 +1,8 @@
 ---
 ---
 
+
+
 ## Axes, Labels and Themes
 
 The `aes` and the `geom_*` functions do their best with annotations and styling,
@@ -31,7 +33,7 @@ wage_gap + labs(
   y = 'Wages (Unadjusted USD)')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/label/unnamed-chunk-1-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
 For information on how to add special symbols and formatting to plot labels, see
@@ -54,13 +56,7 @@ wage_gap + scale_y_continuous(
   trans = 'log10')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{:.output}
-![ ]({% include asset.html path="images/label/unnamed-chunk-2-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
 ===
@@ -100,13 +96,7 @@ sizes, can be set with `theme_*` functions. There are also [8 preset themes in g
 wage_gap + theme_bw()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{:.output}
-![ ]({% include asset.html path="images/label/unnamed-chunk-4-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
 {:.captioned}
 
 Start typing `theme_` on the console to see what themes are available in the
@@ -138,13 +128,7 @@ wage_gap + theme_bw() +
       hjust = 0.5))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{:.output}
-![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
 Use `?theme` for a list of available theme options. Note that position (both
