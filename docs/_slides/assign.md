@@ -6,18 +6,18 @@
 The output of `ggplot` can be assigned to a variable, which works with `+` to
 add layers.
 
-Here, we will store a plot for the wage and level of schooling, only plotting the means for men and women.
+Here, we will recreate the plot for the wage and level of schooling we made before.
 
 ===
+
+First, we will store the plot, mapping only the boxplots for each education level. 
 
 
 
 ~~~r
-schl_wagp <- ggplot(pums,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_point(
-    stat = 'summary',
-    fun = 'mean')
+schl_wagp <- ggplot(filter_SCHL,
+       aes(x = SCHL, y = WAGP)) +
+  geom_boxplot() 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -25,7 +25,9 @@ schl_wagp <- ggplot(pums,
 ===
 
 The plot information stored in `schl_wagp` can be used on its own, or with
-additional layers. To plot the data, simply run the name of the stored object.
+additional layers. 
+
+You may notice that the plot is not displayed in Rstudio when it is stored. To plot the data, simply run the name of the stored object.
 
 
 
@@ -38,14 +40,33 @@ additional layers. To plot the data, simply run the name of the stored object.
 
 ===
 
-Store additional layers by overwriting the variable (or creating a new one).
+To add the points for the mean of each education level, simply add the `geom_point` layer to the stored `schl_wagp` object. 
+
+
+
+~~~r
+schl_wagp +
+  geom_point(
+    color = 'red',
+    stat = 'summary',
+    fun = mean)
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/assign/unnamed-chunk-3-1.png" %})
+{:.captioned}
+
+===
+
+When adding layers, you can save as a new variable or overwrite the existing variable. 
 
 
 
 ~~~r
 schl_wagp <- schl_wagp +
-  scale_color_manual(
-    values = c('black', 'red'))
+  geom_point(
+    color = 'red',
+    stat = 'summary',
+    fun = mean)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -55,16 +76,16 @@ schl_wagp <- schl_wagp +
 > schl_wagp
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/assign/unnamed-chunk-4-1.png" %})
+![ ]({% include asset.html path="images/assign/unnamed-chunk-5-1.png" %})
 {:.captioned}
-
-In this plot, the colors were manually changed using `scale_color_manual` to black and red. Because there are two levels of `SEX`, two color are expected.
-
 ===
 
 Figures are constructed in [ggplot2](){:.rlib} as layers of shapes, from the
 axes on up through the `geom_*` elements. The natural file type for storing such
-figures at "infinite" resolution are PDF (for print) or SVG (for online). Use the function `ggsave` to save as an image.  
+figures at "infinite" resolution are PDF (for print) or SVG (for online). 
+{:.notes}
+
+Use the function `ggsave` to save as an image.  
 
 
 

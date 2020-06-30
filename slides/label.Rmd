@@ -6,6 +6,8 @@
 The `aes` and the `geom_*` functions do their best with annotations and styling,
 but precise control comes from other functions. 
 
+===
+
 Functions include:
 
 - `labs`: labels
@@ -15,11 +17,12 @@ Functions include:
 ===
 
 To demonstrate these functions, we can edit the plot showing relationship of age and wages based on sex, saved as `wage_gap`. 
+{:.notes}
 
 Setting the title and axis labels is done by the `labs` function, which accepts names for
 labeled elements in your plot (e.g. `x`, `y`, `title`) as arguments.
 
-```{r, handout = 0}
+```{r, handout = 0, message = F}
 wage_gap + labs(
   title = 'Wage Gap',
   x = NULL,
@@ -31,22 +34,26 @@ For information on how to add special symbols and formatting to plot labels, see
 {:.notes}
 
 ===
+
 Scales in `ggplot` control how the data is mapped to aesthetics. 
 
 Functions related to the axes, i.e.  limits, breaks, and transformations,
 are all `scale_*` functions. To modify any property of a continuous y-axis, add
-a call to `scale_y_continuous`.
+a call to `scale_y_continuous`. For example, we can transform the y axis to a log scale.
+{:.notes}
 
-For example, we can transform the y axis to a log scale.
 ```{r, handout = 0}
 wage_gap + scale_y_continuous(
   trans = 'log10')
 ```
 
 ===
+
 Scales are also used to control color and fill schemes. `scale_color_*` functions, for example, control the colors, labels, and breaks mapping.
 
 We can use `scale_color_manual` and `scale_fill_manual` to manually specify the colors we want to use for men and women in the plot and relabel the factors from 1 and 2 to "Men" and "Women."
+{:.notes}
+
 
 ```{r, handout=0}
 wage_gap <- wage_gap + labs(
@@ -62,6 +69,7 @@ wage_gap <- wage_gap + labs(
 ```
 wage_gap
 ```
+===
 
 "Look and feel" options in [ggplot2](){:.rlib}, from background color to font
 sizes, can be set with `theme_*` functions. There are also [8 preset themes in ggplot](https://ggplot2.tidyverse.org/reference/ggtheme.html)
@@ -86,6 +94,7 @@ those customizations.  Check the order if your plot isn't looking how you'd like
 {:.notes}
 
 For example, we can center align and bold face the title using the following `theme` specifications.
+{:.notes}
 
 ```{r, handout = 0}
 wage_gap + theme_bw() +

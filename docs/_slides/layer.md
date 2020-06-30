@@ -5,9 +5,6 @@
 
 ## Getting Started
 
-The dataset you will plot is an example of Public Use Microdata Sample (PUMS)
-produced by the US Census Bureau. You can find more about this data [here] (https://www.census.gov/programs-surveys/acs/technical-documentation/pums/about.html). 
-
 In this lesson, we'll explore the wage gap between men and women.
 
 The file to be loaded contains individuals' anonymized responses to the 5 Year
@@ -16,8 +13,18 @@ variables giving individual level data on household members income, education,
 employment, ethnicity, and much more.
 {:.notes}
 
+The dataset is an example of Public Use Microdata Sample (PUMS)
+produced by the US Census Bureau. The [technical
+documentation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
+for the PUMS data includes a data dictionary, explaining the codes used for
+the variable, such as education attainment, and everything else you'ld like to know about the dataset.
+{:.notes}
+
 ===
-The data columns we will use in this lesson are age (AGEP), wages over the past 12 months (WAGP), educational attainment (SCHL),  and sex (SEX)
+
+The data columns we will use in this lesson are age (AGEP), wages over the past 12 months (WAGP), educational attainment (SCHL), sex (SEX), and travel time to work (JWMNP)
+{:.notes}
+
 
 
 
@@ -29,7 +36,8 @@ pums <- read_csv(
     AGEP = 'i',
     WAGP = 'd',
     SCHL = 'c',
-    SEX = 'c'))
+    SEX = 'c', 
+    SCIENGP = 'c'))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 
@@ -62,12 +70,12 @@ ggplot(data = pums, aes(x = WAGP)) +
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
+===
+
 The `ggplot` command expects a data frame and an aesthetic mapping. 
 
 - The data is specified (`data = pums`). 
-
-- The `aes` function creates the aesthetic, a mapping between variables in the data frame and visual elements in the plot. Here, the aesthetic maps `WAGP` to the
-x-axis; a histogram only needs one variable mapped. {:.notes}
+- The `aes` function creates the aesthetic, a mapping between variables in the data frame and visual elements in the plot. Here, the aesthetic maps `WAGP` to the x-axis; a histogram only needs one variable mapped. 
 
 The `ggplot` function by itself only creates the axes, because only the
 aesthetic map has been defined. No data are plotted until the addition of a
@@ -78,7 +86,10 @@ with `+`, to the object created by the `ggplot` function.
 ===
 
 Plotting histograms is always a good idea when exploring data. The zeros and
-the "top coded" value used for high wage-earners in PUMS are outliers. So we will now "filter" the data to remove individuals with a wage of 0 and the "top-coded" high earners)
+the "top coded" value used for high wage-earners in PUMS are outliers. 
+{:.notes}
+
+We can "filter" the data to remove individuals with a wage of 0 and the "top-coded" high earners)
 
 
 
@@ -113,7 +124,10 @@ ggplot(data = pums, aes(x = WAGP)) +
 ===
 
 The `geom_histogram` aesthetic only involves one variable. A scatterplot
-requires two, both an `x` and a `y`. We can use a scatterplot to look at the relationship between age and wage. 
+requires two, both an `x` and a `y`. 
+{:.notes}
+
+We can use a scatterplot to look at the relationship between age and wage. 
 
 
 
@@ -137,7 +151,10 @@ available](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html).
 
 The aesthetic and the geometry are entirely independent, making it easy to
 experiment with very different kinds of visual representations. The only change
-needed is in the `geom_*` layer. For example, we can plot the same data, age and wage, using a 2D density plot by switching out geom_histogram with geom_density_2d
+needed is in the `geom_*` layer. 
+{:.notes}
+
+For example, we can plot the same data, age and wage, using a 2D density plot by switching out geom_histogram with `geom_density_2d`
 
 
 
@@ -152,17 +169,34 @@ ggplot(pums,
 
 ===
 
-For a discrete x-axis, a boxplot is often beter than a scatterplot. Here, we plot wage by the level of education (`SCHL`)
+For a discrete x-axis, a boxplot is often beter than a scatterplot. 
+
+First, we can simplify the level of educational attainment `SCHL` variable' by only including some of the factor levels and saving in a new data frame `filter_SCHL`.   
+
+Here, we include only individuals where the highest level of educational attainment is high school (16), bachelor's degree (21), a masters degree (22), or a doctorate (24). 
+{:.notes}
 
 
 
 ~~~r
-ggplot(pums,
+filter_SCHL <- pums[pums$SCHL %in% c(16, 21, 22, 24),]
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+===
+
+Here, we plot wage by the level of education (`SCHL`)
+
+
+
+~~~r
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_boxplot()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-8-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-9-1.png" %})
 {:.captioned}
 
 To create a scatterplot, a boxplot, and even a 2d kernel density estimate, the
@@ -173,18 +207,18 @@ foundation.
 
 ===
 
-Multiple `geom_*` layers create a plot with multiple visual elements.
+Multiple `geom_*` layers create a plot with multiple visual elements. For example, the data points can be *added* on top of the boxplots.
 
 
 
 ~~~r
-ggplot(pums,
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_boxplot() +
   geom_point()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-9-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-10-1.png" %})
 {:.captioned}
 
 ===
@@ -208,13 +242,13 @@ are common to multiple `geom_*` functions, such as changing the layer's color or
 
 
 ~~~r
-ggplot(pums,
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
   geom_point(color = 'red') +
   geom_boxplot()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-10-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-11-1.png" %})
 {:.captioned}
 
 The `color` specification was not part of aesthetic mapping between data and visual elements. In other words, it was not used to specify how the **data** are mapped visually.  Therefore, 1) it applies to every record (or person) and 2) only the elements in the scatterplot layer are affected. 
@@ -223,21 +257,23 @@ The `color` specification was not part of aesthetic mapping between data and vis
 ===
 
 The `stat` parameter, in conjunction with `fun`, provides the ability to
-perform quick data transformations while plotting.
+perform quick data transformations while plotting. 
+
+Instead of using `geom_point` to display all the data points, we can add points for the mean at each educational level.
+{:.notes}
 
 
 
 ~~~r
-ggplot(pums,
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
-  geom_boxplot() +
   geom_point(
     color = 'red',
     stat = 'summary',
     fun = mean)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-11-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-12-1.png" %})
 {:.captioned}
 
 With `stat = 'summary'`, the plot replaces the raw data with the result of a
@@ -260,17 +296,22 @@ function works quite differently than assiging color to a `geom_*`.
 
 ===
 
-Here, the color of each point is detemined by the variable in the `SEX` data column. This time, color is specificied in the `aes` function. 
+To show the difference in wages based on sex, we can color the points based on the `SEX` data column. 
+
+This time, color is specificied in the `aes` function because we are aesthetically mapping the data to an visual element in the plot.
+{:.notes}
 
 
 
 ~~~r
-ggplot(pums,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_boxplot()
+ggplot(filter_SCHL,
+  aes(x = SCHL, y = WAGP, color=SEX)) +
+  geom_point(
+    stat = 'summary',
+    fun = mean)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-12-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-13-1.png" %})
 {:.captioned}
 
 ===
@@ -285,19 +326,24 @@ Answer
 ===
 
 Properties of the data itself are similarly independent of the aesthetic mapping
-and the visual elements, but they can still affect the output. For example, switching the order of the levels of `SEX` will likewise switch the order in the plot.
+and the visual elements, but they can still affect the output. 
+
+For example, see what happens when we switching the order of the levels of `SEX` in the data and then replot.
+{:.notes}
 
 
 
 ~~~r
-pums$SEX <- factor(pums$SEX, levels = c("2", "1"))
+filter_SCHL$SEX <- factor(filter_SCHL$SEX, levels = c("2", "1"))
 
-ggplot(pums,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_boxplot()
+ggplot(filter_SCHL,
+  aes(x = SCHL, y = WAGP, color=SEX)) +
+  geom_point(
+    stat = 'summary',
+    fun = mean)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/layer/unnamed-chunk-13-1.png" %})
+![ ]({% include asset.html path="images/layer/unnamed-chunk-14-1.png" %})
 {:.captioned}
 
 There can be cases where you don't want to or can't modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you'd like within the `ggplot`, `aes`, and `scale_*` functions.  More on modifying plots with `scale_*` later in the [lesson](#axes-labels-and-themes).      

@@ -7,15 +7,6 @@
 
 ### Exercise 1
 
-Use `ggplot` to show how the mean wage earned in the U.S. varies with age,
-showing males and females in different colors. (Hint: Baby steps! Start with a
-scatterplot of wage by age. Then expand your code to plot only the means. Then
-distinguish sexes by color.)
-
-===
-
-### Exercise 2
-
 Create a histogram, using a `geom_histogram` layer, of the wages earned by
 females and males, with sex distinguished by the color of the bar's interior. To
 silence that warning you're getting, open the help with `?geom_histogram` and
@@ -23,6 +14,15 @@ determine how to explicitly set the bin width.
 
 ===
 
+### Exercise 2
+
+The ACS includes data for if an individual has a science or engineering degree `SCIENGP`. Use `ggplot` to show how the mean wage earned in the U.S. varies when individuals have a science or engineering degree (coded as 1) or do not (coded as 2),
+showing males and females in different colors. (Hint: Baby steps! First determine what type of plot you want to use to display categorical data for `SCIENGP`. Then
+distinguish sexes by color. You can then customize your plot labels, colors, etc.)
+
+Explore the help file for `?geom_abline` Add a horizontal line for the median wages for the data overall. 
+
+===
 ### Exercise 3
 
 The `facet_grid` layer (different from `facet_wrap`) requires an argument for
@@ -42,32 +42,24 @@ foundation.)
 
 ~~~r
 ggplot(pums,
-  aes(x = AGEP, y = WAGP, color = SEX)) +
-  geom_line(stat = 'summary',
-            fun.y = 'mean')
+  aes(x = WAGP, fill = SEX)) +
+  geom_histogram(binwidth = 10000)
 ~~~
 {:title="Solution 1" .text-document}
-
-
-~~~
-Warning: Ignoring unknown parameters: fun.y
-~~~
-{:.output}
-
-
-~~~
-No summary function supplied, defaulting to `mean_se()`
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/exercise/unnamed-chunk-1-1.png" %})
 {:.captioned}
 
 
 
 ~~~r
-ggplot(pums,
-  aes(x = WAGP, fill = SEX)) +
-  geom_histogram(binwidth = 10000)
+ggplot(na.omit(pums), aes(x=SCIENGP, y=WAGP, color=SEX)) +
+  geom_boxplot()+
+  scale_color_manual(values = c('blue', 'red'), 
+                     labels = c('Men', 'Women')) +
+  scale_x_discrete(labels = c('Yes', 'No'))+
+  labs(x = "Science or Engineering Degree", 
+       y = "Wages (Unadjusted USD)") +
+  geom_hline(aes(yintercept= median(WAGP)))
 ~~~
 {:title="Solution 2" .text-document}
 ![ ]({% include asset.html path="images/exercise/unnamed-chunk-2-1.png" %})
@@ -76,7 +68,7 @@ ggplot(pums,
 
 
 ~~~r
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL))
@@ -93,13 +85,13 @@ as in the solution below.
 
 
 ~~~r
-ggplot(na.omit(pums),
+ggplot(filter_SCHL,
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
   facet_grid(vars(SEX), vars(SCHL)) +
   geom_histogram(
     bins = 20,
-    data = na.omit(pums['WAGP']),
+    data = filter_SCHL['WAGP'],
     alpha = 0.5)
 ~~~
 {:title="Solution 3 (challenge)" .text-document}

@@ -17,40 +17,19 @@ facet by the interaction of a row variable by a column variable.
 The gender wage gap apparent in the US Census PUMS data is probably not
 consistent across people who obtained different levels of education.
 
-Before we plot the data, we can recode the levels of school in `SCHL` from a numeric code to the highest education level as we want displayed. 
-
-
-~~~r
-pums$SCHL <- factor(pums$SCHL)
-levels(pums$SCHL) <- list(
-  'High School' = '16',
-  'Bachelor\'s' = '21',
-  'Master\'s' = '22',
-  'Doctorate' = '24')
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-The [technical
-documentation](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html)
-for the PUMS data includes a data dictionary, explaining the codes used for
-education attainment, and everything else you'ld like to know about the dataset.
+The `wage_gap` plot created above stored it's own copy of the data. To plot the simplified levels of education, we will need to change the input data. Therefore, we need to create a
+new `ggplot` foundation using a cleaned up dataset. We can either use the dataset we created earlier, `filter_SCHL` or we can specify the data in the `ggplot` command.
 {:.notes}
 
-===
-
-The `sex_wagp` plot created above stored it's own copy of the data, so create a
-new `ggplot` foundation using a cleaned up dataset. The data for ggplot in this case has the na's removed by using the command `na.omit`.
-
 
 
 ~~~r
-ggplot(na.omit(pums),
-  aes(x = SEX, y = WAGP)) + 
+ggplot(pums[pums$SCHL %in% c(16, 21, 22, 24),],
+  aes(x = AGEP, y = WAGP)) + 
   geom_point() +
   geom_smooth(
     method = 'lm',
-    aes(group = 0)) +
+    aes(color = SEX, fill=SEX)) +
   facet_wrap(vars(SCHL))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
@@ -60,7 +39,7 @@ ggplot(na.omit(pums),
 `geom_smooth()` using formula 'y ~ x'
 ~~~
 {:.output}
-![ ]({% include asset.html path="images/facet/unnamed-chunk-2-1.png" %})
+![ ]({% include asset.html path="images/facet/unnamed-chunk-1-1.png" %})
 {:.captioned}
 
 Adding `facet_wrap(vars(SCHL))` creates 4 separate plots, 1 for each level of eduction attainment.
@@ -72,5 +51,4 @@ Question
 do it?
 
 Answer
-: {:.fragment} There are so many possibilities! For example, a scatterplot of
-wage against age colored by sex that includes a fitted regression model.
+: {:.fragment} There are so many possibilities! 
