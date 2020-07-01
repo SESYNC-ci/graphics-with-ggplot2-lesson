@@ -2,9 +2,8 @@
 ---
 
 ```{r, include = FALSE}
-opts_chunk$set(message = FALSE, warning = FALSE)
+opts_chunk$set(message = FALSE, warning = FALSE, fig.height= 6, fig.width= 6, dpi=100)
 ```
-
 ## Facets
 
 To conclude this overview of [ggplot2](){:.rlib}, we'll apply the same plotting

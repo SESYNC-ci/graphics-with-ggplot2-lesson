@@ -1,6 +1,8 @@
 ---
 ---
 
+
+
 ## Exercises
 
 ===
@@ -46,7 +48,7 @@ ggplot(pums,
   geom_histogram(binwidth = 10000)
 ~~~
 {:title="Solution 1" .text-document}
-![ ]({% include asset.html path="images/exercise/unnamed-chunk-1-1.png" %})
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
 
@@ -62,7 +64,7 @@ ggplot(na.omit(pums), aes(x=SCIENGP, y=WAGP, color=SEX)) +
   geom_hline(aes(yintercept= median(WAGP)))
 ~~~
 {:title="Solution 2" .text-document}
-![ ]({% include asset.html path="images/exercise/unnamed-chunk-2-1.png" %})
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
 
@@ -74,7 +76,7 @@ ggplot(filter_SCHL,
   facet_grid(vars(SEX), vars(SCHL))
 ~~~
 {:title="Solution 3" .text-document}
-![ ]({% include asset.html path="images/exercise/unnamed-chunk-3-1.png" %})
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-4-1.png" %})
 {:.captioned}
 
 For the advanced challenge, you must supply a dataset to a second gemo_histogram
@@ -95,5 +97,5 @@ ggplot(filter_SCHL,
     alpha = 0.5)
 ~~~
 {:title="Solution 3 (challenge)" .text-document}
-![ ]({% include asset.html path="images/exercise/unnamed-chunk-4-1.png" %})
+![ ]({% include asset.html path="images/exercise/unnamed-chunk-5-1.png" %})
 {:.captioned}

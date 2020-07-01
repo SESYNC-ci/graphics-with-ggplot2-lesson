@@ -1,6 +1,10 @@
 ---
 ---
 
+```{r, include = FALSE}
+opts_chunk$set(message = FALSE, warning = FALSE, fig.height= 4, fig.width= 4, dpi=100)
+```
+
 ## Storing and Re-plotting
 
 The output of `ggplot` can be assigned to a variable, which works with `+` to

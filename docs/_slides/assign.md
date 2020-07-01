@@ -1,6 +1,8 @@
 ---
 ---
 
+
+
 ## Storing and Re-plotting
 
 The output of `ggplot` can be assigned to a variable, which works with `+` to
@@ -35,7 +37,7 @@ You may notice that the plot is not displayed in Rstudio when it is stored. To p
 > schl_wagp
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/assign/unnamed-chunk-2-1.png" %})
+![ ]({% include asset.html path="images/assign/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
 ===
@@ -52,7 +54,7 @@ schl_wagp +
     fun = mean)
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/assign/unnamed-chunk-3-1.png" %})
+![ ]({% include asset.html path="images/assign/unnamed-chunk-4-1.png" %})
 {:.captioned}
 
 ===
@@ -76,7 +78,7 @@ schl_wagp <- schl_wagp +
 > schl_wagp
 ~~~
 {:title="Console" .input}
-![ ]({% include asset.html path="images/assign/unnamed-chunk-5-1.png" %})
+![ ]({% include asset.html path="images/assign/unnamed-chunk-6-1.png" %})
 {:.captioned}
 ===
 

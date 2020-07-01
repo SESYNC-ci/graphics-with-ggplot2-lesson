@@ -2,7 +2,6 @@
 ---
 
 
-
 ## Facets
 
 To conclude this overview of [ggplot2](){:.rlib}, we'll apply the same plotting
@@ -39,6 +38,7 @@ ggplot(pums[pums$SCHL %in% c(16, 21, 22, 24),],
 {:.captioned}
 
 Adding `facet_wrap(vars(SCHL))` creates 4 separate plots, 1 for each level of eduction attainment.
+{:.notes}
 
 ===
 

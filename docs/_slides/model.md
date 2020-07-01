@@ -1,6 +1,8 @@
 ---
 ---
 
+
+
 ## Smooth Lines
 
 The `geom_smooth` layer can add various kinds of regression lines and
@@ -36,7 +38,7 @@ Next, the regression line is added using `geom_smooth` using a linear model.
 Age_Wage + geom_smooth(method = 'lm')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/model/unnamed-chunk-2-1.png" %})
+![ ]({% include asset.html path="images/model/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
 ===

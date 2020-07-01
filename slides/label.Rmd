@@ -2,7 +2,7 @@
 ---
 
 ```{r, include = FALSE}
-opts_chunk$set(message = FALSE, warning = FALSE)
+opts_chunk$set(message = FALSE, warning = FALSE, fig.height= 4, fig.width= 4, dpi=100)
 ```
 
 ## Axes, Labels and Themes

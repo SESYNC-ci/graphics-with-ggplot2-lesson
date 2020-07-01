@@ -1,6 +1,10 @@
 ---
 ---
 
+```{r, include = FALSE}
+opts_chunk$set(message = FALSE, warning = FALSE, fig.height= 4, fig.width= 4, dpi=100)
+```
+
 ## Exercises
 
 ===
@@ -55,7 +59,7 @@ ggplot(na.omit(pums), aes(x=SCIENGP, y=WAGP, color=SEX)) +
   geom_hline(aes(yintercept= median(WAGP)))
 ```
 
-```{r, title = "Solution 3"}
+```{r, title = "Solution 3", fig.height= 7, fig.width= 7, dpi=100}
 ggplot(filter_SCHL,
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
@@ -67,7 +71,7 @@ that does not have the variable specified in `facet_grid`. Note that
 `facet_grid` affects the entire plot, including layers added "after faceting",
 as in the solution below.
 
-```{r, title = "Solution 3 (challenge)"}
+```{r, title = "Solution 3 (challenge)", fig.height= 7, fig.width= 7, dpi=100}
 ggplot(filter_SCHL,
   aes(x = WAGP)) +
   geom_histogram(bins = 20) +
