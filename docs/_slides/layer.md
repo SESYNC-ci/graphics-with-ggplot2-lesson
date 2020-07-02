@@ -67,18 +67,6 @@ ggplot(data = pums, aes(x = WAGP)) +
   geom_histogram()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-~~~
-{:.output}
-
-
-~~~
-Warning: Removed 1681 rows containing non-finite values (stat_bin).
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
@@ -130,12 +118,6 @@ ggplot(data = pums, aes(x = WAGP)) +
   geom_histogram()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/layer/unnamed-chunk-5-1.png" %})
 {:.captioned}
 

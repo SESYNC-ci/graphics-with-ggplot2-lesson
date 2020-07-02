@@ -56,12 +56,6 @@ wage_gap + scale_y_continuous(
   trans = 'log10')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/label/unnamed-chunk-3-1.png" %})
 {:.captioned}
 
@@ -102,12 +96,6 @@ sizes, can be set with `theme_*` functions. There are also [8 preset themes in g
 wage_gap + theme_bw()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
 {:.captioned}
 
@@ -140,12 +128,6 @@ wage_gap + theme_bw() +
       hjust = 0.5))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
-
-~~~
-`geom_smooth()` using formula 'y ~ x'
-~~~
-{:.output}
 ![ ]({% include asset.html path="images/label/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
