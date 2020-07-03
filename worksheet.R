@@ -98,6 +98,9 @@ ggsave(...,
 ... + 
   ...(method = 'lm')
 
+... <- Age_Wage + 
+  geom_smooth(method = ..., aes(...))
+
 # Axes, Labels and Themes
 
 ... + ...(
