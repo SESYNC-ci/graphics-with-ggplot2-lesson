@@ -22,7 +22,7 @@ First, the scatterplot is stored as `Age_Wage`
   geom_point()
 ```
 
-```
+```{r}
 Age_Wage
 ```
 
@@ -43,11 +43,11 @@ wage_gap <- Age_Wage +
   geom_smooth(method='lm', aes(color=SEX, fill=SEX))
 ```
 
-```
+```{r, message=F}
 wage_gap
 ```
 
-To learn more about adding regression lines, such as how to change the confidence interval, see the `geom_smooth` [help page] (https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+To learn more about adding regression lines, such as how to change the confidence interval, see the `geom_smooth` [help page](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
 {:.notes}
 
 

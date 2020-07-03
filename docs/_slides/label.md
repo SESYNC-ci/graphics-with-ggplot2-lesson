@@ -29,7 +29,7 @@ labeled elements in your plot (e.g. `x`, `y`, `title`) as arguments.
 ~~~r
 wage_gap + labs(
   title = 'Wage Gap',
-  x = NULL,
+  x = 'Age',
   y = 'Wages (Unadjusted USD)')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
