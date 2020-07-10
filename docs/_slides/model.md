@@ -1,56 +1,74 @@
 ---
 ---
 
+
+
 ## Smooth Lines
 
-The `geom_smooth` layer used above can add various kinds of regression lines and
-confidence intervals. A `method = 'lm'` argument specifies a linear model.
-
-Note, however, that with a categorical predictor mapped to an aesthetic element,
-the `geom_smooth` call would separately perform a linear regression (ANOVA)
-within each group. The call to `aes` must override the "group" aesthetic so the
-regression is run once.
-{:.notes}
+The `geom_smooth` layer can add various kinds of regression lines and
+confidence intervals. The argument `method` defines the type of regression; `method = 'lm'`  specifies a linear model.
 
 ===
+
+Here, we will observe the relationship between age (AGEP) and wages (WAGP). 
+
+First, the scatterplot is stored as `Age_Wage`
 
 
 
 ~~~r
-ggplot(person,
-  aes(x = SEX, y = WAGP)) + 
-  geom_point() +
-  geom_smooth(
-    method = 'lm',
-    aes(group = 0))
+ Age_Wage <- ggplot(pums, 
+       aes(x=AGEP, y=WAGP)) +
+  geom_point()
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/model/unnamed-chunk-1-1.png" %})
-{:.captioned}
 
-Is there really a confidence interval? Yes, it's just pretty narrow and hard to
-see. You could add a `size = 0.5` argument to `geom_smooth` to see there is a
-gray interval around the line. Or, as the next step shows, you could change
-the size of the confidence interval for a better visual representation of the
-variability.
-{:.notes}
-
-===
-
-The `level` argument for `geom_smooth` controls the limits of the confidence
-interval, defaulting to 95%.
 
 
 
 ~~~r
-ggplot(person,
-  aes(x = SEX, y = WAGP)) + 
-  geom_point() +
-  geom_smooth(
-    method = 'lm',
-    level = 0.99,
-    aes(group = 0))
+> Age_Wage
+~~~
+{:title="Console" .input}
+![ ]({% include asset.html path="images/model/unnamed-chunk-3-1.png" %})
+{:.captioned}
+
+===
+
+Next, the regression line is added using `geom_smooth` using a linear model. 
+
+
+
+~~~r
+Age_Wage + geom_smooth(method = 'lm')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/model/unnamed-chunk-2-1.png" %})
+![ ]({% include asset.html path="images/model/unnamed-chunk-4-1.png" %})
 {:.captioned}
+
+===
+
+We can also use the aesthetic mapping to explore how wages differ by sex. To do this, map the color and fill to `SEX`, using `aes` inside the `geom_smooth` layer. In `ggplot2`, `color` refers to the outline and `fill` the interior coloring.  
+
+
+
+~~~r
+wage_gap <- Age_Wage + 
+  geom_smooth(method='lm', aes(color=SEX, fill=SEX))
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+
+
+~~~r
+> wage_gap
+~~~
+{:title="Console" .input}
+![ ]({% include asset.html path="images/model/unnamed-chunk-6-1.png" %})
+{:.captioned}
+
+To learn more about adding regression lines, such as how to change the confidence interval, see the `geom_smooth` [help page](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+{:.notes}
+
+

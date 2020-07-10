@@ -8,7 +8,7 @@ visualizations in R begins to seem down-right orderly.
 ## Instructor Notes
 
 The [dataset] used in this lesson is the Public-Use Microdata Sample (PUMS) of
-the 2017 5-year ACS conducted and published by the US Census Beaurea. At the
+the 2017 5-year ACS conducted and published by the US Census Bureau. At the
 time of writing, a direct [download link] for a 2.3Gb ZIP is available. Full
 [documentation is available online].
 

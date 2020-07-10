@@ -2,6 +2,7 @@
 .Rhistory
 .Rproj.user
 cache/
+notes_MMG.Rmd
 
 # Jupyter
 .ipynb_checkpoints/

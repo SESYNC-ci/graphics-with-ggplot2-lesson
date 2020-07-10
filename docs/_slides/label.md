@@ -1,39 +1,35 @@
 ---
 ---
 
+
+
 ## Axes, Labels and Themes
 
 The `aes` and the `geom_*` functions do their best with annotations and styling,
-but precise control comes from `labs`, `scale_*`, and `theme_*`.
+but precise control comes from other functions. 
 
 ===
 
-First, store a plot to simplify experiments with the labels.
+Functions include:
 
-
-
-~~~r
-sex_wagp <- ggplot(person,
-  aes(x = SEX, y = WAGP)) + 
-  geom_point() +
-  geom_smooth(
-    method = 'lm',
-    aes(group = 0))
-~~~
-{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-
+- `labs`: labels
+- `scale_*`: scales such as color, size, and positional scales
+- `theme_*` : the stylistic theme unrelated to the data
 
 ===
 
-Set the title and axis labels with the `labs` function, which accepts names for
+To demonstrate these functions, we can edit the plot showing relationship of age and wages based on sex, saved as `wage_gap`. 
+{:.notes}
+
+Setting the title and axis labels is done by the `labs` function, which accepts names for
 labeled elements in your plot (e.g. `x`, `y`, `title`) as arguments.
 
 
 
 ~~~r
-sex_wagp + labs(
+wage_gap + labs(
   title = 'Wage Gap',
-  x = NULL,
+  x = 'Age',
   y = 'Wages (Unadjusted USD)')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
@@ -46,14 +42,17 @@ For information on how to add special symbols and formatting to plot labels, see
 
 ===
 
-Functions related to the axes, i.e. their limits, breaks, and any transformation
+Scales in `ggplot` control how the data is mapped to aesthetics. 
+
+Functions related to the axes, i.e.  limits, breaks, and transformations,
 are all `scale_*` functions. To modify any property of a continuous y-axis, add
-a call to `scale_y_continuous`.
+a call to `scale_y_continuous`. For example, we can transform the y axis to a log scale.
+{:.notes}
 
 
 
 ~~~r
-sex_wagp + scale_y_continuous(
+wage_gap + scale_y_continuous(
   trans = 'log10')
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
@@ -62,16 +61,42 @@ sex_wagp + scale_y_continuous(
 
 ===
 
-"Look and feel" options in [ggplot2](){:.rlib}, from background color to font
-sizes, can be set with `theme_*` functions. 
+Scales are also used to control color and fill schemes. `scale_color_*` functions, for example, control the colors, labels, and breaks mapping.
+
+We can use `scale_color_manual` and `scale_fill_manual` to manually specify the colors we want to use for men and women in the plot and relabel the factors from 1 and 2 to "Men" and "Women."
+{:.notes}
+
 
 
 
 ~~~r
-sex_wagp + theme_bw()
+wage_gap <- wage_gap + labs(
+  title = 'Wage Gap',
+  x = 'Age',
+  y = 'Wages (Unadjusted USD)') + 
+  scale_color_manual(values = c('blue', 'red'), 
+                     labels = c('Women', 'Men')) + 
+  scale_fill_manual(values = c('blue', 'red'), 
+                     labels = c('Women', 'Men')) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/label/unnamed-chunk-4-1.png" %})
+
+
+```
+wage_gap
+```
+===
+
+"Look and feel" options in [ggplot2](){:.rlib}, from background color to font
+sizes, can be set with `theme_*` functions. There are also [8 preset themes in ggplot](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+
+
+
+~~~r
+wage_gap + theme_bw()
+~~~
+{:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
 {:.captioned}
 
 Start typing `theme_` on the console to see what themes are available in the
@@ -89,10 +114,13 @@ Do be aware that if `theme` comes after other custom specifications, it will ove
 those customizations.  Check the order if your plot isn't looking how you'd like it to look.  
 {:.notes}
 
+For example, we can center align and bold face the title using the following `theme` specifications.
+{:.notes}
+
 
 
 ~~~r
-sex_wagp + theme_bw() +
+wage_gap + theme_bw() +
   labs(title = 'Wage Gap') +
   theme(
     plot.title = element_text(
@@ -100,7 +128,7 @@ sex_wagp + theme_bw() +
       hjust = 0.5))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
-![ ]({% include asset.html path="images/label/unnamed-chunk-5-1.png" %})
+![ ]({% include asset.html path="images/label/unnamed-chunk-6-1.png" %})
 {:.captioned}
 
 Use `?theme` for a list of available theme options. Note that position (both

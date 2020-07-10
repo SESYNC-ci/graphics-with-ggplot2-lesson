@@ -1,125 +1,142 @@
 # Getting Started
 
 library(readr)
-person <- read_csv(
+pums <- read_csv(
   file = 'data/census_pums/sample.csv',
   col_types = cols_only(
     ... = 'i',
     ... = 'd',
     ... = 'c',
+    ... = 'c', 
     ... = 'c'))
 
 ## Layered Grammar
 
 library(...)
-...(person, ...(x = WAGP)) +
+...(pums, ...(x = WAGP)) +
   ..._histogram()
 
 library(dplyr)
-person <- filter(
-  person,
+pums <- filter(
+  pums,
   WAGP > 0,
   WAGP < max(WAGP, na.rm = TRUE))
 
-ggplot(person,
+...(pums, ...(x = ...)) +
+  geom_histogram()
+
+ggplot(pums,
   aes(...)) +
   geom_point()
 
-ggplot(person,
-  aes(x = SCHL, y = WAGP)) +
-  ...
+ggplot(pums,
+  aes(x = ..., y = ...)) +
+  geom_...
 
 ## Layer Customization
+... <- pums[pums$SCHL %in% c(16, 21, 22, 24),]
 
-ggplot(person,
+ggplot(...,
   aes(x = SCHL, y = WAGP)) +
-  geom_boxplot(...) +
-  geom_point()
+  geom_...() +
+  
+ggplot(...,
+         aes(x = SCHL, y = WAGP)) +
+  geom_...() +
+  geom_...() 
 
-ggplot(person,
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP)) +
-  geom_boxplot() +
-  geom_point(
-    ... = 'red',
+  geom_point(...) +
+  geom_boxplot()
+
+ggplot(filter_SCHL,
+       aes(x = SCHL, y = WAGP)) +
+  geom_...(
+    color = ...,
     ... = 'summary',
-    fun.y = ...)
+    ... = mean)
 
 ## Adding Aesthetics
 
-ggplot(person,
+ggplot(filter_SCHL,
   aes(x = SCHL, y = WAGP, ...)) +
-  geom_boxplot()
+  geom_point(
+    stat = 'summary',
+    fun = mean)  
+  
 
-person$SEX <- factor(person$SEX, levels = ...)
+filter_SCHL$SEX <- factor(filter_SCHL$SEX, levels = ...)
 
-ggplot(person,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_boxplot()
+ggplot(filter_SCHL,
+       aes(x = SCHL, y = WAGP, color=SEX)) +
+  geom_point(
+    stat = 'summary',
+    fun = mean)
 
 # Storing and Re-plotting
 
-... ggplot(person,
-  aes(x = SCHL, y = WAGP, color = SEX)) +
-  geom_point(
-    stat = 'summary',
-    fun.y = 'mean')
+... ggplot(filter_SCHL,
+                    aes(x = SCHL, y = WAGP)) +
+  geom_boxplot() 
 
-schl_wagp <- ... +
-  scale_color_manual(
-    values = c('black', 'red'))
+... <- ... +
+  geom_point(
+    color = 'red',
+    stat = 'summary',
+    fun = mean)
 
 ggsave(...,
   plot = ...,
   width = 4, height = 3)
 
 # Smooth Lines
+... <- ggplot(pums, 
+                   aes(x=AGEP, y=WAGP)) +
+  geom_point()
 
-ggplot(person,
-  aes(x = SEX, y = WAGP)) + 
-  geom_point() +
-  ...(
-    method = ...,
-    aes(group = 0))
+... + 
+  ...(method = 'lm')
+
+... <- Age_Wage + 
+  geom_smooth(method = ..., aes(...))
 
 # Axes, Labels and Themes
 
-sex_wagp <- ggplot(person,
-  aes(x = SEX, y = WAGP)) + 
-  geom_point() +
-  geom_smooth(
-    method = 'lm',
-    aes(group = 0))
-
-sex_wagp + ...(
+... + ...(
   ... = 'Wage Gap',
   x = ...,
   ... = 'Wages (Unadjusted USD)')
 
-sex_wagp + ...(
+... + ...(
   trans = 'log10')
 
-sex_wagp + ...()
 
-sex_wagp + theme_bw() +
+... <- ... + labs(
+  title = 'Wage Gap',
+  x = 'Age',
+  y = 'Wages (Unadjusted USD)') + 
+  scale_...(values = ..., 
+                     labels = ...) + 
+  scale_...(values = ..., 
+                    labels = ...) 
+
+... + theme_...() 
+
+... + theme_bw() +
   labs(title = 'Wage Gap') +
   theme(
     ... = element_text(
-      face = 'bold',
+      face = ...,
       hjust = 0.5))
+
 
 # Facets
 
-person$SCHL <- factor(person$SCHL)
-levels(person$SCHL) <- list(
-  'High School' = '16',
-  'Bachelor\'s' = '21',
-  'Master\'s' = '22',
-  'Doctorate' = '24')
-
-ggplot(...,
-  aes(x = SEX, y = WAGP)) + 
-  geom_point() +
+ggplot(pums[pums$SCHL %in% c(16, 21, 22, 24),],
+       aes(x = ..., y = ...)) + 
+  geom_...() +
   geom_smooth(
     method = 'lm',
-    aes(group = 0)) +
-  ...
+    aes(...)) +
+  facet_...

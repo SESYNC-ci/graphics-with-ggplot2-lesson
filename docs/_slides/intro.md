@@ -5,7 +5,7 @@
 
 - Meet the "layered grammar of graphics"
 - Trust that [ggplot2](){:.rpkg} is way better than base R's `plot`
-- Learn to layer visual elements on top of tidy data
+- Layer visual elements
 - Glimpse the vast collection of [ggplot2](){:.rpkg} options
 
 ===
