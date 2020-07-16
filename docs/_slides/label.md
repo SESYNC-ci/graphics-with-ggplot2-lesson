@@ -75,9 +75,9 @@ wage_gap <- wage_gap + labs(
   x = 'Age',
   y = 'Wages (Unadjusted USD)') + 
   scale_color_manual(values = c('blue', 'red'), 
-                     labels = c('Women', 'Men')) + 
+                     labels = c('Men', 'Women')) + 
   scale_fill_manual(values = c('blue', 'red'), 
-                     labels = c('Women', 'Men')) 
+                     labels = c('Men', 'Women')) 
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
 

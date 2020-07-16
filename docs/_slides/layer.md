@@ -73,9 +73,11 @@ ggplot(data = pums, aes(x = WAGP)) +
 ===
 
 The `ggplot` command expects a data frame and an aesthetic mapping. 
+{:.notes}
 
 - The data is specified (`data = pums`). 
 - The `aes` function creates the aesthetic, a mapping between variables in the data frame and visual elements in the plot. Here, the aesthetic maps `WAGP` to the x-axis; a histogram only needs one variable mapped. 
+{:.notes}
 
 The `ggplot` function by itself only creates the axes, because only the
 aesthetic map has been defined. No data are plotted until the addition of a
@@ -83,7 +85,6 @@ aesthetic map has been defined. No data are plotted until the addition of a
 with `+`, to the object created by the `ggplot` function.
 {:.notes}
 
-===
 
 Plotting histograms is always a good idea when exploring data. The zeros and
 the "top coded" value used for high wage-earners in PUMS are outliers. 
@@ -318,12 +319,13 @@ ggplot(filter_SCHL,
 
 Question
 : What sex do you think is coded as "1"?
+{:.notes}
 
 Answer
 : ... Megan is skeptical about the answer!
 : {:.fragment}![]({% include asset.html path = 'images/rapinoe.jpg' %})
+{:.notes}
 
-===
 
 Properties of the data itself are similarly independent of the aesthetic mapping
 and the visual elements, but they can still affect the output. 
