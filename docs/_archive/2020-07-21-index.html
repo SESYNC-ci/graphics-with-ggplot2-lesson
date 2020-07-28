@@ -127,7 +127,7 @@ gigabytes, so a sample suffices while developing ideas for visualiztion.</p>
 </span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pums</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-3-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-3-1.png" alt=" " /></p>
 
 <p class="notes">The <code class="language-plaintext highlighter-rouge">ggplot</code> command expects a data frame and an aesthetic mapping.</p>
 
@@ -161,7 +161,7 @@ is an essential accompaniment to <a href="" class="rlib">ggplot2</a>.</p>
 <div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pums</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-5-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-5-1.png" alt=" " /></p>
 
 <p class="notes">The <code class="language-plaintext highlighter-rouge">geom_histogram</code> aesthetic only involves one variable. A scatterplot
 requires two, both an <code class="language-plaintext highlighter-rouge">x</code> and a <code class="language-plaintext highlighter-rouge">y</code>.</p>
@@ -172,7 +172,7 @@ requires two, both an <code class="language-plaintext highlighter-rouge">x</code
   </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AGEP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_point</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-6-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-6-1.png" alt=" " /></p>
 
 <p class="notes">The <code class="language-plaintext highlighter-rouge">aes</code> function can map variable to more than just the <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> axes in a
 plot. There are several other “scales” that exist, although whether and how they
@@ -190,7 +190,7 @@ needed is in the <code class="language-plaintext highlighter-rouge">geom_*</code
   </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AGEP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_density_2d</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-7-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-7-1.png" alt=" " /></p>
 
 <p>For a discrete x-axis, a boxplot is often beter than a scatterplot.</p>
 
@@ -207,7 +207,7 @@ needed is in the <code class="language-plaintext highlighter-rouge">geom_*</code
   </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-9-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-9-1.png" alt=" " /></p>
 
 <p class="notes">To create a scatterplot, a boxplot, and even a 2d kernel density estimate, the
 <code class="language-plaintext highlighter-rouge">geom_*</code> function takes no arguments. Every layer added on top of the foundation
@@ -221,7 +221,7 @@ foundation.</p>
   </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_point</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-10-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-10-1.png" alt=" " /></p>
 
 <dl>
   <dt>Question</dt>
@@ -241,7 +241,7 @@ are common to multiple <code class="language-plaintext highlighter-rouge">geom_*
   </span><span class="n">geom_point</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'red'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-11-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-11-1.png" alt=" " /></p>
 
 <p class="notes">The <code class="language-plaintext highlighter-rouge">color</code> specification was not part of aesthetic mapping between data and visual elements. In other words, it was not used to specify how the <strong>data</strong> are mapped visually.  Therefore, 1) it applies to every record (or person) and 2) only the elements in the scatterplot layer are affected.</p>
 
@@ -257,7 +257,7 @@ perform quick data transformations while plotting.</p>
     </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
     </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-12-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-12-1.png" alt=" " /></p>
 
 <p class="notes">With <code class="language-plaintext highlighter-rouge">stat = 'summary'</code>, the plot replaces the raw data with the result of a
 summary function applied to a “grouping” that is defined in the aesthetic. In
@@ -283,7 +283,7 @@ function works quite differently than assiging color to a <code class="language-
     </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
     </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-13-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-13-1.png" alt=" " /></p>
 
 <dl class="notes">
   <dt>Question</dt>
@@ -293,7 +293,7 @@ function works quite differently than assiging color to a <code class="language-
 <dl class="notes">
   <dt>Answer</dt>
   <dd>… Megan is skeptical about the answer!</dd>
-  <dd class="fragment"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/rapinoe.jpg" alt="" /></dd>
+  <dd class="fragment"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/rapinoe.jpg" alt="" /></dd>
 </dl>
 
 <p>Properties of the data itself are similarly independent of the aesthetic mapping
@@ -309,7 +309,7 @@ and the visual elements, but they can still affect the output.</p>
     </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
     </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/layer/unnamed-chunk-14-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/layer/unnamed-chunk-14-1.png" alt=" " /></p>
 
 <p class="notes">There can be cases where you don’t want to or can’t modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you’d like within the <code class="language-plaintext highlighter-rouge">ggplot</code>, <code class="language-plaintext highlighter-rouge">aes</code>, and <code class="language-plaintext highlighter-rouge">scale_*</code> functions.  More on modifying plots with <code class="language-plaintext highlighter-rouge">scale_*</code> later in the <a href="#axes-labels-and-themes">lesson</a>.</p>
 
@@ -339,7 +339,7 @@ additional layers.</p>
 
 <div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">schl_wagp</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/assign/unnamed-chunk-3-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/assign/unnamed-chunk-3-1.png" alt=" " /></p>
 
 <p>To add the points for the mean of each education level, simply add the <code class="language-plaintext highlighter-rouge">geom_point</code> layer to the stored <code class="language-plaintext highlighter-rouge">schl_wagp</code> object.</p>
 
@@ -349,7 +349,7 @@ additional layers.</p>
     </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
     </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/assign/unnamed-chunk-4-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/assign/unnamed-chunk-4-1.png" alt=" " /></p>
 
 <p>When adding layers, you can save as a new variable or overwrite the existing variable.</p>
 
@@ -362,7 +362,7 @@ additional layers.</p>
 
 <div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">schl_wagp</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/assign/unnamed-chunk-6-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/assign/unnamed-chunk-6-1.png" alt=" " /></p>
 
 <p class="notes">Figures are constructed in <a href="" class="rlib">ggplot2</a> as layers of shapes, from the
 axes on up through the <code class="language-plaintext highlighter-rouge">geom_*</code> elements. The natural file type for storing such
@@ -401,13 +401,13 @@ confidence intervals. The argument <code class="language-plaintext highlighter-r
 
 <div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">Age_Wage</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/model/unnamed-chunk-3-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/model/unnamed-chunk-3-1.png" alt=" " /></p>
 
 <p>Next, the regression line is added using <code class="language-plaintext highlighter-rouge">geom_smooth</code> using a linear model.</p>
 
 <div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">Age_Wage</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lm'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/model/unnamed-chunk-4-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/model/unnamed-chunk-4-1.png" alt=" " /></p>
 
 <p>We can also use the aesthetic mapping to explore how wages differ by sex. To do this, map the color and fill to <code class="language-plaintext highlighter-rouge">SEX</code>, using <code class="language-plaintext highlighter-rouge">aes</code> inside the <code class="language-plaintext highlighter-rouge">geom_smooth</code> layer. In <code class="language-plaintext highlighter-rouge">ggplot2</code>, <code class="language-plaintext highlighter-rouge">color</code> refers to the outline and <code class="language-plaintext highlighter-rouge">fill</code> the interior coloring.</p>
 
@@ -417,7 +417,7 @@ confidence intervals. The argument <code class="language-plaintext highlighter-r
 
 <div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">wage_gap</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/model/unnamed-chunk-6-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/model/unnamed-chunk-6-1.png" alt=" " /></p>
 
 <p class="notes">To learn more about adding regression lines, such as how to change the confidence interval, see the <code class="language-plaintext highlighter-rouge">geom_smooth</code> <a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">help page</a></p>
 
@@ -449,7 +449,7 @@ labeled elements in your plot (e.g. <code class="language-plaintext highlighter-
   </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Age'</span><span class="p">,</span><span class="w">
   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wages (Unadjusted USD)'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/label/unnamed-chunk-2-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/label/unnamed-chunk-2-1.png" alt=" " /></p>
 
 <p class="notes">For information on how to add special symbols and formatting to plot labels, see
 <code class="language-plaintext highlighter-rouge">?plotmath</code>.</p>
@@ -463,7 +463,7 @@ a call to <code class="language-plaintext highlighter-rouge">scale_y_continuous<
 <div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="w">
   </span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'log10'</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/label/unnamed-chunk-3-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/label/unnamed-chunk-3-1.png" alt=" " /></p>
 
 <p>Scales are also used to control color and fill schemes. <code class="language-plaintext highlighter-rouge">scale_color_*</code> functions, for example, control the colors, labels, and breaks mapping.</p>
 
@@ -487,7 +487,7 @@ sizes, can be set with <code class="language-plaintext highlighter-rouge">theme_
 
 <div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_bw</span><span class="p">()</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/label/unnamed-chunk-5-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/label/unnamed-chunk-5-1.png" alt=" " /></p>
 
 <p class="notes">Start typing <code class="language-plaintext highlighter-rouge">theme_</code> on the console to see what themes are available in the
 pop-up menu. The default theme is <code class="language-plaintext highlighter-rouge">theme_grey</code>. A popular “minimal” theme is
@@ -509,7 +509,7 @@ those customizations.  Check the order if your plot isn’t looking how you’d 
       </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bold'</span><span class="p">,</span><span class="w">
       </span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/label/unnamed-chunk-6-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/label/unnamed-chunk-6-1.png" alt=" " /></p>
 
 <p class="notes">Use <code class="language-plaintext highlighter-rouge">?theme</code> for a list of available theme options. Note that position (both
 <code class="language-plaintext highlighter-rouge">legend.position</code> and <code class="language-plaintext highlighter-rouge">hjust</code> for horizontal justification) should be given as a
@@ -544,7 +544,7 @@ new <code class="language-plaintext highlighter-rouge">ggplot</code> foundation 
     </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SEX</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">facet_wrap</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">SCHL</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/facet/unnamed-chunk-2-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/facet/unnamed-chunk-2-1.png" alt=" " /></p>
 
 <p class="notes">Adding <code class="language-plaintext highlighter-rouge">facet_wrap(vars(SCHL))</code> creates 4 separate plots, 1 for each level of eduction attainment.</p>
 
@@ -617,7 +617,7 @@ foundation.)</p>
   </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">binwidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10000</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/exercise/unnamed-chunk-2-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/exercise/unnamed-chunk-2-1.png" alt=" " /></p>
 
 <div class="language-r text-document highlighter-rouge" title="Solution 2"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">na.omit</span><span class="p">(</span><span class="n">pums</span><span class="p">),</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">SCIENGP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="o">+</span><span class="w">
@@ -628,14 +628,14 @@ foundation.)</p>
        </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Wages (Unadjusted USD)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_hline</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">yintercept</span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">WAGP</span><span class="p">)))</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/exercise/unnamed-chunk-3-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/exercise/unnamed-chunk-3-1.png" alt=" " /></p>
 
 <div class="language-r text-document highlighter-rouge" title="Solution 3"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
   </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
   </span><span class="n">facet_grid</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="n">vars</span><span class="p">(</span><span class="n">SCHL</span><span class="p">))</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/exercise/unnamed-chunk-4-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/exercise/unnamed-chunk-4-1.png" alt=" " /></p>
 
 <p>For the advanced challenge, you must supply a dataset to a second gemo_histogram
 that does not have the variable specified in <code class="language-plaintext highlighter-rouge">facet_grid</code>. Note that
@@ -651,7 +651,7 @@ as in the solution below.</p>
     </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter_SCHL</span><span class="p">[</span><span class="s1">'WAGP'</span><span class="p">],</span><span class="w">
     </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">)</span><span class="w">
 </span></code></pre></div></div>
-<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.0/docs/assets/images/exercise/unnamed-chunk-5-1.png" alt=" " /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.1/docs/assets/images/exercise/unnamed-chunk-5-1.png" alt=" " /></p>
 
 <p class="ToS"><a href="#/slides/exercise">Top of Section</a></p>
 
