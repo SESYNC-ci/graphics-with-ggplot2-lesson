@@ -2,7 +2,7 @@ title: Visualizing Tabular Data
 handouts:
   - worksheet.R
   - data/census_pums/sample.csv
-tag: v1.1
+tag: v1.2
 lesson: 2
 instructor: Mary Glover
 lifecycle: stable # status for lifecycle badge
