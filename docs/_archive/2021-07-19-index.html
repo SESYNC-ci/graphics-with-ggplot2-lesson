@@ -1,0 +1,918 @@
+---
+---
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualizing Tabular Data</title>
+<meta name="description" content="Craft publication-quality graphics with ggplot2.">
+<link rel="canonical"
+      href="https://SESYNC-ci.github.io/graphics-with-ggplot2-lesson/2021/07/19/index.html">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SESYNC-ci/lesson-style@3.0/docs/assets/css/default.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SESYNC-ci/lesson-style@3.0/docs/assets/css/syntax.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SESYNC-ci/lesson-style@3.0/docs/assets/css/static.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      rel="stylesheet"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous">
+
+    
+  </head>
+  <body>
+    <div class="page-content">
+      <div class="wrapper">
+        
+
+<h1 style="text-transform: none;" id="visualizing-tabular-data">Visualizing Tabular Data</h1>
+
+<p>Lesson 2 with <em>Mary Glover</em></p>
+
+<nav id="ToC">
+
+  <ul>
+    <li><a href="#/slides/intro">Lesson Objectives</a></li>
+    <li><a href="#/slides/layer">Getting Started</a></li>
+    <li><a href="#/slides/assign">Storing and Re-plotting</a></li>
+    <li><a href="#/slides/model">Smooth Lines</a></li>
+    <li><a href="#/slides/label">Axes, Labels and Themes</a></li>
+    <li><a href="#/slides/facet">Facets</a></li>
+    <li><a href="#/slides/conclude">Review</a></li>
+    <li><a href="#/slides/exercise">Exercises</a></li>
+  </ul>
+</nav>
+
+<hr />
+<p><a name="/slides/intro"></a></p>
+
+<section><h2 id="lesson-objectives">Lesson Objectives</h2>
+
+<ul>
+  <li>Meet the “layered grammar of graphics”</li>
+  <li>Trust that <a href="" class="rpkg">ggplot2</a> is way better than base R’s <code class="language-plaintext highlighter-rouge">plot</code></li>
+  <li>Layer visual elements</li>
+  <li>Glimpse the vast collection of <a href="" class="rpkg">ggplot2</a> options</li>
+</ul>
+
+</section>
+
+<section>
+
+<h2 id="specific-achievements">Specific Achievements</h2>
+
+<ul>
+  <li>Create “aesthetic mappings” from variables to scales &amp; geometries</li>
+  <li>Build boxplots, scatterplots, smoothed lines and histograms</li>
+  <li>Style plots with colors &amp; annotate them with labels</li>
+  <li>Repeat plots for different subsets of data</li>
+</ul>
+
+<p class="notes">“A Layered Grammar of Graphics” is the title of an
+<a href="https://dx.doi.org/10.1198/jcgs.2009.07098">article</a> by the author of
+<a href="" class="rpkg">ggplot2</a>, Hadley Wickham. The package codifies the ideas presented in
+the article, especially the main idea that scientific visualization is all about
+assigning different variables to distinct visual elements. A plot is made up of
+several of these “aesthetic mappings”: for example, equating <em>income</em> to a
+linear scale on the y-axis, <em>education</em> to a ordinal scale on the x-axis, and
+displaying records about each person in a box-plot geometry.</p>
+</section>
+
+<p class="ToS"><a href="#/slides/intro">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/layer"></a></p>
+
+<section><h2 id="getting-started">Getting Started</h2>
+
+<p>In this lesson, we’ll explore the wage gap between men and women.</p>
+
+<p class="notes">The file to be loaded contains individuals’ anonymized responses to the 5 Year
+American Community Survey (ACS) completed in 2017. There are over a hundred
+variables giving individual level data on household members income, education,
+employment, ethnicity, and much more.</p>
+
+<p class="notes">The dataset is an example of Public Use Microdata Sample (PUMS)
+produced by the US Census Bureau. The <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2017.html">technical
+documentation</a>
+for the PUMS data includes a data dictionary, explaining the codes used for
+the variable, such as education attainment, and everything else you’ld like to know about the dataset.</p>
+
+</section>
+
+<section>
+
+<p class="notes">The data columns we will use in this lesson are age (AGEP), wages over the past 12 months (WAGP), educational attainment (SCHL), sex (SEX), and travel time to work (JWMNP)</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span><span class="w">
+</span><span class="n">pums</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">read_csv</span><span class="p">(</span><span class="w">
+  </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'data/census_pums/sample.csv'</span><span class="p">,</span><span class="w">
+  </span><span class="n">col_types</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cols_only</span><span class="p">(</span><span class="w">
+    </span><span class="n">AGEP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'i'</span><span class="p">,</span><span class="w">
+    </span><span class="n">WAGP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'d'</span><span class="p">,</span><span class="w">
+    </span><span class="n">SCHL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'c'</span><span class="p">,</span><span class="w">
+    </span><span class="n">SEX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'c'</span><span class="p">,</span><span class="w"> 
+    </span><span class="n">SCIENGP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'c'</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes">The <a href="" class="rlib">readr</a> package gives additional flexibility and speed over the
+base R <code class="language-plaintext highlighter-rouge">read.csv</code> function. The CSV contains 4 million rows, equating to several
+gigabytes, so a sample suffices while developing ideas for visualiztion.</p>
+
+</section>
+
+<section>
+
+<h3 id="layered-grammar">Layered Grammar</h3>
+
+<p>First, we will explore the data by plotting a histogram of the wages (WAGP) of all the individuals in the data set. The code to plot the histogram calls three functions: <code class="language-plaintext highlighter-rouge">ggplot</code>, <code class="language-plaintext highlighter-rouge">aes</code>, and <code class="language-plaintext highlighter-rouge">geom_histogram</code> from the <a href="" class="rlib">ggplot2</a> package.</p>
+
+</section>
+
+<section>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ggplot</code> creates the foundation</li>
+  <li><code class="language-plaintext highlighter-rouge">aes</code> specifies an aesthetic mapping</li>
+  <li><code class="language-plaintext highlighter-rouge">geom_histogram</code> adds a layer of visual elements</li>
+</ul>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span><span class="w">
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pums</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Warning: Removed 1681 rows containing non-finite values (stat_bin).
+</code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-3-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">ggplot</code> command expects a data frame and an aesthetic mapping.</p>
+
+<ul class="notes">
+  <li>The data is specified (<code class="language-plaintext highlighter-rouge">data = pums</code>).</li>
+  <li>The <code class="language-plaintext highlighter-rouge">aes</code> function creates the aesthetic, a mapping between variables in the data frame and visual elements in the plot. Here, the aesthetic maps <code class="language-plaintext highlighter-rouge">WAGP</code> to the x-axis; a histogram only needs one variable mapped.</li>
+</ul>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">ggplot</code> function by itself only creates the axes, because only the
+aesthetic map has been defined. No data are plotted until the addition of a
+<code class="language-plaintext highlighter-rouge">geom_*</code> layer, in this example a <code class="language-plaintext highlighter-rouge">geom_histogram</code>. Layers are literally added,
+with <code class="language-plaintext highlighter-rouge">+</code>, to the object created by the <code class="language-plaintext highlighter-rouge">ggplot</code> function.</p>
+
+<p class="notes">Plotting histograms is always a good idea when exploring data. The zeros and
+the “top coded” value used for high wage-earners in PUMS are outliers.</p>
+
+<p>We can “filter” the data to remove individuals with a wage of 0 and the “top-coded” high earners)</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span><span class="w">
+</span><span class="n">pums</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="w">
+  </span><span class="n">pums</span><span class="p">,</span><span class="w">
+  </span><span class="n">WAGP</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">
+  </span><span class="n">WAGP</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes">The <a href="" class="rlib">dplyr</a> package provides tools for manipulating tabular data. It
+is an essential accompaniment to <a href="" class="rlib">ggplot2</a>.</p>
+
+</section>
+
+<section>
+
+<p>Now, we can remake the histogram with the filtered data set in the same way.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pums</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+</code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-5-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">geom_histogram</code> aesthetic only involves one variable. A scatterplot
+requires two, both an <code class="language-plaintext highlighter-rouge">x</code> and a <code class="language-plaintext highlighter-rouge">y</code>.</p>
+
+<p>We can use a scatterplot to look at the relationship between age and wage.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">pums</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AGEP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-6-1.png" alt=" " /></p>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">aes</code> function can map variable to more than just the <code class="language-plaintext highlighter-rouge">x</code> and <code class="language-plaintext highlighter-rouge">y</code> axes in a
+plot. There are several other “scales” that exist, although whether and how they
+show up depends on the <code class="language-plaintext highlighter-rouge">geom_*</code> layer. Commonly used arguments are <code class="language-plaintext highlighter-rouge">color</code> for
+line or edge color and <code class="language-plaintext highlighter-rouge">fill</code> for interior colors, but <a href="https://ggplot2.tidyverse.org/articles/ggplot2-specs.html">many more are
+available</a>.</p>
+
+</section>
+
+<section>
+
+<p class="notes">The aesthetic and the geometry are entirely independent, making it easy to
+experiment with very different kinds of visual representations. The only change
+needed is in the <code class="language-plaintext highlighter-rouge">geom_*</code> layer.</p>
+
+<p>For example, we can plot the same data, age and wage, using a 2D density plot by switching out geom_histogram with <code class="language-plaintext highlighter-rouge">geom_density_2d</code></p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">pums</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AGEP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_density_2d</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-7-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p>For a discrete x-axis, a boxplot is often beter than a scatterplot.</p>
+
+<p>First, we can simplify the level of educational attainment <code class="language-plaintext highlighter-rouge">SCHL</code> variable’ by only including some of the factor levels and saving in a new data frame <code class="language-plaintext highlighter-rouge">filter_SCHL</code>.</p>
+
+<p class="notes">Here, we include only individuals where the highest level of educational attainment is high school (16), bachelor’s degree (21), a masters degree (22), or a doctorate (24).</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">filter_SCHL</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">pums</span><span class="p">[</span><span class="n">pums</span><span class="o">$</span><span class="n">SCHL</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">22</span><span class="p">,</span><span class="w"> </span><span class="m">24</span><span class="p">),]</span><span class="w">
+</span></code></pre></div></div>
+
+</section>
+
+<section>
+
+<p>Here, we plot wage by the level of education (<code class="language-plaintext highlighter-rouge">SCHL</code>)</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-9-1.png" alt=" " /></p>
+
+<p class="notes">To create a scatterplot, a boxplot, and even a 2d kernel density estimate, the
+<code class="language-plaintext highlighter-rouge">geom_*</code> function takes no arguments. Every layer added on top of the foundation
+generated by the call to <code class="language-plaintext highlighter-rouge">ggplot</code> <em>inherits</em> the dataset and aesthetics of the
+foundation.</p>
+
+</section>
+
+<section>
+
+<p>Multiple <code class="language-plaintext highlighter-rouge">geom_*</code> layers create a plot with multiple visual elements. For example, the data points can be <em>added</em> on top of the boxplots.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-10-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<dl>
+  <dt>Question</dt>
+  <dd>What happens if you supply <code class="language-plaintext highlighter-rouge">x = AGEP</code> to the aesthetic map in the boxplot?</dd>
+  <dt>Answer</dt>
+  <dd class="fragment">Boxplots aren’t designed for continuous x-axis variables, so the
+result is not useful. Fortunately, there’s a warning.</dd>
+</dl>
+
+</section>
+
+<section>
+
+<h3 id="layer-customization">Layer Customization</h3>
+
+<p>Each <code class="language-plaintext highlighter-rouge">geom_*</code> object accepts arguments to customize that layer. Many arguments
+are common to multiple <code class="language-plaintext highlighter-rouge">geom_*</code> functions, such as changing the layer’s color or size. To make the points only from the scatterplot red, we add an aesthetic for color to the <code class="language-plaintext highlighter-rouge">geom_point</code> layer.</p>
+
+</section>
+
+<section>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'red'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-11-1.png" alt=" " /></p>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">color</code> specification was not part of aesthetic mapping between data and visual elements. In other words, it was not used to specify how the <strong>data</strong> are mapped visually.  Therefore, 1) it applies to every record (or person) and 2) only the elements in the scatterplot layer are affected.</p>
+
+</section>
+
+<section>
+
+<p>The <code class="language-plaintext highlighter-rouge">stat</code> parameter, in conjunction with <code class="language-plaintext highlighter-rouge">fun</code>, provides the ability to
+perform quick data transformations while plotting.</p>
+
+<p class="notes">Instead of using <code class="language-plaintext highlighter-rouge">geom_point</code> to display all the data points, we can add points for the mean at each educational level.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="w">
+    </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'red'</span><span class="p">,</span><span class="w">
+    </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+    </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-12-1.png" alt=" " /></p>
+
+<p class="notes">With <code class="language-plaintext highlighter-rouge">stat = 'summary'</code>, the plot replaces the raw data with the result of a
+summary function applied to a “grouping” that is defined in the aesthetic. In
+this case, it’s the ordinal x-axis that defines education attainment groups. The
+<code class="language-plaintext highlighter-rouge">fun</code> argument determines what function, here the function <code class="language-plaintext highlighter-rouge">mean</code>, you want to summarize each group.</p>
+
+</section>
+
+<section>
+
+<h3 id="additional-aesthetics">Additional Aesthetics</h3>
+
+<p>The true power of <a href="" class="rlib">ggplot2</a> is the natural connection it provides
+between variables and visuals.</p>
+
+<p class="notes">Associating color (or any attribute, like the shape of points) to a variable is
+another kind of aesthetic mapping. Passing the <code class="language-plaintext highlighter-rouge">color</code> argument to the <code class="language-plaintext highlighter-rouge">aes</code>
+function works quite differently than assiging color to a <code class="language-plaintext highlighter-rouge">geom_*</code>.</p>
+
+</section>
+
+<section>
+
+<p>To show the difference in wages based on sex, we can color the points based on the <code class="language-plaintext highlighter-rouge">SEX</code> data column.</p>
+
+<p class="notes">This time, color is specificied in the <code class="language-plaintext highlighter-rouge">aes</code> function because we are aesthetically mapping the data to an visual element in the plot.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="w">
+    </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+    </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-13-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<dl class="notes">
+  <dt>Question</dt>
+  <dd>What sex do you think is coded as “1”?</dd>
+</dl>
+
+<dl class="notes">
+  <dt>Answer</dt>
+  <dd>… Megan is skeptical about the answer!</dd>
+  <dd class="fragment"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/rapinoe.jpg" alt="" /></dd>
+</dl>
+
+<p>Properties of the data itself are similarly independent of the aesthetic mapping
+and the visual elements, but they can still affect the output.</p>
+
+<p class="notes">For example, see what happens when we switching the order of the levels of <code class="language-plaintext highlighter-rouge">SEX</code> in the data and then replot.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">filter_SCHL</span><span class="o">$</span><span class="n">SEX</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="o">$</span><span class="n">SEX</span><span class="p">,</span><span class="w"> </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">))</span><span class="w">
+
+</span><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="w">
+    </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+    </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/layer/unnamed-chunk-14-1.png" alt=" " /></p>
+
+<p class="notes">There can be cases where you don’t want to or can’t modify the dataframe.  Then, it is still possible to change properties of the data to get the plot you’d like within the <code class="language-plaintext highlighter-rouge">ggplot</code>, <code class="language-plaintext highlighter-rouge">aes</code>, and <code class="language-plaintext highlighter-rouge">scale_*</code> functions.  More on modifying plots with <code class="language-plaintext highlighter-rouge">scale_*</code> later in the <a href="#axes-labels-and-themes">lesson</a>.</p>
+
+</section>
+
+<p class="ToS"><a href="#/slides/layer">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/assign"></a></p>
+
+<section><h2 id="storing-and-re-plotting">Storing and Re-plotting</h2>
+
+<p>The output of <code class="language-plaintext highlighter-rouge">ggplot</code> can be assigned to a variable, which works with <code class="language-plaintext highlighter-rouge">+</code> to
+add layers.</p>
+
+<p>Here, we will recreate the plot for the wage and level of schooling we made before.</p>
+
+</section>
+
+<section>
+
+<p>First, we will store the plot, mapping only the boxplots for each education level.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">schl_wagp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SCHL</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="w"> 
+</span></code></pre></div></div>
+
+</section>
+
+<section>
+
+<p>The plot information stored in <code class="language-plaintext highlighter-rouge">schl_wagp</code> can be used on its own, or with
+additional layers.</p>
+
+<p>You may notice that the plot is not displayed in Rstudio when it is stored. To plot the data, simply run the name of the stored object.</p>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">schl_wagp</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/assign/unnamed-chunk-3-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p>To add the points for the mean of each education level, simply add the <code class="language-plaintext highlighter-rouge">geom_point</code> layer to the stored <code class="language-plaintext highlighter-rouge">schl_wagp</code> object.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">schl_wagp</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="w">
+    </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'red'</span><span class="p">,</span><span class="w">
+    </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+    </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/assign/unnamed-chunk-4-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p>When adding layers, you can save as a new variable or overwrite the existing variable.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">schl_wagp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">schl_wagp</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">(</span><span class="w">
+    </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'red'</span><span class="p">,</span><span class="w">
+    </span><span class="n">stat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'summary'</span><span class="p">,</span><span class="w">
+    </span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">schl_wagp</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/assign/unnamed-chunk-6-1.png" alt=" " /></p>
+</section>
+
+<section>
+
+<p class="notes">Figures are constructed in <a href="" class="rlib">ggplot2</a> as layers of shapes, from the
+axes on up through the <code class="language-plaintext highlighter-rouge">geom_*</code> elements. The natural file type for storing such
+figures at “infinite” resolution are PDF (for print) or SVG (for online).</p>
+
+<p>Use the function <code class="language-plaintext highlighter-rouge">ggsave</code> to save as an image.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggsave</span><span class="p">(</span><span class="n">filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'schl_wagp.pdf'</span><span class="p">,</span><span class="w">
+  </span><span class="n">plot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">schl_wagp</span><span class="p">,</span><span class="w">
+  </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">3</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">plot</code> argument is unnecessary if the target is the most recently displayed
+plot, but adding <code class="language-plaintext highlighter-rouge">plot</code> will ensure that the correct plot is saved. When a raster file type
+is necessary (e.g. a PNG, JPG, or TIFF) use the <code class="language-plaintext highlighter-rouge">dpi</code> argument to specify an
+image resolution. To save as a different file type, simply change the extension of the plot name (for example <code class="language-plaintext highlighter-rouge">filename = 'sch_wagp.png'</code>).</p>
+</section>
+
+<p class="ToS"><a href="#/slides/assign">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/model"></a></p>
+
+<section><h2 id="smooth-lines">Smooth Lines</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">geom_smooth</code> layer can add various kinds of regression lines and
+confidence intervals. The argument <code class="language-plaintext highlighter-rouge">method</code> defines the type of regression; <code class="language-plaintext highlighter-rouge">method = 'lm'</code>  specifies a linear model.</p>
+
+</section>
+
+<section>
+
+<p>Here, we will observe the relationship between age (AGEP) and wages (WAGP).</p>
+
+<p>First, the scatterplot is stored as <code class="language-plaintext highlighter-rouge">Age_Wage</code></p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="n">Age_Wage</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ggplot</span><span class="p">(</span><span class="n">pums</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">AGEP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">Age_Wage</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/model/unnamed-chunk-3-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p>Next, the regression line is added using <code class="language-plaintext highlighter-rouge">geom_smooth</code> using a linear model.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">Age_Wage</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lm'</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/model/unnamed-chunk-4-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p>We can also use the aesthetic mapping to explore how wages differ by sex. To do this, map the color and fill to <code class="language-plaintext highlighter-rouge">SEX</code>, using <code class="language-plaintext highlighter-rouge">aes</code> inside the <code class="language-plaintext highlighter-rouge">geom_smooth</code> layer. In <code class="language-plaintext highlighter-rouge">ggplot2</code>, <code class="language-plaintext highlighter-rouge">color</code> refers to the outline and <code class="language-plaintext highlighter-rouge">fill</code> the interior coloring.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Age_Wage</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'lm'</span><span class="p">,</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">SEX</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-r input highlighter-rouge" title="Console"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span><span class="w"> </span><span class="n">wage_gap</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/model/unnamed-chunk-6-1.png" alt=" " /></p>
+
+<p class="notes">To learn more about adding regression lines, such as how to change the confidence interval, see the <code class="language-plaintext highlighter-rouge">geom_smooth</code> <a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">help page</a></p>
+
+</section>
+
+<p class="ToS"><a href="#/slides/model">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/label"></a></p>
+
+<section><h2 id="axes-labels-and-themes">Axes, Labels and Themes</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">aes</code> and the <code class="language-plaintext highlighter-rouge">geom_*</code> functions do their best with annotations and styling,
+but precise control comes from other functions.</p>
+
+</section>
+
+<section>
+
+<p>Functions include:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">labs</code>: labels</li>
+  <li><code class="language-plaintext highlighter-rouge">scale_*</code>: scales such as color, size, and positional scales</li>
+  <li><code class="language-plaintext highlighter-rouge">theme_*</code> : the stylistic theme unrelated to the data</li>
+</ul>
+
+</section>
+
+<section>
+
+<p class="notes">To demonstrate these functions, we can edit the plot showing relationship of age and wages based on sex, saved as <code class="language-plaintext highlighter-rouge">wage_gap</code>.</p>
+
+<p>Setting the title and axis labels is done by the <code class="language-plaintext highlighter-rouge">labs</code> function, which accepts names for
+labeled elements in your plot (e.g. <code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">y</code>, <code class="language-plaintext highlighter-rouge">title</code>) as arguments.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">labs</span><span class="p">(</span><span class="w">
+  </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wage Gap'</span><span class="p">,</span><span class="w">
+  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Age'</span><span class="p">,</span><span class="w">
+  </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wages (Unadjusted USD)'</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/label/unnamed-chunk-2-1.png" alt=" " /></p>
+
+<p class="notes">For information on how to add special symbols and formatting to plot labels, see
+<code class="language-plaintext highlighter-rouge">?plotmath</code>.</p>
+
+</section>
+
+<section>
+
+<p>Scales in <code class="language-plaintext highlighter-rouge">ggplot</code> control how the data is mapped to aesthetics.</p>
+
+<p class="notes">Functions related to the axes, i.e.  limits, breaks, and transformations,
+are all <code class="language-plaintext highlighter-rouge">scale_*</code> functions. To modify any property of a continuous y-axis, add
+a call to <code class="language-plaintext highlighter-rouge">scale_y_continuous</code>. For example, we can transform the y axis to a log scale.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scale_y_continuous</span><span class="p">(</span><span class="w">
+  </span><span class="n">trans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'log10'</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`geom_smooth()` using formula 'y ~ x'
+</code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/label/unnamed-chunk-3-1.png" alt=" " /></p>
+
+</section>
+
+<section>
+
+<p>Scales are also used to control color and fill schemes. <code class="language-plaintext highlighter-rouge">scale_color_*</code> functions, for example, control the colors, labels, and breaks mapping.</p>
+
+<p class="notes">We can use <code class="language-plaintext highlighter-rouge">scale_color_manual</code> and <code class="language-plaintext highlighter-rouge">scale_fill_manual</code> to manually specify the colors we want to use for men and women in the plot and relabel the factors from 1 and 2 to “Men” and “Women.”</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">labs</span><span class="p">(</span><span class="w">
+  </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wage Gap'</span><span class="p">,</span><span class="w">
+  </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Age'</span><span class="p">,</span><span class="w">
+  </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wages (Unadjusted USD)'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'blue'</span><span class="p">,</span><span class="w"> </span><span class="s1">'red'</span><span class="p">),</span><span class="w"> 
+                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Men'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Women'</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'blue'</span><span class="p">,</span><span class="w"> </span><span class="s1">'red'</span><span class="p">),</span><span class="w"> 
+                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Men'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Women'</span><span class="p">))</span><span class="w"> 
+</span></code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wage_gap
+</code></pre></div></div>
+</section>
+
+<section>
+
+<p>“Look and feel” options in <a href="" class="rlib">ggplot2</a>, from background color to font
+sizes, can be set with <code class="language-plaintext highlighter-rouge">theme_*</code> functions. There are also <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">8 preset themes in ggplot</a></p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_bw</span><span class="p">()</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`geom_smooth()` using formula 'y ~ x'
+</code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/label/unnamed-chunk-5-1.png" alt=" " /></p>
+
+<p class="notes">Start typing <code class="language-plaintext highlighter-rouge">theme_</code> on the console to see what themes are available in the
+pop-up menu. The default theme is <code class="language-plaintext highlighter-rouge">theme_grey</code>. A popular “minimal” theme is
+<code class="language-plaintext highlighter-rouge">theme_bw</code>. Any option set by a <code class="language-plaintext highlighter-rouge">theme_*</code> function can also be set by calling
+<code class="language-plaintext highlighter-rouge">theme</code> itself with the option and value as an argument.</p>
+
+</section>
+
+<section>
+
+<p>The options available directly through <code class="language-plaintext highlighter-rouge">theme</code> offer limitless possibilities
+for customization.</p>
+
+<p class="notes">Do be aware that if <code class="language-plaintext highlighter-rouge">theme</code> comes after other custom specifications, it will overwrite
+those customizations.  Check the order if your plot isn’t looking how you’d like it to look.</p>
+
+<p class="notes">For example, we can center align and bold face the title using the following <code class="language-plaintext highlighter-rouge">theme</code> specifications.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">wage_gap</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theme_bw</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Wage Gap'</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">theme</span><span class="p">(</span><span class="w">
+    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">element_text</span><span class="p">(</span><span class="w">
+      </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bold'</span><span class="p">,</span><span class="w">
+      </span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`geom_smooth()` using formula 'y ~ x'
+</code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/label/unnamed-chunk-6-1.png" alt=" " /></p>
+
+<p class="notes">Use <code class="language-plaintext highlighter-rouge">?theme</code> for a list of available theme options. Note that position (both
+<code class="language-plaintext highlighter-rouge">legend.position</code> and <code class="language-plaintext highlighter-rouge">hjust</code> for horizontal justification) should be given as a
+proportion of the plot window (i.e. between 0 and 1).</p>
+</section>
+
+<p class="ToS"><a href="#/slides/label">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/facet"></a></p>
+
+<section><h2 id="facets">Facets</h2>
+
+<p>To conclude this overview of <a href="" class="rlib">ggplot2</a>, we’ll apply the same plotting
+instructions to different subsets of the data, creating panels or “facets”.</p>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">facet_wrap</code> function takes a <code class="language-plaintext highlighter-rouge">vars</code> argument that, like the <code class="language-plaintext highlighter-rouge">aes</code> function,
+relates a variable in the dataset to a visual element, the panels. The
+<code class="language-plaintext highlighter-rouge">facet_grid</code> function works like <code class="language-plaintext highlighter-rouge">facet_wrap</code>, but expects two variables to
+facet by the interaction of a row variable by a column variable.</p>
+
+</section>
+
+<section>
+
+<p>The gender wage gap apparent in the US Census PUMS data is probably not
+consistent across people who obtained different levels of education.</p>
+
+<p class="notes">The <code class="language-plaintext highlighter-rouge">wage_gap</code> plot created above stored it’s own copy of the data. To plot the simplified levels of education, we will need to change the input data. Therefore, we need to create a
+new <code class="language-plaintext highlighter-rouge">ggplot</code> foundation using a cleaned up dataset. We can either use the dataset we created earlier, <code class="language-plaintext highlighter-rouge">filter_SCHL</code> or we can specify the data in the <code class="language-plaintext highlighter-rouge">ggplot</code> command.</p>
+
+<div class="language-r text-document highlighter-rouge" title="worksheet-2.R"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">pums</span><span class="p">[</span><span class="n">pums</span><span class="o">$</span><span class="n">SCHL</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">16</span><span class="p">,</span><span class="w"> </span><span class="m">21</span><span class="p">,</span><span class="w"> </span><span class="m">22</span><span class="p">,</span><span class="w"> </span><span class="m">24</span><span class="p">),],</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AGEP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> 
+  </span><span class="n">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_smooth</span><span class="p">(</span><span class="w">
+    </span><span class="n">method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'lm'</span><span class="p">,</span><span class="w">
+    </span><span class="n">aes</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SEX</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_wrap</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">SCHL</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>`geom_smooth()` using formula 'y ~ x'
+</code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/facet/unnamed-chunk-2-1.png" alt=" " /></p>
+
+<p class="notes">Adding <code class="language-plaintext highlighter-rouge">facet_wrap(vars(SCHL))</code> creates 4 separate plots, 1 for each level of eduction attainment.</p>
+
+</section>
+
+<section>
+
+<dl>
+  <dt>Question</dt>
+  <dd>What wage gap trend do you think is worth investigating, and how might you
+do it?</dd>
+  <dt>Answer</dt>
+  <dd class="fragment">There are so many possibilities!</dd>
+</dl>
+</section>
+
+<p class="ToS"><a href="#/slides/facet">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/conclude"></a></p>
+
+<section><h2 id="review">Review</h2>
+
+<ol>
+  <li>Call <code class="language-plaintext highlighter-rouge">ggplot</code> with data and an <code class="language-plaintext highlighter-rouge">aes</code> to pave the way for subsequent layers.</li>
+  <li>Add one or more <code class="language-plaintext highlighter-rouge">geom_*</code> layers, possibly with data transformations.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">labs</code> to annotate your plot and axes labels (not optional!).</li>
+  <li>Optionally add <code class="language-plaintext highlighter-rouge">scale_*</code>, <code class="language-plaintext highlighter-rouge">theme_*</code>, <code class="language-plaintext highlighter-rouge">facet_*</code>, or other modifiers that work on underlying layers.</li>
+</ol>
+
+</section>
+
+<section>
+
+<h2 id="additional-resources">Additional Resources</h2>
+
+<ul>
+  <li><a href="http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">Data Visualization with ggplot2</a> RStudio Cheat Sheet</li>
+  <li><a href="http://www.cookbook-r.com/Graphs/">Cookbook for R - Graphs</a> Reference on customizations in ggplot</li>
+  <li><a href="https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html">Introduction to cowplot</a> Vignette for a package with ggplot enhancements</li>
+</ul>
+
+</section>
+
+<p class="ToS"><a href="#/slides/conclude">Top of Section</a></p>
+
+<hr />
+<p><a name="/slides/exercise"></a></p>
+
+<section><h2 id="exercises">Exercises</h2>
+
+</section>
+
+<section>
+
+<h3 id="exercise-1">Exercise 1</h3>
+
+<p>Create a histogram, using a <code class="language-plaintext highlighter-rouge">geom_histogram</code> layer, of the wages earned by
+females and males, with sex distinguished by the color of the bar’s interior. To
+silence that warning you’re getting, open the help with <code class="language-plaintext highlighter-rouge">?geom_histogram</code> and
+determine how to explicitly set the bin width.</p>
+
+</section>
+
+<section>
+
+<h3 id="exercise-2">Exercise 2</h3>
+
+<p>The ACS includes data for if an individual has a science or engineering degree <code class="language-plaintext highlighter-rouge">SCIENGP</code>. Use <code class="language-plaintext highlighter-rouge">ggplot</code> to show how the mean wage earned in the U.S. varies when individuals have a science or engineering degree (coded as 1) or do not (coded as 2),
+showing males and females in different colors. (Hint: Baby steps! First determine what type of plot you want to use to display categorical data for <code class="language-plaintext highlighter-rouge">SCIENGP</code>. Then
+distinguish sexes by color. You can then customize your plot labels, colors, etc.)</p>
+
+<p>Explore the help file for <code class="language-plaintext highlighter-rouge">?geom_abline</code> Add a horizontal line for the median wages for the data overall.</p>
+
+</section>
+
+<section>
+<h3 id="exercise-3">Exercise 3</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">facet_grid</code> layer (different from <code class="language-plaintext highlighter-rouge">facet_wrap</code>) requires an argument for
+both row and column varaibles, creating a grid of panels. Create a plot with 8
+facets, each displaying a single histogram of wage earned by women or men having
+one of the four education attainment levels. Make the grid have 2 rows and 4
+columns. <em>Advanced challenge</em>: add a second, partially transparent, histogram to
+the background of each facet that provides a comparison to the whole population.
+(Hint: the second histogram should not inherit the dataset from the <code class="language-plaintext highlighter-rouge">ggplot</code>
+foundation.)</p>
+
+</section>
+
+<section>
+
+<h2 id="solutions">Solutions</h2>
+
+<div class="language-r text-document highlighter-rouge" title="Solution 1"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">pums</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">binwidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10000</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/exercise/unnamed-chunk-2-1.png" alt=" " /></p>
+
+<div class="language-r text-document highlighter-rouge" title="Solution 2"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">na.omit</span><span class="p">(</span><span class="n">pums</span><span class="p">),</span><span class="w"> </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">SCIENGP</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="n">WAGP</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="o">=</span><span class="n">SEX</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_boxplot</span><span class="p">()</span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'blue'</span><span class="p">,</span><span class="w"> </span><span class="s1">'red'</span><span class="p">),</span><span class="w"> 
+                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Men'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Women'</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">scale_x_discrete</span><span class="p">(</span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s1">'Yes'</span><span class="p">,</span><span class="w"> </span><span class="s1">'No'</span><span class="p">))</span><span class="o">+</span><span class="w">
+  </span><span class="n">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Science or Engineering Degree"</span><span class="p">,</span><span class="w"> 
+       </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Wages (Unadjusted USD)"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_hline</span><span class="p">(</span><span class="n">aes</span><span class="p">(</span><span class="n">yintercept</span><span class="o">=</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">WAGP</span><span class="p">)))</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/exercise/unnamed-chunk-3-1.png" alt=" " /></p>
+
+<div class="language-r text-document highlighter-rouge" title="Solution 3"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_grid</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="n">vars</span><span class="p">(</span><span class="n">SCHL</span><span class="p">))</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/exercise/unnamed-chunk-4-1.png" alt=" " /></p>
+
+<p>For the advanced challenge, you must supply a dataset to a second gemo_histogram
+that does not have the variable specified in <code class="language-plaintext highlighter-rouge">facet_grid</code>. Note that
+<code class="language-plaintext highlighter-rouge">facet_grid</code> affects the entire plot, including layers added “after faceting”,
+as in the solution below.</p>
+
+<div class="language-r text-document highlighter-rouge" title="Solution 3 (challenge)"><div class="highlight"><pre class="highlight"><code><span class="n">ggplot</span><span class="p">(</span><span class="n">filter_SCHL</span><span class="p">,</span><span class="w">
+  </span><span class="n">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WAGP</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">facet_grid</span><span class="p">(</span><span class="n">vars</span><span class="p">(</span><span class="n">SEX</span><span class="p">),</span><span class="w"> </span><span class="n">vars</span><span class="p">(</span><span class="n">SCHL</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w">
+  </span><span class="n">geom_histogram</span><span class="p">(</span><span class="w">
+    </span><span class="n">bins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">,</span><span class="w">
+    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter_SCHL</span><span class="p">[</span><span class="s1">'WAGP'</span><span class="p">],</span><span class="w">
+    </span><span class="n">alpha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/SESYNC-ci/graphics-with-ggplot2-lesson@v1.2/docs/assets/images/exercise/unnamed-chunk-5-1.png" alt=" " /></p>
+</section>
+
+<p class="ToS"><a href="#/slides/exercise">Top of Section</a></p>
+
+
+
+        <hr>
+
+<p>If you need to catch-up before a section of code will work, just squish it's
+🍅 to copy code above it into your clipboard. Then paste into your interpreter's
+console, run, and you'll be ready to start in on that section. Code copied by
+both 🍅 and 📋 will also appear below, where you can edit first, and then copy,
+paste, and run again.</p>
+
+<div class="output">
+  <pre id="ketchup" contenteditable="true"><code># Nothing here yet!</code></pre>
+</div>
+
+<script>
+$(document).ready(function(){
+  
+  // Add code help icons to code blocks
+  $('.input, .text-document').append('<ul class="code-help">');
+  $('.code-help')
+    .append('<li class="clipboard">📋</li>');
+  $('.text-document:not(.no-eval) .code-help')
+    .append('<li class="ketchup">🍅</li>');
+
+  // Bind copy actions to mouse clicks on icons
+  var $ketchup = $('#ketchup');
+  var rng = document.createRange();
+  var sel = window.getSelection();
+  $('.ketchup').click(function(){
+    var $prev = $(this)
+      .parents('.text-document')
+      .prevAll('.text-document:has(.ketchup)');
+    $ketchup.find('code').text($prev.find('pre').text());
+    rng.selectNodeContents($ketchup[0]);
+    sel.removeAllRanges();
+    sel.addRange(rng);
+    document.execCommand("copy");
+    sel.removeAllRanges();
+  });
+  $('.text-document .clipboard').click(function(){
+    var pre = $(this).parents('.text-document').find('pre').text();
+    $ketchup.find('code').text(pre);
+    rng.selectNodeContents($ketchup[0]);
+    sel.removeAllRanges();
+    sel.addRange(rng);
+    document.execCommand("copy");
+    sel.removeAllRanges();
+  });
+  $('.input .clipboard').click(function(){
+    var pre = $(this).parents('.input').find('pre').text();
+    pre = pre.replace(/(^|\n)[>+] /g, '$1');
+    $ketchup.find('code').text(pre);
+    rng.selectNodeContents($ketchup[0]);
+    sel.removeAllRanges();
+    sel.addRange(rng);
+    document.execCommand("copy");
+    sel.removeAllRanges();
+  });
+});
+</script>
+      </div>
+    </div>
+    <script>
+$(document).ready(function(){
+  // Add links to R and Python package repositories
+  $('a.rlib').map(function(){
+    this.href = 'https://cran.r-project.org/package=' + this.innerText;
+  });
+  $('a.pylib').map(function(){
+    this.href = 'https://pypi.python.org/pypi/' + this.innerText;
+  });
+});
+</script>
+
+  </body>
+</html>
