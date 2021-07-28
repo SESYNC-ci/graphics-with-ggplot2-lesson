@@ -34,6 +34,12 @@ ggplot(pums[pums$SCHL %in% c(16, 21, 22, 24),],
   facet_wrap(vars(SCHL))
 ~~~
 {:title="{{ site.data.lesson.handouts[0] }}" .text-document}
+
+
+~~~
+`geom_smooth()` using formula 'y ~ x'
+~~~
+{:.output}
 ![ ]({% include asset.html path="images/facet/unnamed-chunk-2-1.png" %})
 {:.captioned}
 
