@@ -1,5 +1,5 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://github.com/SESYNC-ci/sesync-ci.github.io/blob/master/lesson/lesson-lifecycle.md#stable)
-[![DOI](https://zenodo.org/badge/66203224.svg)](https://zenodo.org/badge/latestdoi/66203224)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5708571.svg)](https://doi.org/10.5281/zenodo.5708571)
 
 ## Visualizing Tabular Data
 
